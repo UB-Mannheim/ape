@@ -1,13 +1,16 @@
 #!/usr/bin/php -q
 <?php
+// load config
+$config = parse_ini_file("print.conf", TRUE);
+// echo $config["lib"]["mailparser"];
 
 // include Mailparser Library
-require_once '/home/mailuser/script/composer/vendor/autoload.php';
+require_once $config["lib"]["mailparser"];
 $Parser = new PhpMimeMailParser\Parser();
 
 // set Variables
-$__PATH__ = "/home/mailuser/script/";
-$__LOG__ = "/home/mailuser/script/log/debug.log";
+$__PATH__ = $config["common"]["root"];
+$__LOG__ = $config["common"]["log"];
 $__MAIL__ = true;
 
 if(isset($argv[1])) {
@@ -18,7 +21,7 @@ $__FILE__ = $__PATH__.$argv[1];
 function writeLog($msg) {
 
     // get variable out of here when in oop context
-    $log = "/home/mailuser/script/log/debug.log";
+    $log = $config["common"]["log"];
     $fdw = fopen($log, "a+");
     fwrite($fdw, $msg . "\n");
     fclose($fdw);
@@ -134,8 +137,8 @@ if($__MAIL__) {
     }
 */
 
-    $filename = "/home/mailuser/script/tmp/incoming__".$udate.".html";
-    $pdf = "/home/mailuser/script/tmp/pdf__".$udate.".pdf";
+    $filename = $config["common"]["tmp"]."incoming__".$udate.".html";
+    $pdf = $config["common"]["tmp"]."pdf__".$udate.".pdf";
     writeLog("-- writing html file: ".$filename);
 
     $fdw = fopen($filename, "w+");
