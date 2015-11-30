@@ -137,7 +137,7 @@ if($__MAIL__) {
     $mailstr = "New mail received at " .$printer. " :" .$date_rfc. "\nSubject: " .$subject. "\nTo: " .$to. "\nFrom :" .$from. "\nText: \n" .$htmlEmbedded;
 
     // print " --- \n" . $email;
-
+/*
     $print = array();
     // if (preg_match_all('#<h2>(?:.*?)</h2>#is', $email, $matches)) {
     if (preg_match_all('|<h2 id="type">(.*)</h2>|U', $email, $type)) {
@@ -160,10 +160,10 @@ if($__MAIL__) {
     $print["name"] = $str;
 
     print $str ."\r\n";
+*/
+    // assignJob($print);
 
-    assignJob($print);
-
-    var_dump($print);
+    // var_dump($print);
 /*
     writeLog("-- EMail Inhalte\n ");
     writeLog("-- Betreff: ". $subject);
@@ -224,6 +224,20 @@ if($__MAIL__) {
     // unlink($pdf);
 
 writeLog("--- END ---");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 function assignJob($print) {
 
@@ -259,10 +273,10 @@ function setStage() {
 */
 
 // Direktdruck (Ruecklagezettel)
-printJob($filename, $printer);
+// printJob($filename, $printer);
 
 // in Warteschlange kopieren
-queueJob($filename, $queue);
+// queueJob($filename, $queue);
 
 
 ?>
