@@ -1,17 +1,18 @@
 #!/usr/bin/php -q
 <?php
-// load config
-$config = parse_ini_file("print.conf", TRUE);
-// echo $config["lib"]["mailparser"];
 
-// include Mailparser Library
-require_once $config["lib"]["mailparser"];
-$Parser = new PhpMimeMailParser\Parser();
+    // Load Config
+    $config = parse_ini_file("print.conf", TRUE);
+    // echo $config["lib"]["mailparser"];
 
-// set Variables
-$__PATH__ = $config["common"]["root"];
-$__LOG__ = $config["common"]["log"];
-$__MAIL__ = true;
+    // Include Mailparser Library
+    require_once $config["lib"]["mailparser"];
+    $Parser = new PhpMimeMailParser\Parser();
+
+    // Set Variables
+    $__PATH__ = $config["common"]["root"];
+    $__LOG__ = $config["common"]["log"];
+    $__MAIL__ = true;
 
 if(isset($argv[1])) {
 $__FILE__ = $__PATH__.$argv[1];
@@ -20,9 +21,12 @@ $__FILE__ = $__PATH__.$argv[1];
 // Log
 function writeLog($msg) {
 
+    // quick n dirty
     $config = $GLOBALS["config"];
+    // with own class:
+    // http://php.net/manual/de/reserved.variables.globals.php
 
-    // get variable out of here when in oop context
+    // get global variable out of here when in oop context
     $log = $config["common"]["log"];
     $fdw = fopen($log, "a+");
     fwrite($fdw, $msg . "\n");
@@ -32,6 +36,14 @@ function writeLog($msg) {
 writeLog("--- STARTING WORKER PROCESS ---");
 
 $email = "";
+
+$to = "";
+$from = "";
+$subject = "";
+
+$text = "";
+$html = "";
+$htmlEmbedded = "";
 
 if (isset($__FILE__)) {
 // if command line argument (local file) exists
@@ -48,10 +60,10 @@ if (isset($__FILE__)) {
         // writeLog($email);
         }
 
-    $__MAIL__ = false;
-
     // close file
     fclose($localfile);
+
+    $__MAIL__ = false;
 
     writeLog($email);
 
@@ -124,6 +136,34 @@ if($__MAIL__) {
 
     $mailstr = "New mail received at " .$printer. " :" .$date_rfc. "\nSubject: " .$subject. "\nTo: " .$to. "\nFrom :" .$from. "\nText: \n" .$htmlEmbedded;
 
+    // print " --- \n" . $email;
+
+    $print = array();
+    // if (preg_match_all('#<h2>(?:.*?)</h2>#is', $email, $matches)) {
+    if (preg_match_all('|<h2 id="type">(.*)</h2>|U', $email, $type)) {
+        $print["type"] = $type[1][0];
+    }
+    if (preg_match_all('|<h2 id="library">(.*)</h2>|U', $email, $library)) {
+        $print["library"] = $library[1][0];
+    }
+    if (preg_match_all('|<h2 id="callnumber">(.*)</h2>|U', $email, $callnumber)) {
+        $print["callnumber"] = $callnumber[1][0];
+    }
+    if (preg_match_all('|<h2 id="level">(.*)</h2>|U', $email, $level)) {
+        $print["level"] = $level[1][0];
+    }
+
+    $name = $print["type"]."__".$print["library"]."__".$print["callnumber"]."__".$print["level"];
+    $name = preg_replace('/\s+/', '_', $name);
+    $name = preg_replace('/\,/', '', $name);
+
+    $print["name"] = $str;
+
+    print $str ."\r\n";
+
+    assignJob($print);
+
+    var_dump($print);
 /*
     writeLog("-- EMail Inhalte\n ");
     writeLog("-- Betreff: ". $subject);
@@ -184,5 +224,45 @@ if($__MAIL__) {
     // unlink($pdf);
 
 writeLog("--- END ---");
+/*
+function assignJob($print) {
+
+    // createPrintName
+    // Sections
+    // BB Schloss Schneckenhof, West
+
+
+    // set belonging queue DIREKT | MAGAZIN | SCAN
+    switch($print[1][0]) {
+
+        case "MAGAZINBESTELLUNG": ;// copy to magazin queue
+        default:
+
+    }
+
+}
+function createPrintPrefix($print) {
+
+    // Bereich / Stockwerk / Signatur
+    return $name;
+}
+function setQueue() {
+
+}
+
+function setSection() {
+
+}
+function setStage() {
+
+}
+*/
+
+// Direktdruck (Ruecklagezettel)
+printJob($filename, $printer);
+
+// in Warteschlange kopieren
+queueJob($filename, $queue);
+
 
 ?>
