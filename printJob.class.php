@@ -169,8 +169,14 @@ class printJob {
         // Unique ID
         $uid = uniqid();
         $udate = $date."__".$uid;
-/*
-        $printer = "";
+
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+// alter Block
+$printer = "";
+$to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         switch($to) {
 
@@ -183,9 +189,13 @@ class printJob {
             default: $printer = "Kyocera_ECOSYS_M2530dn";
         }
 
-        $mailstr = "New mail received at " .$printer. " :" .$date_rfc. "\nSubject: " .$subject. "\nTo: " .$to. "\nFrom :" .$from. "\nText: \n" .$htmlEmbedded;
-*/
+        // $mailstr = "New mail received at " .$printer. " :" .$date_rfc. "\nSubject: " .$subject. "\nTo: " .$to. "\nFrom :" .$from. "\nText: \n" .$htmlEmbedded;
+
         // print " --- \n" . $email;
+
+
+
+
 
         // Get Information from HTML
         $printjob = array();
@@ -225,6 +235,58 @@ class printJob {
 
         print "SIGNATURE \t::".$printjob["callnumber"]."\r\n";
         // copy to magazin
+
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
+
+        // bisher weitgehend unbearbeitet
+        $filename = $this->__CFG__["common"]["tmp"].$name."____incoming__".$udate.".html";
+        $pdf = $this->__CFG__["common"]["tmp"].$name."____pdf__".$udate.".pdf";
+        $this->writeLog("-- writing html file: ".$filename);
+
+        $fdw = fopen($filename, "w+");
+        // Embedded Html Only
+        fwrite($fdw, $email);
+        // fwrite($fdw, $htmlEmbedded);
+
+        // old self-generated "header"
+        // fwrite($fdw, $mailstr);
+
+        // all information from stdin
+        // fwrite($fdw, $email);
+
+        fclose($fdw);
+
+        $this->writeLog("-- file: ".$filename." written");
+
+        // html to pdf
+        $this->writeLog("-- create pdf: ".$pdf);
+
+        $convert_cmd = "/usr/local/bin/wkhtmltopdf -q ".$filename." ".$pdf;
+
+        $this->writeLog("-- ". $convert_cmd);
+
+        exec($convert_cmd);
+
+        if (file_exists($pdf)) {
+            $this->writeLog("-- file: ".$pdf." successfully created");
+        } else {
+            $this->writeLog("-- file: ".$pdf." not found");
+        }
+
+        $this->writeLog("-- start printing: ".$pdf);
+
+        $print_cmd = "lp -d " .$printer. " " .$pdf; // ." >/dev/null 2>&1 &";
+
+        $this->writeLog("-- ". $print_cmd);
+
+        shell_exec($print_cmd);
+
+        // unlink($filename);
+        // unlink($pdf);
+
+    $this->writeLog("--- END ---");
 
     }
 
