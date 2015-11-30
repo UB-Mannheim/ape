@@ -20,6 +20,8 @@ $__FILE__ = $__PATH__.$argv[1];
 // Log
 function writeLog($msg) {
 
+    $config = $GLOBALS["config"];
+
     // get variable out of here when in oop context
     $log = $config["common"]["log"];
     $fdw = fopen($log, "a+");
