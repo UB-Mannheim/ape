@@ -505,12 +505,13 @@ if(isset($argv[1])) {
     // Aufruf mit Datei
     $print = new printJob($argv[1]);
 } else {
-        /*
+
         $sock = fopen ("php://stdin", 'r'); while (!feof($sock)) { $input .= fread($sock, 1024); } fclose($sock);
-        print $input;
-        */
+        // print $input;
+
     // Aufruf mit STDIN
-    print STDIN;
-    $print = new printJob(STDIN);
+    // print STDIN;
+    $context = stream_context_create($input);
+    $print = new printJob($context);
     }
 ?>
