@@ -32,6 +32,7 @@ class printJob {
 
             // Read StreamInput
             $content = $this->streamInput();
+            print "FILECONTENT: " . $content;
 
             $this->getContent($content);
 
