@@ -400,7 +400,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                         foreach($sub as $s) {
                             $print_cmd = "";
                             // echo $s . "\r\n";
-                            switch($sub) {
+                            switch($f) {
                                 case "A3":
                                     $printer = $this->__CFG__["printer"]["printer50"];
                                     break;
