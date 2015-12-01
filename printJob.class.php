@@ -412,6 +412,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 $print_cmd = "lp -d " .$printer. " " .$f; // ." >/dev/null 2>&1 &";
                 // shell_exec($print_cmd);
                 print $print_cmd . "\r\n";
+                // mv to <history> directory
+                // 2015-12-01__XY
             }
 
         }
@@ -452,6 +454,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                             $print_cmd = "lp -d " .$printer. " " .$dir."/".$f."/".$s;
                             // shell_exec($print_cmd);
                             print $print_cmd . "\r\n";
+                            // mv to <history> directory
+                            // 2015-12-01__XY
                             }
                 } else {
                     // print jobs in root
@@ -471,6 +475,9 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         // shell_exec($print_cmd);
         print $print_cmd;
+
+        // mv to <history> directory
+        // 2015-12-01_XY
 
         }
 
