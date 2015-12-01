@@ -374,8 +374,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
     protected function sendToQueue($queue, $section, $file) {
 
         // print $this->__CFG__["queue"][$queue];
-        // $cp_cmd = "copy \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"";
-        $cp_cmd = "cp \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"";
+        // $cp_cmd = "copy \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"\".$section;
+        $cp_cmd = "cp \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"/".$section;
 
         // print($cp_cmd);
         shell_exec($cp_cmd);
