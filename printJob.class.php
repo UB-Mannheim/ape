@@ -217,7 +217,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         // $mailstr = "New mail received at " .$printer. " :" .$date_rfc. "\nSubject: " .$subject. "\nTo: " .$to. "\nFrom :" .$from. "\nText: \n" .$htmlEmbedded;
 
-        // print " --- \n" . $email;
+        print " --- \n" . $email;
 
 
 
