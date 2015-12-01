@@ -510,6 +510,7 @@ if(isset($argv[1])) {
         print $input;
         */
     // Aufruf mit STDIN
+    print STDIN;
     $print = new printJob(STDIN);
     }
 ?>
