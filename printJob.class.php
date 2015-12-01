@@ -504,9 +504,10 @@ if(isset($argv[1])) {
     $print = new printJob($argv[1]);
 } else {
 
+    /*
     $sock = fopen ("php://stdin", 'r'); while (!feof($sock)) { $input .= fread($sock, 1024); } fclose($sock);
     print $input;
-
+    */
     // Aufruf mit STDIN
     $print = new printJob("php://stdin", 'r');
     }
