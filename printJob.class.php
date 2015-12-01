@@ -43,6 +43,14 @@ class printJob {
         $this->getContent($content);
     }
 
+    function __construct2($cron, $job) {
+
+        $this->getConfig();
+
+        $this->printByNow($cron, $job);
+
+    }
+
     protected function getConfig() {
 
         // Initialize Variables
@@ -313,23 +321,23 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         if($queue=="direct") {
             switch($section) {
                 case "BB Schloss Schneckenhof, West":
-                    $this->printByNow("printer08", $file);
+                    $this->printByNow($this->__CFG__["printer"]["printer08"], $file);
                     // sendToQueue("magazin", "BSE", $file);
                     break;
                 case "BB A3":
-                    $this->printByNow("printer10", $file);
+                    $this->printByNow($this->__CFG__["printer"]["printer10"], $file);
                     break;
                 case "BB A5":
-                    $this->printByNow("printer46", $file);
+                    $this->printByNow($this->__CFG__["printer"]["printer46"], $file);
                     break;
                 case "BB Schloss Schneckenhof, BWL":
-                    $this->printByNow("printer29", $file);
+                    $this->printByNow($this->__CFG__["printer"]["printer29"], $file);
                     break;
                 case "BB Schloss Ehrenhof":
-                    $this->printByNow("printer48", $file);
+                    $this->printByNow($this->__CFG__["printer"]["printer48"], $file);
                     break;
                 default:
-                    $this->printByNow("printer08", $file);
+                    $this->printByNow($this->__CFG__["printer"]["printer08"], $file);
             }
         } else {
             if($queue=="magazin") {
@@ -362,6 +370,66 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
     protected function printByNow($printer, $file) {
 
+    if( ($file=="cronMagazinDruck") || ($file=="cronScanauftrag") ) {
+
+        if($file=="cronMagazinDruck") {
+
+        $dir = $this->__CFG__["queue"]["magazin"];
+        $printer = $this->__CFG__["printer"]["magazin"];
+
+        $files = array_diff(scandir($dir), array('..', '.'));
+
+            foreach($files as $f) {
+                $print_cmd = "lp -d " .$printer. " " .$f; // ." >/dev/null 2>&1 &";
+                // shell_exec($print_cmd);
+                print $print_cmd . "\r\n";
+            }
+
+        }
+
+        if($file=="cronScanauftrag") {
+
+        $dir = $this->__CFG__["queue"]["scanauftrag"];
+        $printer = "";
+
+        $files = array_diff(scandir($dir), array('..', '.'));
+
+            foreach($files as $f) {
+                if(is_dir($dir."/".$f)) {
+                    $sub = array_diff(scandir($dir."/".$f), array('..', '.'));
+                        foreach($sub as $s) {
+                            $print_cmd = "";
+                            // echo $s . "\r\n";
+                            switch($sub) {
+                                case A3:
+                                    $printer = $this->__CFG__["printer"]["printer50"];
+                                    break;
+                                case A5:
+                                    $printer = $this->__CFG__["printer"]["konicaA5"];
+                                    break;
+                                case BWL:
+                                    $printer = $this->__CFG__["printer"]["printer29"];
+                                    break;
+                                case BSE:
+                                    $printer = $this->__CFG__["printer"]["printer21"];
+                                    break;
+                                case SW:
+                                    $printer = $this->__CFG__["printer"]["printer08"];
+                                    break;
+                                default:
+                                    $printer = $this->__CFG__["printer"]["printer08"];
+                            }
+                            $print_cmd = "lp -d " .$printer. " " .$f;
+                            // shell_exec($print_cmd);
+                            print $print_cmd . "\r\n";
+                            }
+                } else {
+                    // print jobs in root
+                }
+            }
+        }
+
+    } else {
         $this->writeLog("-- start printing: ".$file);
 
         $print_cmd = "lp -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
@@ -369,8 +437,10 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $this->writeLog("-- ". $print_cmd);
 
         shell_exec($print_cmd);
+        }
 
     }
+
     protected function sendToQueue($queue, $section, $file) {
 
         // print $this->__CFG__["queue"][$queue];
