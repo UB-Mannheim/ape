@@ -213,7 +213,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             $printjob["level"] = $level[1][0];
         }
 
-        $name = $printjob["type"]."__".$printjob["library"]."__".$printjob["callnumber"]."__".$printjob["level"];
+        $name = $printjob["type"]."__".$printjob["library"]."__".$printjob["level"]."__".$printjob["callnumber"];
         $name = preg_replace('/\s+/', '_', $name);
         $name = preg_replace('/\,/', '', $name);
 
@@ -274,7 +274,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         } else {
             $this->writeLog("-- file: ".$pdf." not found");
         }
-
+/*
         $this->writeLog("-- start printing: ".$pdf);
 
         $print_cmd = "lp -d " .$printer. " " .$pdf; // ." >/dev/null 2>&1 &";
@@ -282,14 +282,82 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $this->writeLog("-- ". $print_cmd);
 
         shell_exec($print_cmd);
-
+*/
         // unlink($filename);
         // unlink($pdf);
 
     $this->writeLog("--- END ---");
 
+    $this->processPrint($printjob["type"], $printjob["library"], $pdf);
+    // $this->processPrint($printjob["type"], $printjob["library"], $filename);
+
     }
 
+    protected function processPrint($type, $section, $file) {
+
+        $queue = "";
+
+        switch($type) {
+            case "RÜCKLAGEZETTEL": $queue = "direct";
+            break;
+            case "MAGAZINBESTELLUNG": $queue = "magazin";
+            break;
+            case "SCANAUFTRAG": $queue = "scanauftrag";
+            break;
+            default:
+                // Drucker Ausleitheke
+                $queue = "direct";
+                $section = "BB Schloss Schneckenhof, West";
+        }
+
+        if($queue=="direct") {
+            switch($section) {
+                case "BB Schloss Schneckenhof, West":
+                    $this->printByNow("printer08", $file);
+                    // sendToQueue("magazin", "BSE", $file);
+                    break;
+                case "BB A3":
+                    $this->printByNow("printer10", $file);
+                    break;
+                case "BB A5":
+                    $this->printByNow("printer46", $file);
+                    break;
+                case "BB Schloss Schneckenhof, BWL":
+                    $this->printByNow("printer29", $file);
+                    break;
+                case "BB Schloss Ehrenhof":
+                    $this->printByNow("printer48", $file);
+                    break;
+                default:
+                    $this->printByNow("printer08", $file);
+            }
+        } else {
+            $this->sendToQueue("magazin", "", $file);
+        }
+
+    }
+
+    protected function printByNow($printer, $file) {
+
+        $this->writeLog("-- start printing: ".$file);
+
+        $print_cmd = "lp -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
+
+        $this->writeLog("-- ". $print_cmd);
+
+        shell_exec($print_cmd);
+
+    }
+    protected function sendToQueue($queue, $section, $file) {
+
+        // print $this->__CFG__["queue"][$queue];
+        // $cp_cmd = "copy \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"";
+        $cp_cmd = "cp \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"";
+
+        // print($cp_cmd);
+        shell_exec($cp_cmd);
+
+    }
 }
 
 /*
