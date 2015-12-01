@@ -419,7 +419,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                                 default:
                                     $printer = $this->__CFG__["printer"]["printer08"];
                             }
-                            $print_cmd = "lp -d " .$printer. " " .$f;
+                            $print_cmd = "lp -d " .$printer. " " .$dir."/".$f."/".$s;
                             // shell_exec($print_cmd);
                             print $print_cmd . "\r\n";
                             }
