@@ -505,7 +505,7 @@ if(isset($argv[1])) {
     // Aufruf mit Datei
     $print = new printJob($argv[1]);
 } else {
-
+        $input = "";
         $sock = fopen ("php://stdin", 'r'); while (!feof($sock)) { $input .= fread($sock, 1024); } fclose($sock);
         // print $input;
 
