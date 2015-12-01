@@ -32,8 +32,6 @@ class printJob {
 
             // Read StreamInput
             $content = $this->streamInput();
-            print ":::::";
-            print "FILECONTENT: " . $content;
 
             $this->getContent($content);
 
@@ -77,9 +75,8 @@ class printJob {
         $this->__LOG__ = $this->__CFG__["common"]["log"];
 
         // Include Mailparser Library
-        // require_once $this->__CFG__["lib"]["mailparser"];
-        // print ":::::".$this->__CFG__["lib"]["mailparser"];
-        // $this->__PARSER__ = new PhpMimeMailParser\Parser();
+        require_once $this->__CFG__["lib"]["mailparser"];
+        $this->__PARSER__ = new PhpMimeMailParser\Parser();
 
     }
 
@@ -104,21 +101,16 @@ class printJob {
 
         $this->writeLog("--- READING MAIL ---");
 
-        // Include Mailparser Library
-        require_once $this->__CFG__["lib"]["mailparser"];
-        $Parser = new PhpMimeMailParser\Parser();
-        $Parser->setStream(fopen("php://stdin", "r"));
+        $this->__PARSER__->setStream(fopen("php://stdin", "r"));
 
             $email = ""; // zu pruefen, ob weiterhin benoetigt
-            $to = $Parser->getHeader('to');
-            $from = $Parser->getHeader('from');
-            $subject = $Parser->getHeader('subject');
+            $to = $this->__PARSER__->getHeader('to');
+            $from = $this->__PARSER__->getHeader('from');
+            $subject = $this->__PARSER__->getHeader('subject');
 
-            $text = $Parser->getMessageBody('text');
-            $html = $Parser->getMessageBody('html');
-            $htmlEmbedded = $Parser->getMessageBody('htmlEmbedded'); //HTML Body included data
-
-        print $to . "\r\n";
+            $text = $this->__PARSER__->getMessageBody('text');
+            $html = $this->__PARSER__->getMessageBody('html');
+            $htmlEmbedded = $this->__PARSER__->getMessageBody('htmlEmbedded'); //HTML Body included data
         /*
         // Mailobobjekt erstellen?
         include ("Mail.class.php");
@@ -225,8 +217,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         // $mailstr = "New mail received at " .$printer. " :" .$date_rfc. "\nSubject: " .$subject. "\nTo: " .$to. "\nFrom :" .$from. "\nText: \n" .$htmlEmbedded;
 
-        print ":::::";
-        print " --- \n" . $email;
+        // print " --- \n" . $email;
 
 
 
