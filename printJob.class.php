@@ -401,19 +401,19 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                             $print_cmd = "";
                             // echo $s . "\r\n";
                             switch($sub) {
-                                case A3:
+                                case "A3":
                                     $printer = $this->__CFG__["printer"]["printer50"];
                                     break;
-                                case A5:
+                                case "A5":
                                     $printer = $this->__CFG__["printer"]["konicaA5"];
                                     break;
-                                case BWL:
+                                case "BWL":
                                     $printer = $this->__CFG__["printer"]["printer29"];
                                     break;
-                                case BSE:
+                                case "BSE":
                                     $printer = $this->__CFG__["printer"]["printer21"];
                                     break;
-                                case SW:
+                                case "SW":
                                     $printer = $this->__CFG__["printer"]["printer08"];
                                     break;
                                 default:
