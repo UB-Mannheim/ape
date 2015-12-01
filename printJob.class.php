@@ -370,9 +370,9 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
     protected function printByNow($printer, $file) {
 
-    if( ($file=="cronMagazinDruck") || ($file=="cronScanauftrag") ) {
+    if( ($file=="cronMagazindruck") || ($file=="cronScanauftrag") ) {
 
-        if($file=="cronMagazinDruck") {
+        if($file=="cronMagazindruck") {
 
         $dir = $this->__CFG__["queue"]["magazin"];
         $printer = $this->__CFG__["printer"]["magazin"];
@@ -436,7 +436,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $this->writeLog("-- ". $print_cmd);
 
-        shell_exec($print_cmd);
+        // shell_exec($print_cmd);
+        print $print_cmd;
         }
 
     }
