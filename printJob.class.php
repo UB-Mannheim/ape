@@ -43,6 +43,8 @@ class printJob {
     // call:    wit 1 parameter = filename
     //          file input
 
+    print "construct1";
+
         // Load Config
         $this->getConfig();
         $this->__MAIL__ = false;
