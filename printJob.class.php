@@ -338,22 +338,22 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             if($queue=="scanauftrag") {
                 switch($section) {
                 case "BB Schloss Schneckenhof, West":
-                    sendToQueue("scanauftrag", "SW", $file);
+                    $this->sendToQueue("scanauftrag", "SW", $file);
                     break;
                 case "BB A3":
-                    sendToQueue("scanauftrag", "A3", $file);
+                    $this->sendToQueue("scanauftrag", "A3", $file);
                     break;
                 case "BB A5":
-                    sendToQueue("scanauftrag", "A5", $file);
+                    $this->sendToQueue("scanauftrag", "A5", $file);
                     break;
                 case "BB Schloss Schneckenhof, BWL":
-                    sendToQueue("scanauftrag", "BWL", $file);
+                    $this->sendToQueue("scanauftrag", "BWL", $file);
                     break;
                 case "BB Schloss Ehrenhof":
-                    sendToQueue("scanauftrag", "BSE", $file);
+                    $this->sendToQueue("scanauftrag", "BSE", $file);
                     break;
                 default:
-                    sendToQueue("scanauftrag", "", $file);
+                    $this->sendToQueue("scanauftrag", "", $file);
                 }
             }
         }
