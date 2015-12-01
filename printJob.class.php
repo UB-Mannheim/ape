@@ -117,6 +117,8 @@ class printJob {
             $text = $Parser->getMessageBody('text');
             $html = $Parser->getMessageBody('html');
             $htmlEmbedded = $Parser->getMessageBody('htmlEmbedded'); //HTML Body included data
+
+        print $to . "\r\n";
         /*
         // Mailobobjekt erstellen?
         include ("Mail.class.php");
