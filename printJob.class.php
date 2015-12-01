@@ -11,16 +11,23 @@ class printJob {
     private $__PARSER__;
 
     function __construct() {
+    //
+    // call:    without parameter = standard
+    //          stream input
 
+        // switch: constructors with multiple parameters
         $a = func_get_args();
         $i = func_num_args();
 
+        // call constructor by parameter count
         if (method_exists($this,$f='__construct'.$i)) {
             call_user_func_array(array($this,$f),$a);
         } else {
 
-            $this->getConfig();
+        // START (standard)
 
+            // Load Config
+            $this->getConfig();
             $this->__MAIL__ = true;
 
             // Read StreamInput
@@ -32,9 +39,12 @@ class printJob {
     }
 
     function __construct1($filename) {
+    //
+    // call:    wit 1 parameter = filename
+    //          file input
 
+        // Load Config
         $this->getConfig();
-
         $this->__MAIL__ = false;
 
          // Load File Content
@@ -44,6 +54,9 @@ class printJob {
     }
 
     function __construct2($cron, $job) {
+    //
+    // call:    with 2 parameters = cronjob
+    //          activaed by cron
 
         $this->getConfig();
 
@@ -52,6 +65,9 @@ class printJob {
     }
 
     protected function getConfig() {
+    //
+    // Read Configuration
+    //
 
         // Initialize Variables
         $this->__CFG__ = parse_ini_file("print.conf", TRUE);
@@ -65,30 +81,25 @@ class printJob {
     }
 
     protected function writeLog($msg) {
+    //
+    // Logwriter
+    //
 
         $log = $this->__CFG__["common"]["log"];
+
         $fdw = fopen($log, "a+");
             fwrite($fdw, $msg . "\n");
         fclose($fdw);
+
     }
 
     protected function streamInput() {
-        print "STREAM IN";
+    //
+    // Reading StreamInput
+    //
+    print "STREAM IN";
 
         $this->writeLog("--- READING MAIL ---");
-        /*
-            //listen to incoming e-mails
-            $sock = fopen ("php://stdin", 'r');
-
-            //read e-mail into buffer
-            while (!feof($sock))
-            {
-                $email .= fread($sock, 1024);
-            }
-
-            //close socket
-            fclose($sock);
-        */
 
         $this->__PARSER__->setStream(fopen("php://stdin", "r"));
 
@@ -100,8 +111,8 @@ class printJob {
             $text = $this->__PARSER__->getMessageBody('text');
             $html = $this->__PARSER__->getMessageBody('html');
             $htmlEmbedded = $this->__PARSER__->getMessageBody('htmlEmbedded'); //HTML Body included data
-/*
-        // Mailobobjekt erstellen
+        /*
+        // Mailobobjekt erstellen?
         include ("Mail.class.php");
         $mail = new Mail();
         $mail->setContent($email, $to, $from, $subject, $text, $html, $htmlEmbedded);
@@ -112,12 +123,18 @@ class printJob {
         $this->writeLog("-- Html-Text (Data): " .$htmlEmbedded);
 
         return $mail;
-*/
+    */
+
         // return plain text, no headers, etc.
         return $htmlEmbedded;
+
     }
 
     protected function fileInput($filename) {
+    //
+    // Reading FileInput
+    //
+
         $this->__FILE__ = $this->__PATH__.$filename;
         print "FILE: " . $this->__FILE__ ."\r\n";
 
@@ -138,7 +155,7 @@ class printJob {
 
             // close file
             fclose($localfile);
-/*
+            /*
             $this->__PARSER__->setText($email);
 
                 $email = ""; // zu pruefen, ob weiterhin benoetigt
@@ -160,7 +177,8 @@ class printJob {
             $this->writeLog($email);
 
             return $mail;
-*/
+            */
+
             // return plain text
             return $email;
         }
@@ -268,21 +286,22 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $this->writeLog("-- file: ".$filename." written");
 
-        // html to pdf
-        $this->writeLog("-- create pdf: ".$pdf);
+        // Convert HTML to PDF
+        $this->writeLog("-- Create PDF: ".$pdf);
 
         $convert_cmd = "/usr/local/bin/wkhtmltopdf -q ".$filename." ".$pdf;
-
-        $this->writeLog("-- ". $convert_cmd);
-
+        // $this->writeLog("-- ". $convert_cmd);
         exec($convert_cmd);
 
+        // File Creation Successful?
         if (file_exists($pdf)) {
             $this->writeLog("-- file: ".$pdf." successfully created");
         } else {
             $this->writeLog("-- file: ".$pdf." not found");
         }
 /*
+        // copied to own function
+
         $this->writeLog("-- start printing: ".$pdf);
 
         $print_cmd = "lp -d " .$printer. " " .$pdf; // ." >/dev/null 2>&1 &";
@@ -291,13 +310,18 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         shell_exec($print_cmd);
 */
+
+        // check if files should be deleted?
         // unlink($filename);
         // unlink($pdf);
 
-    $this->writeLog("--- END ---");
+        $this->writeLog("--- END ---");
 
-    $this->processPrint($printjob["type"], $printjob["library"], $pdf);
-    // $this->processPrint($printjob["type"], $printjob["library"], $filename);
+        // Process Print Job
+        $this->processPrint($printjob["type"], $printjob["library"], $pdf);
+
+        // local test (no pdf generator)
+        // $this->processPrint($printjob["type"], $printjob["library"], $filename);
 
     }
 
@@ -369,9 +393,14 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
     }
 
     protected function printByNow($printer, $file) {
+    //
+    // Printing
+    //
 
+    // Is Cronjob?
     if( ($file=="cronMagazindruck") || ($file=="cronScanauftrag") ) {
 
+        // Cron: Magazindruck
         if($file=="cronMagazindruck") {
 
         $dir = $this->__CFG__["queue"]["magazin"];
@@ -387,6 +416,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         }
 
+        // Cron: Scanauftrag
         if($file=="cronScanauftrag") {
 
         $dir = $this->__CFG__["queue"]["scanauftrag"];
@@ -430,6 +460,9 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         }
 
     } else {
+
+    // No Cronjob, called directly from processPrint()
+
         $this->writeLog("-- start printing: ".$file);
 
         $print_cmd = "lp -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
@@ -438,27 +471,24 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         // shell_exec($print_cmd);
         print $print_cmd;
+
         }
 
     }
 
     protected function sendToQueue($queue, $section, $file) {
+    //
+    // Copy File to Queue
+    //
 
-        // print $this->__CFG__["queue"][$queue];
-        // $cp_cmd = "copy \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"\".$section;
         $cp_cmd = "cp \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"/".$section;
+
+        // local test (slashes)
+        // $cp_cmd = "copy \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"\".$section;
 
         // print($cp_cmd);
         shell_exec($cp_cmd);
 
     }
 }
-
-/*
-$config = parse_ini_file("print.conf", TRUE);
-
-require_once "glb.php.class";
-
-echo $config["common"]["log"];
-*/
 ?>
