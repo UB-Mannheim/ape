@@ -510,6 +510,6 @@ if(isset($argv[1])) {
         print $input;
         */
     // Aufruf mit STDIN
-    $print = new printJob($sock = fopen ("php://stdin", 'r'));
+    $print = new printJob();
     }
 ?>
