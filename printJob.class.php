@@ -32,6 +32,7 @@ class printJob {
 
             // Read StreamInput
             $content = $this->streamInput();
+            print ":::::";
             print "FILECONTENT: " . $content;
 
             $this->getContent($content);
@@ -77,6 +78,7 @@ class printJob {
 
         // Include Mailparser Library
         require_once $this->__CFG__["lib"]["mailparser"];
+        print ":::::".$this->__CFG__["lib"]["mailparser"];
         $this->__PARSER__ = new PhpMimeMailParser\Parser();
 
     }
@@ -218,6 +220,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         // $mailstr = "New mail received at " .$printer. " :" .$date_rfc. "\nSubject: " .$subject. "\nTo: " .$to. "\nFrom :" .$from. "\nText: \n" .$htmlEmbedded;
 
+        print ":::::";
         print " --- \n" . $email;
 
 
