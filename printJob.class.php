@@ -504,6 +504,18 @@ if(isset($argv[1])) {
     $print = new printJob($argv[1]);
 } else {
     // Aufruf mit STDIN
+    $sock = fopen ("php://stdin", 'r');
+
+    //read e-mail into buffer
+    while (!feof($sock))
+    {
+        $input .= fread($sock, 1024);
+    }
+
+    //close socket
+    fclose($sock);
+    print $input;
+
     $print = new printJob();
     }
 ?>
