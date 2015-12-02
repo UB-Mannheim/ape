@@ -1,3 +1,4 @@
+#!/usr/bin/php -q
 <?php
 
     include ("printJob.class.php");
