@@ -403,6 +403,14 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         // "FALLBACK"
         if( ($queue=="quittung") || ($queue=="mahnung") || ($queue=="fallback") ) {
             $this->printByNow($this->__CFG__["printer"]["printer08"], $file);
+
+            // move to history directory /$queue/
+            if (!file_exists($this->__CFG__["common"]["history"]."/".$queue."/".$date)) {
+                mkdir($this->__CFG__["common"]["history"]."/".$queue."/".$date, 0777, true);
+            }
+
+            $movedFile = basename($file);
+            rename($file, $this->__CFG__["common"]["history"]."/".$queue."/".$date."/".$movedFile);
         }
 
     }
