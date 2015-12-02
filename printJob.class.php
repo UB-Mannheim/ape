@@ -511,7 +511,7 @@ if(isset($argv[1])) {
 
     // Aufruf mit STDIN
     // print STDIN;
-    $context = stream_context_create($input);
+    $context = stream_context_create(STDIN);
     $print = new printJob($context);
     }
 ?>
