@@ -337,9 +337,9 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             break;
             case "SCANAUFTRAG": $queue = "scanauftrag";
             break;
-            case "QUITTUNG": $queue = "quittung";
+            case "Quittung": $queue = "quittung";
             break;
-            case "MAHNUNG": $queue = "mahnung";
+            case "Mahnung": $queue = "mahnung";
             break;
             default:
                 // Printer "Ausleitheke"
@@ -403,6 +403,10 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         // "FALLBACK"
         if( ($queue=="quittung") || ($queue=="mahnung") || ($queue=="fallback") ) {
             $this->printByNow($this->__CFG__["printer"]["printer08"], $file);
+
+            // Date
+            $date_rfc = date(DATE_RFC822);
+            $date = date("Y-m-d");
 
             // move to history directory /$queue/
             if (!file_exists($this->__CFG__["common"]["history"]."/".$queue."/".$date)) {
