@@ -409,12 +409,12 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             $date = date("Y-m-d");
 
             // move to history directory /$queue/
-            if (!file_exists($this->__CFG__["common"]["history"]."/".$queue."/".$date)) {
-                mkdir($this->__CFG__["common"]["history"]."/".$queue."/".$date, 0777, true);
+            if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
+                mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
             }
 
             $movedFile = basename($file);
-            rename($file, $this->__CFG__["common"]["history"]."/".$queue."/".$date."/".$movedFile);
+            rename($file, $this->__CFG__["common"]["history"].$queue."/".$date."/".$movedFile);
         }
 
     }
@@ -435,23 +435,23 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         if($file=="cronMagazindruck") {
 
         $dir = $this->__CFG__["queue"]["magazin"];
+        print $dir "\r\n";
         $printer = $this->__CFG__["printer"]["magazin"];
 
         $files = array_diff(scandir($dir), array('..', '.'));
 
             foreach($files as $f) {
-                $print_cmd = "lp -d " .$printer. " " .$f; // ." >/dev/null 2>&1 &";
+                $print_cmd = "lp -d " .$printer. " " $dir."/".$f; // ." >/dev/null 2>&1 &";
 
                 shell_exec($print_cmd);
                 print $print_cmd . "\r\n";
 
                 // move to history directory /magazin/
-                if (!file_exists($this->__CFG__["common"]["history"]."/magazin/".$date)) {
-                    mkdir($this->__CFG__["common"]["history"]."/magazin/".$date, 0777, true);
+                if (!file_exists($this->__CFG__["common"]["history"]."magazin/".$date)) {
+                    mkdir($this->__CFG__["common"]["history"]."magazin/".$date, 0777, true);
                 }
 
-                $movedFile = basename($f);
-                rename($f, $this->__CFG__["common"]["history"]."/magazin/".$date."/".$movedFile);
+                rename($dir."/".$f, $this->__CFG__["common"]["history"]."magazin/".$date."/".$f);
 
             }
 
@@ -496,12 +496,12 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                             print $print_cmd . "\r\n";
 
                             // move to history directory /scanauftrag/
-                            if (!file_exists($this->__CFG__["common"]["history"]."/scanauftrag/".$date)) {
-                                mkdir($this->__CFG__["common"]["history"]."/scanauftrag/".$date, 0777, true);
+                            if (!file_exists($this->__CFG__["common"]["history"]."scanauftrag/".$date)) {
+                                mkdir($this->__CFG__["common"]["history"]."scanauftrag/".$date, 0777, true);
                             }
 
                             $movedFile = basename($f);
-                            rename($f, $this->__CFG__["common"]["history"]."/scanauftrag/".$date."/".$movedFile);
+                            rename($f, $this->__CFG__["common"]["history"]."scanauftrag/".$date."/".$movedFile);
 
                             }
                 } else {
@@ -524,12 +524,12 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         print $print_cmd;
 
         // move to history directory /direct/
-        if (!file_exists($this->__CFG__["common"]["history"]."/direct/".$date)) {
-            mkdir($this->__CFG__["common"]["history"]."/direct/".$date, 0777, true);
+        if (!file_exists($this->__CFG__["common"]["history"]."direct/".$date)) {
+            mkdir($this->__CFG__["common"]["history"]."direct/".$date, 0777, true);
         }
 
         $movedFile = basename($f);
-        rename($f, $this->__CFG__["common"]["history"]."/direct/".$date."/".$movedFile);
+        rename($f, $this->__CFG__["common"]["history"]."direct/".$date."/".$movedFile);
 
         }
 
