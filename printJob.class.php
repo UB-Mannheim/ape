@@ -40,7 +40,7 @@ class printJob {
 
     function __construct1($filename) {
     //
-    // call:    wit 1 parameter = filename
+    // call:    with 1 parameter = filename
     //          file input
 
         // Load Config
@@ -226,7 +226,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         // Get Information from HTML
         $printjob = array();
         // if (preg_match_all('#<h2>(?:.*?)</h2>#is', $email, $matches)) {
-        if (preg_match_all('|<h2 id="type">(.*)</h2>|U', $email, $type)) {
+        if (preg_match_all('|<h2 id="print_type">(.*)</h2>|U', $email, $type)) {
             $printjob["type"] = $type[1][0];
         }
         if (preg_match_all('|<h2 id="library">(.*)</h2>|U', $email, $library)) {
@@ -329,20 +329,25 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $queue = "";
 
+        // get type from html content of email
         switch($type) {
-            case "RÜCKLAGEZETTEL": $queue = "direct";
+            case "RÜCKLAGEZETTEL": $queue = "ruecklage";
             break;
             case "MAGAZINBESTELLUNG": $queue = "magazin";
             break;
             case "SCANAUFTRAG": $queue = "scanauftrag";
             break;
+            case "QUITTUNG": $queue = "quittung";
+            break;
+            case "MAHNUNG": $queue = "mahnung";
+            break;
             default:
-                // Drucker Ausleitheke
-                $queue = "direct";
-                $section = "BB Schloss Schneckenhof, West";
+                // Printer "Ausleitheke"
+                $queue = "fallback";
         }
 
-        if($queue=="direct") {
+        // RUECKLAGE ZETTEL
+        if($queue=="ruecklage") {
             switch($section) {
                 case "BB Schloss Schneckenhof, West":
                     $this->printByNow($this->__CFG__["printer"]["printer08"], $file);
@@ -363,31 +368,41 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 default:
                     $this->printByNow($this->__CFG__["printer"]["printer08"], $file);
             }
-        } else {
-            if($queue=="magazin") {
-                $this->sendToQueue("magazin", "", $file);
-            }
-            if($queue=="scanauftrag") {
-                switch($section) {
-                case "BB Schloss Schneckenhof, West":
-                    $this->sendToQueue("scanauftrag", "SW", $file);
-                    break;
-                case "BB A3":
-                    $this->sendToQueue("scanauftrag", "A3", $file);
-                    break;
-                case "BB A5":
-                    $this->sendToQueue("scanauftrag", "A5", $file);
-                    break;
-                case "BB Schloss Schneckenhof, BWL":
-                    $this->sendToQueue("scanauftrag", "BWL", $file);
-                    break;
-                case "BB Schloss Ehrenhof":
-                    $this->sendToQueue("scanauftrag", "BSE", $file);
-                    break;
-                default:
-                    $this->sendToQueue("scanauftrag", "", $file);
+        }
+
+        // MAGAZINDRUCK
+        if($queue=="magazin") {
+            $this->sendToQueue("magazin", "", $file);
+        }
+
+        // SCANAUFTRAG
+        if($queue=="scanauftrag") {
+            switch($section) {
+            case "BB Schloss Schneckenhof, West":
+                $this->sendToQueue("scanauftrag", "SW", $file);
+                break;
+            case "BB A3":
+                $this->sendToQueue("scanauftrag", "A3", $file);
+                break;
+            case "BB A5":
+                $this->sendToQueue("scanauftrag", "A5", $file);
+                break;
+            case "BB Schloss Schneckenhof, BWL":
+                $this->sendToQueue("scanauftrag", "BWL", $file);
+                break;
+            case "BB Schloss Ehrenhof":
+                $this->sendToQueue("scanauftrag", "BSE", $file);
+                break;
+            default:
+                $this->sendToQueue("scanauftrag", "", $file);
                 }
             }
+
+        // QUITTUNGSDRUCK,
+        // 3.MAHNHUNG &
+        // "FALLBACK"
+        if( ($queue=="quittung") || ($queue=="mahnung") || ($queue=="fallback") ) {
+            $this->printByNow($this->__CFG__["printer"]["printer08"], $file);
         }
 
     }
@@ -396,6 +411,10 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
     //
     // Printing
     //
+
+    // Date
+    $date_rfc = date(DATE_RFC822);
+    $date = date("Y-m-d");
 
     // Is Cronjob?
     if( ($file=="cronMagazindruck") || ($file=="cronScanauftrag") ) {
@@ -412,8 +431,15 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 $print_cmd = "lp -d " .$printer. " " .$f; // ." >/dev/null 2>&1 &";
                 // shell_exec($print_cmd);
                 print $print_cmd . "\r\n";
-                // mv to <history> directory
-                // 2015-12-01__XY
+
+                // move to history directory /magazin/
+                if (!file_exists($this->__CFG__["common"]["history"]."/magazin/".$date)) {
+                    mkdir($this->__CFG__["common"]["history"]."/magazin/".$date, 0777, true);
+                }
+
+                $movedFile = basename($f);
+                rename($f, $this->__CFG__["common"]["history"]."/magazin/".$date."/".$movedFile);
+
             }
 
         }
@@ -454,8 +480,15 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                             $print_cmd = "lp -d " .$printer. " " .$dir."/".$f."/".$s;
                             // shell_exec($print_cmd);
                             print $print_cmd . "\r\n";
-                            // mv to <history> directory
-                            // 2015-12-01__XY
+
+                            // move to history directory /scanauftrag/
+                            if (!file_exists($this->__CFG__["common"]["history"]."/scanauftrag/".$date)) {
+                                mkdir($this->__CFG__["common"]["history"]."/scanauftrag/".$date, 0777, true);
+                            }
+
+                            $movedFile = basename($f);
+                            rename($f, $this->__CFG__["common"]["history"]."/scanauftrag/".$date."/".$movedFile);
+
                             }
                 } else {
                     // print jobs in root
@@ -476,8 +509,13 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         // shell_exec($print_cmd);
         print $print_cmd;
 
-        // mv to <history> directory
-        // 2015-12-01_XY
+        // move to history directory /direct/
+        if (!file_exists($this->__CFG__["common"]["history"]."/direct/".$date)) {
+            mkdir($this->__CFG__["common"]["history"]."/direct/".$date, 0777, true);
+        }
+
+        $movedFile = basename($f);
+        rename($f, $this->__CFG__["common"]["history"]."/direct/".$date."/".$movedFile);
 
         }
 
