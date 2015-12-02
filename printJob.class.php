@@ -491,7 +491,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
                             }
                 } else {
-                    // print jobs in root
+                    // print jobs in ROOT
                 }
             }
         }
