@@ -437,7 +437,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
             foreach($files as $f) {
                 $print_cmd = "lp -d " .$printer. " " .$f; // ." >/dev/null 2>&1 &";
-                // shell_exec($print_cmd);
+
+                shell_exec($print_cmd);
                 print $print_cmd . "\r\n";
 
                 // move to history directory /magazin/
@@ -486,7 +487,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                                     $printer = $this->__CFG__["printer"]["printer08"];
                             }
                             $print_cmd = "lp -d " .$printer. " " .$dir."/".$f."/".$s;
-                            // shell_exec($print_cmd);
+                            shell_exec($print_cmd);
+
                             print $print_cmd . "\r\n";
 
                             // move to history directory /scanauftrag/
@@ -514,7 +516,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $this->writeLog("-- ". $print_cmd);
 
-        // shell_exec($print_cmd);
+        shell_exec($print_cmd);
         print $print_cmd;
 
         // move to history directory /direct/
