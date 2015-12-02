@@ -441,7 +441,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $files = array_diff(scandir($dir), array('..', '.'));
 
             foreach($files as $f) {
-                $print_cmd = "lp -d " .$printer. " " .$dir."/".$f; // ." >/dev/null 2>&1 &";
+                $print_cmd = "lp  -o media=a5 -d " .$printer. " " .$dir."/".$f; // ." >/dev/null 2>&1 &";
 
                 shell_exec($print_cmd);
                 print $print_cmd . "\r\n";
