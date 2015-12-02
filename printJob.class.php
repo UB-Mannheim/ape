@@ -435,7 +435,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         if($file=="cronMagazindruck") {
 
         $dir = $this->__CFG__["queue"]["magazin"];
-        print $dir "\r\n";
+        print $dir ."\r\n";
         $printer = $this->__CFG__["printer"]["magazin"];
 
         $files = array_diff(scandir($dir), array('..', '.'));
