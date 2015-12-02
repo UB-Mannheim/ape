@@ -490,10 +490,13 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                                 default:
                                     $printer = $this->__CFG__["printer"]["printer08"];
                             }
+
                             $print_cmd = "lp -d " .$printer. " " .$dir."/".$f."/".$s;
                             shell_exec($print_cmd);
 
                             print $print_cmd . "\r\n";
+
+                            /* RE, ordentlich verschieben
 
                             // move to history directory /scanauftrag/
                             if (!file_exists($this->__CFG__["common"]["history"]."scanauftrag/".$date)) {
@@ -503,6 +506,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                             $movedFile = basename($f);
                             rename($f, $this->__CFG__["common"]["history"]."scanauftrag/".$date."/".$movedFile);
 
+                            */
                             }
                 } else {
                     // print jobs in ROOT
@@ -528,8 +532,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             mkdir($this->__CFG__["common"]["history"]."direct/".$date, 0777, true);
         }
 
-        $movedFile = basename($f);
-        rename($f, $this->__CFG__["common"]["history"]."direct/".$date."/".$movedFile);
+        $movedFile = basename($file);
+        rename($file, $this->__CFG__["common"]["history"]."direct/".$date."/".$movedFile);
 
         }
 
