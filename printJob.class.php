@@ -43,8 +43,6 @@ class printJob {
     // call:    wit 1 parameter = filename
     //          file input
 
-    print "construct1";
-
         // Load Config
         $this->getConfig();
         $this->__MAIL__ = false;
@@ -500,18 +498,4 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
     }
 }
-
-if(isset($argv[1])) {
-    // Aufruf mit Datei
-    $print = new printJob($argv[1]);
-} else {
-        $input = "";
-        $sock = fopen ("php://stdin", 'r'); while (!feof($sock)) { $input .= fread($sock, 1024); } fclose($sock);
-        // print $input;
-
-    // Aufruf mit STDIN
-    // print STDIN;
-    $context = stream_context_create(STDIN);
-    $print = new printJob($context);
-    }
 ?>
