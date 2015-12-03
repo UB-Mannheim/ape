@@ -470,12 +470,14 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $files = array_diff(scandir($dir), array('..', '.'));
 
+        print "cronMagazindruck\r\n";
+
             foreach($files as $f) {
                 // a5 quer
                 // $print_cmd = "lp (-o media=a5) -d " .$printer. " " .$dir."/".$f; // ." >/dev/null 2>&1 &";
 
                 // a5 hoch, klein skaliert
-                $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir."/".$f;
+                $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir."/".$f." >/dev/null 2>&1 &";
 
                 shell_exec($print_cmd);
                 print $print_cmd . "\r\n";
@@ -508,6 +510,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                             switch($f) {
                                 case "A3":
                                     $printer = $this->__CFG__["printer"]["printer50"];
+
                                     break;
                                 case "A5":
                                     $printer = $this->__CFG__["printer"]["konicaA5"];
@@ -529,18 +532,16 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                             shell_exec($print_cmd);
 
                             print $print_cmd . "\r\n";
-
-                            /* RE, ordentlich verschieben
-
+/*
                             // move to history directory /scanauftrag/
                             if (!file_exists($this->__CFG__["common"]["history"]."scanauftrag/".$date)) {
                                 mkdir($this->__CFG__["common"]["history"]."scanauftrag/".$date, 0777, true);
                             }
 
-                            $movedFile = basename($f);
+                            $movedFile = basename($s);
                             rename($f, $this->__CFG__["common"]["history"]."scanauftrag/".$date."/".$movedFile);
 
-                            */
+*/
                             }
                 } else {
                     // print jobs in ROOT
