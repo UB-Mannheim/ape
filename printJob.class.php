@@ -335,7 +335,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             break;
             case "magazinbestellung": $queue = "magazin";
             break;
-            case "scnauftrag": $queue = "scanauftrag";
+            case "scanauftrag": $queue = "scanauftrag";
             break;
             case "quittung": $queue = "quittung";
             break;
