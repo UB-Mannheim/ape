@@ -229,13 +229,13 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         if (preg_match_all('|<h2 id="print_type">(.*)</h2>|U', $email, $type)) {
             $printjob["type"] = $type[1][0];
         }
-        if (preg_match_all('|<h2 id="library">(.*)</h2>|U', $email, $library)) {
+        if (preg_match_all('|<h2 id="print_library">(.*)</h2>|U', $email, $library)) {
             $printjob["library"] = $library[1][0];
         }
-        if (preg_match_all('|<h2 id="callnumber">(.*)</h2>|U', $email, $callnumber)) {
+        if (preg_match_all('|<h2 id="print_callnumber">(.*)</h2>|U', $email, $callnumber)) {
             $printjob["callnumber"] = $callnumber[1][0];
         }
-        if (preg_match_all('|<h2 id="level">(.*)</h2>|U', $email, $level)) {
+        if (preg_match_all('|<h2 id="print_level">(.*)</h2>|U', $email, $level)) {
             $printjob["level"] = $level[1][0];
         }
 
@@ -331,15 +331,21 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         // get type from html content of email
         switch($type) {
-            case "RÜCKLAGEZETTEL": $queue = "ruecklage";
+            case "ruecklagezettel": $queue = "ruecklage";
             break;
-            case "MAGAZINBESTELLUNG": $queue = "magazin";
+            case "magazinbestellung": $queue = "magazin";
             break;
-            case "SCANAUFTRAG": $queue = "scanauftrag";
+            case "scnauftrag": $queue = "scanauftrag";
             break;
-            case "Quittung": $queue = "quittung";
+            case "quittung": $queue = "quittung";
             break;
-            case "Mahnung": $queue = "mahnung";
+            case "mahnung": $queue = "mahnung";
+            break;
+            case "bestellliste": $queue = "medienbearb";
+            break;
+            case "erwerbungsstornierung": $queue = "medienbearb";
+            break;
+            case "erwerbungsmahnung": $queue = "medienbearb";
             break;
             default:
                 // Printer "Ausleitheke"
@@ -396,7 +402,30 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             default:
                 $this->sendToQueue("scanauftrag", "", $file);
                 }
-            }
+        }
+
+        // MEDIENBEARBEITUNG (Bestellliste, Erwerbungsstornierung, Erwerbungsmahnung)
+        if($queue=="medienbearb") {
+            switch($section) {
+            case "BB Schloss Schneckenhof, West":
+                $this->printByNow($this->__CFG__["printer"]["printer09"], $file);
+                break;
+            case "BB A3":
+                $this->printByNow($this->__CFG__["printer"]["konicaA3"], $file);
+                break;
+            case "BB A5":
+                $this->printByNow($this->__CFG__["printer"]["konicaA5"], $file);
+                break;
+            case "BB Schloss Schneckenhof, BWL":
+                $this->printByNow($this->__CFG__["printer"]["printer19"], $file);
+                break;
+            case "BB Schloss Ehrenhof":
+                $this->printByNow($this->__CFG__["printer"]["printer20"], $file);
+                break;
+            default:
+                $this->printByNow($this->__CFG__["printer"]["printer08"], $file);
+                }
+        }
 
         // QUITTUNGSDRUCK,
         // 3.MAHNHUNG &
@@ -408,6 +437,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             $date_rfc = date(DATE_RFC822);
             $date = date("Y-m-d");
 
+            // can't be moved ... has already been moved in 'printByNow()' /direct/
             // move to history directory /$queue/
             if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
                 mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
