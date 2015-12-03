@@ -242,8 +242,11 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $name = $printjob["type"]."__".$printjob["library"]."__".$printjob["level"]."__".$printjob["callnumber"];
         $name = preg_replace('/\s+/', '_', $name);
         $name = preg_replace('/\,/', '', $name);
+        $name = quotemeta($name);
 
+        // posssibliy outdated ...
         $printjob["name"] = $name;
+        //
 
         print "\r\n------------------------------------------------------- \r\n";
         print $name ."\r\n";
