@@ -477,7 +477,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 // $print_cmd = "lp (-o media=a5) -d " .$printer. " " .$dir."/".$f; // ." >/dev/null 2>&1 &";
 
                 // a5 hoch, klein skaliert
-                $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir."/".$f." >/dev/null 2>&1 &";
+                $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir."/".$f; // >/dev/null 2>&1 &";
 
                 shell_exec($print_cmd);
                 print $print_cmd . "\r\n";
