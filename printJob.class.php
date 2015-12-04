@@ -293,9 +293,12 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         // Convert HTML to PDF
         $this->writeLog("-- Create PDF: ".$pdf);
 
-        $convert_cmd = "/usr/local/bin/wkhtmltopdf -q ".$filename." ".$pdf;
+        // quoting filename & pdfname for conversion
+        $q_filename = quotemeta($filename);
+        $q_pdf = quotemeta($pdf);
+        $convert_cmd = "/usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
         // $this->writeLog("-- ". $convert_cmd);
-        exec($convert_cmd);
+        shell_exec($convert_cmd);
 
         // File Creation Successful?
         if (file_exists($pdf)) {
