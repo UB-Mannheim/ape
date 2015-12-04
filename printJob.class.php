@@ -244,6 +244,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $name = preg_replace('/\,/', '', $name);
         $name = quotemeta($name);
 
+// HERE
+
         // posssibliy outdated ...
         $printjob["name"] = $name;
         //
@@ -270,8 +272,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 ///////////////////////////////////////////////////////////////////
 
         // bisher weitgehend unbearbeitet
-        $filename = $this->__CFG__["common"]["tmp"].$name."____incoming__".$udate.".html";
-        $pdf = $this->__CFG__["common"]["tmp"].$name."____pdf__".$udate.".pdf";
+        $filename = quotemeta($this->__CFG__["common"]["tmp"].$name."____incoming__".$udate.".html");
+        $pdf = quotemeta($this->__CFG__["common"]["tmp"].$name."____pdf__".$udate.".pdf");
         $this->writeLog("-- writing html file: ".$filename);
 
         $fdw = fopen($filename, "w+");
@@ -319,6 +321,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         // unlink($pdf);
 
         $this->writeLog("--- END ---");
+
+// HERE
 
         // Process Print Job
         $this->processPrint($printjob["type"], $printjob["library"], $pdf);
