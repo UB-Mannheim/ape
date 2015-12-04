@@ -242,7 +242,6 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $name = $printjob["type"]."__".$printjob["library"]."__".$printjob["level"]."__".$printjob["callnumber"];
         $name = preg_replace('/\s+/', '_', $name);
         $name = preg_replace('/\,/', '', $name);
-        $name = quotemeta($name);
 
 // HERE
 
@@ -272,8 +271,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 ///////////////////////////////////////////////////////////////////
 
         // bisher weitgehend unbearbeitet
-        $filename = quotemeta($this->__CFG__["common"]["tmp"].$name."____incoming__".$udate.".html");
-        $pdf = quotemeta($this->__CFG__["common"]["tmp"].$name."____pdf__".$udate.".pdf");
+        $filename = $this->__CFG__["common"]["tmp"].$name."____incoming__".$udate.".html";
+        $pdf = $this->__CFG__["common"]["tmp"].$name."____pdf__".$udate.".pdf";
         $this->writeLog("-- writing html file: ".$filename);
 
         $fdw = fopen($filename, "w+");
@@ -304,17 +303,6 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         } else {
             $this->writeLog("-- file: ".$pdf." not found");
         }
-/*
-        // copied to own function
-
-        $this->writeLog("-- start printing: ".$pdf);
-
-        $print_cmd = "lp -d " .$printer. " " .$pdf; // ." >/dev/null 2>&1 &";
-
-        $this->writeLog("-- ". $print_cmd);
-
-        shell_exec($print_cmd);
-*/
 
         // check if files should be deleted?
         // unlink($filename);
