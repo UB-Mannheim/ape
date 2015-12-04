@@ -243,8 +243,6 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $name = preg_replace('/\s+/', '_', $name);
         $name = preg_replace('/\,/', '', $name);
 
-// HERE
-
         // posssibliy outdated ...
         $printjob["name"] = $name;
         //
@@ -313,8 +311,6 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $this->writeLog("--- END ---");
 
-// HERE
-
         // Process Print Job
         $this->processPrint($printjob["type"], $printjob["library"], $pdf);
 
@@ -344,6 +340,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             case "erwerbungsstornierung": $queue = "medienbearb";
             break;
             case "erwerbungsmahnung": $queue = "medienbearb";
+            break;
+            case "fernleihe": $queue = "fernleihe";
             break;
             default:
                 // Printer "Ausleitheke"
@@ -436,6 +434,22 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             $date = date("Y-m-d");
 
             // can't be moved ... has already been moved in 'printByNow()' /direct/
+            // move to history directory /$queue/
+            if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
+                mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
+            }
+
+            $movedFile = basename($file);
+            rename($file, $this->__CFG__["common"]["history"].$queue."/".$date."/".$movedFile);
+        }
+
+        if($queue=="fernleihe") {
+            $this->printByNow($this->__CFG__["printer"]["repro"], $file);
+
+            // Date
+            $date_rfc = date(DATE_RFC822);
+            $date = date("Y-m-d");
+
             // move to history directory /$queue/
             if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
                 mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
