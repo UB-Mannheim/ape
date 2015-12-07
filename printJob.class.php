@@ -61,7 +61,13 @@ class printJob {
         $this->getConfig();
 
         // no queue assigned -> ""
-        $this->printByNow($cron, $job, "");
+        if($job=="cronMagazindruck") {
+            $this->printByNow($cron, $job, "magazin");
+        }
+        if($job=="cronScanauftrag") {
+            $this->printByNow($cron, $job, "scanauftrag");
+        }
+
 
     }
 
@@ -561,7 +567,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                             }
 
                         if($s != "dummy") {
-                            $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.$f."/".$s;
+                            $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.$f."/".quotemeta($s);
                             shell_exec($print_cmd);
 
                             $h_dir = basename($dir);    // print ($dir) . "\r\n";   // dir
