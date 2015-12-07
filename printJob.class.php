@@ -472,6 +472,9 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
     $date_rfc = date(DATE_RFC822);
     $date = date("Y-m-d");
 
+/// /// /// /// --- /// /// /// ///
+// 2do $this->__CFG__["queue"]["magazin"] durch $this->__CFG__["queue"][$queue] ersetzen
+
     // Is Cronjob?
     if( ($file=="cronMagazindruck") || ($file=="cronScanauftrag") ) {
 
@@ -520,6 +523,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             print "cronScanauftrag\r\n";
 
         }
+// bis hier
+/// /// /// /// --- /// /// /// ///
 
         $files = array_diff(scandir($dir), array('..', '.'));
 
@@ -545,7 +550,11 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                                     $printer = $this->__CFG__["printer"]["printer21"];
                                     break;
                                 case "SW":
-                                    $printer = $this->__CFG__["printer"]["printer08"];
+                                    if($queue=="magazin") {
+                                        $printer = $this->__CFG__["printer"]["magazin"];
+                                    } else {
+                                        $printer = $this->__CFG__["printer"]["printer08"];
+                                    }
                                     break;
                                 default:
                                     $printer = $this->__CFG__["printer"]["printer08"];
