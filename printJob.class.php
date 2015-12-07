@@ -374,7 +374,26 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         // MAGAZINDRUCK
         if($queue=="magazin") {
-            $this->sendToQueue("magazin", "", $file);
+            // $this->sendToQueue("magazin", "", $file);
+            switch($section) {
+            case "BB Schloss Schneckenhof, West":
+                $this->sendToQueue("magazin", "SW", $file);
+                break;
+            case "BB A3":
+                $this->sendToQueue("magazin", "A3", $file);
+                break;
+            case "BB A5":
+                $this->sendToQueue("magazin", "A5", $file);
+                break;
+            case "BB Schloss Schneckenhof, BWL":
+                $this->sendToQueue("magazin", "BWL", $file);
+                break;
+            case "BB Schloss Ehrenhof":
+                $this->sendToQueue("magazin", "BSE", $file);
+                break;
+            default:
+                $this->sendToQueue("magazin", "", $file);
+                }
         }
 
         // SCANAUFTRAG
@@ -463,7 +482,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
     protected function printByNow($printer, $file) {
     //
-    // Printing
+    // Direct Printing or Printing via Cronjob
     //
 
     // Date
@@ -473,56 +492,65 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
     // Is Cronjob?
     if( ($file=="cronMagazindruck") || ($file=="cronScanauftrag") ) {
 
+        $printer = "";
+
         // Cron: Magazindruck
         if($file=="cronMagazindruck") {
 
-        $dir = $this->__CFG__["queue"]["magazin"];
+            $dir = $this->__CFG__["queue"]["magazin"];
 
-        $printer = $this->__CFG__["printer"]["magazin"];
+            print "cronMagazindruck\r\n";
+            /*
+            // Magazindruck NUR in Magazinturm
 
-        $files = array_diff(scandir($dir), array('..', '.'));
+            $printer = $this->__CFG__["printer"]["magazin"];
 
-        print "cronMagazindruck\r\n";
+            $files = array_diff(scandir($dir), array('..', '.'));
 
-            foreach($files as $f) {
-                // a5 quer
-                // $print_cmd = "lp (-o media=a5) -d " .$printer. " " .$dir."/".$f; // ." >/dev/null 2>&1 &";
+                foreach($files as $f) {
+                    // a5 quer
+                    // $print_cmd = "lp (-o media=a5) -d " .$printer. " " .$dir."/".$f; // ." >/dev/null 2>&1 &";
 
-                // a5 hoch, klein skaliert
-                $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir."/".$f; // >/dev/null 2>&1 &";
+                    // a5 hoch, klein skaliert
+                    $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir."/".$f; // >/dev/null 2>&1 &";
 
-                shell_exec($print_cmd);
-                print $print_cmd . "\r\n";
+                    shell_exec($print_cmd);
+                    print $print_cmd . "\r\n";
 
-                // move to history directory /magazin/
-                if (!file_exists($this->__CFG__["common"]["history"]."magazin/".$date)) {
-                    mkdir($this->__CFG__["common"]["history"]."magazin/".$date, 0777, true);
+                    // move to history directory /magazin/
+                    if (!file_exists($this->__CFG__["common"]["history"]."magazin/".$date)) {
+                        mkdir($this->__CFG__["common"]["history"]."magazin/".$date, 0777, true);
+                    }
+
+                    rename($dir."/".$f, $this->__CFG__["common"]["history"]."magazin/".$date."/".$f);
+
                 }
-
-                rename($dir."/".$f, $this->__CFG__["common"]["history"]."magazin/".$date."/".$f);
-
-            }
+            */
 
         }
 
         // Cron: Scanauftrag
         if($file=="cronScanauftrag") {
 
-        $dir = $this->__CFG__["queue"]["scanauftrag"];
-        $printer = "";
+            $dir = $this->__CFG__["queue"]["scanauftrag"];
+
+            print "cronScanauftrag\r\n";
+
+        }
 
         $files = array_diff(scandir($dir), array('..', '.'));
 
-            foreach($files as $f) {
-                if(is_dir($dir."/".$f)) {
-                    $sub = array_diff(scandir($dir."/".$f), array('..', '.'));
-                        foreach($sub as $s) {
-                            $print_cmd = "";
-                            // echo $s . "\r\n";
+        foreach($files as $f) {
+
+            if(is_dir($dir."/".$f)) {
+
+                $subdir = array_diff(scandir($dir."/".$f), array('..', '.'));
+
+                    foreach($subdir as $s) {
+                        $print_cmd = "";
                             switch($f) {
                                 case "A3":
                                     $printer = $this->__CFG__["printer"]["printer50"];
-
                                     break;
                                 case "A5":
                                     $printer = $this->__CFG__["printer"]["konicaA5"];
@@ -540,26 +568,28 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                                     $printer = $this->__CFG__["printer"]["printer08"];
                             }
 
-                            $print_cmd = "lp -d " .$printer. " " .$dir."/".$f."/".$s;
+                        if($s != "dummy") {
+                            $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.$f."/".$s;
                             shell_exec($print_cmd);
 
-                            print $print_cmd . "\r\n";
-/*
-                            // move to history directory /scanauftrag/
-                            if (!file_exists($this->__CFG__["common"]["history"]."scanauftrag/".$date)) {
-                                mkdir($this->__CFG__["common"]["history"]."scanauftrag/".$date, 0777, true);
-                            }
+                            $h_dir = basename($dir);    // print ($dir) . "\r\n";   // dir
+                            $h_subdir = $f;             // print ($f) . "\r\n";     // subdir
+                            $h_file = $s;               // print ($s) . "\r\n";     // file
 
-                            $movedFile = basename($s);
-                            rename($f, $this->__CFG__["common"]["history"]."scanauftrag/".$date."/".$movedFile);
-
-*/
+                            // move to history directory
+                            if (!file_exists($this->__CFG__["common"]["history"].$h_dir."/".$date)) {
+                                mkdir($this->__CFG__["common"]["history"].$h_dir."/".$date, 0777, true);
                             }
+                            $movedFile = basename($h_file);
+                            rename($dir.$f."/".$s, "/home/mailuser/alma_print/history/".$h_dir."/".$date."/".$movedFile);
+                        }
+
+                    }
+
                 } else {
                     // print jobs in ROOT
                 }
             }
-        }
 
     } else {
 
