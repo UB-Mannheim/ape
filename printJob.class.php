@@ -595,7 +595,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $this->writeLog("-- start printing: ".$file);
 
-        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
+        // $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
+	$print_cmd = "lp -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
 
         $this->writeLog("-- ". $print_cmd);
 
