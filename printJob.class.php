@@ -350,6 +350,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             break;
             case "fernleihe": $queue = "fernleihe";
             break;
+	    case "eingangsbeleg": $queue = "eingangsbeleg";
+            break;
             default:
                 // Printer "Ausleitheke"
                 $queue = "fallback";
@@ -449,7 +451,8 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         }
 
         if($queue=="fernleihe") {
-            $this->printByNow($this->__CFG__["printer"]["repro"], $file, $queue);
+            
+	    $this->printByNow($this->__CFG__["printer"]["repro"], $file, $queue);
 
             /*
             // Date
@@ -465,6 +468,12 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             $movedFile = basename($file);
             rename($file, $this->__CFG__["common"]["history"].$queue."/".$date."/".$movedFile);
             */
+        }
+
+	if($queue=="eingangsbeleg") {
+
+            $this->printByNow($this->__CFG__["printer"]["magazin"], $file, $queue);
+
         }
 
     }
@@ -595,8 +604,13 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $this->writeLog("-- start printing: ".$file);
 
-        // $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
-	$print_cmd = "lp -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
+        // // $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
+	
+	// Letze funktionierende Konfuguration vor Aenderung Eingagnsbeleg
+	// $print_cmd = "lp -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
+
+	// Aenderung fuer Eingangsbeleg#
+	$print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file;
 
         $this->writeLog("-- ". $print_cmd);
 
