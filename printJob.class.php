@@ -327,7 +327,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
     }
 
-    protected function printByFloor($printer, $file, $floor, $queue) {
+    protected function printByFloor($file, $floor, $queue) {
 
         // WESTFLUEGEL
             if($floor=="Westfluegel" || $floor=="Untergeschoss" || $floor="Erdgeschoss" || $floor=="Galerie") {
