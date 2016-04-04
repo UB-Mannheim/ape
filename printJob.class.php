@@ -330,7 +330,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
     protected function printByFloor($file, $floor, $queue) {
 
         // WESTFLUEGEL
-            if($floor=="Westfluegel" || $floor=="Untergeschoss" || $floor="Erdgeschoss" || $floor=="Galerie") {
+            if($floor=="Westfluegel" || $floor=="Untergeschoss" || $floor=="Erdgeschoss" || $floor=="Galerie") {
                 $this->sendToQueue($queue, "WEST", $file);
             } else {
         // MAGAZIN SW
