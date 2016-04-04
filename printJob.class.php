@@ -594,7 +594,39 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                     }
 
                 } else {
-                    // print jobs in ROOT
+
+    		    // print jobs in ROOT
+                    if($f != "dummy") {
+                        $printer = $this->__CFG__["printer"]["printer08"];
+                        // DEBUG
+                        // $printer = "PRINTER08_SW";
+                        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.quotemeta($f);
+                        shell_exec($print_cmd);
+                        // DEBUG
+                        // echo $print_cmd . "\r\n";
+
+                        $h_dir = basename($dir);
+                        $h_file = $f;
+
+                        // move to history directory
+
+                        if (!file_exists($this->__CFG__["common"]["history"].$h_dir."/".$date)) {
+                            mkdir($this->__CFG__["common"]["history"].$h_dir."/".$date, 0777, true);
+                        }
+                        // DEBUG
+                        // if (!file_exists($history_dir.$h_dir."/".$date)) {
+                            // // mkdir($history_dir.$h_dir."/".$date, 0777, true);
+                            // echo "creating dir: " . $history_dir.$h_dir."/".$date;
+
+                        // }
+                        $movedFile = basename($h_file);
+                        rename($dir.$f, "/home/mailuser/alma_print/history/".$h_dir."/".$date."/".$movedFile);
+                        // DEBUG
+                        // echo "renaming from: ". $dir.$f . " to " . "/home/mailuser/alma_print/history/".$h_dir."/".$date."/TEST_".$movedFile;
+                        //echo "\r\n\r\n";
+                        }
+		    // end print in ROOT
+
                 }
             }
 
