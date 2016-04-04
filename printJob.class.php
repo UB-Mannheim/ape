@@ -319,15 +319,28 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $this->writeLog("--- END ---");
 
         // Process Print Job
-        $this->processPrint($printjob["type"], $printjob["library"], $pdf);
+        // $this->processPrint($printjob["type"], $printjob["library"], $pdf);
+        $this->processPrint($printjob["type"], $printjob["library"], $printjob["level"], $pdf);
 
         // local test (no pdf generator)
         // $this->processPrint($printjob["type"], $printjob["library"], $filename);
 
     }
 
-    protected function processPrint($type, $section, $file) {
+    protected function printByFloor($printer, $file, $floor, $queue() {
 
+        // WESTFLUEGEL
+            if($floor=="Westfluegel" || $floor=="Untergeschoss" || $floor="Erdgeschoss" || $floor=="Galerie") {
+                $this->sendToQueue($queue, "WEST", $file);
+            } else {
+        // MAGAZIN SW
+                $this->sendToQueue($queue, "SW", $file);
+            }
+
+    }
+
+    // protected function processPrint($type, $section, $file) {
+    protected function processPrint($type, $section, $floor, $file) {
         $queue = "";
 
         // get type from html content of email
@@ -350,7 +363,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             break;
             case "fernleihe": $queue = "fernleihe";
             break;
-	    case "eingangsbeleg": $queue = "eingangsbeleg";
+            case "eingangsbeleg": $queue = "eingangsbeleg";
             break;
             default:
                 // Printer "Ausleitheke"
@@ -376,6 +389,9 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 case "BB Schloss Ehrenhof":
                     $this->printByNow($this->__CFG__["printer"]["printer48"], $file, $queue);
                     break;
+                case "Ausleihzentrum_X_Westfluegel":
+                    $this->printByNow($this->__CFG__["printer"]["printer52"], $file, $queue);
+                    break;
                 default:
                     $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
             }
@@ -399,6 +415,11 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 break;
             case "BB Schloss Ehrenhof":
                 $this->sendToQueue($queue, "BSE", $file);
+                break;
+            case "Ausleihzentrum_X_Westfluegel":
+                $this->printByFloor($file, $floor, $queue);
+                // if (UG, EG, Galerie) sendToQueue("Westf")
+                // else (Stock_01 - 11) sendToQueue ("SW")
                 break;
             default:
                 $this->sendToQueue($queue, "", $file);
@@ -451,7 +472,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         }
 
         if($queue=="fernleihe") {
-            
+
 	    $this->printByNow($this->__CFG__["printer"]["repro"], $file, $queue);
 
             /*
@@ -594,7 +615,25 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                     }
 
                 } else {
+
                     // print jobs in ROOT
+                    if($f != "dummy") {
+                        $printer = $this->__CFG__["printer"]["printer08"];
+
+                        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.quotemeta($f);
+                        shell_exec($print_cmd);
+
+                        $h_dir = basename($dir);
+                        $h_file = $f;
+
+                        // move to history directory
+                        if (!file_exists($this->__CFG__["common"]["history"].$h_dir."/".$date)) {
+                            mkdir($this->__CFG__["common"]["history"].$h_dir."/".$date, 0777, true);
+                        }
+                        $movedFile = basename($h_file);
+                        rename($dir.$f, "/home/mailuser/alma_print/history/".$h_dir."/".$date."/".$movedFile);
+                    }
+
                 }
             }
 
@@ -605,7 +644,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $this->writeLog("-- start printing: ".$file);
 
         // // $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
-	
+
 	// Letze funktionierende Konfuguration vor Aenderung Eingagnsbeleg
 	// $print_cmd = "lp -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
 
