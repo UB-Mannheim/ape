@@ -389,7 +389,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 case "BB Schloss Ehrenhof":
                     $this->printByNow($this->__CFG__["printer"]["printer48"], $file, $queue);
                     break;
-                case "Ausleihzentrum_X_Westfluegel":
+                case "Ausleihzentrum_Westfluegel":
                     $this->printByNow($this->__CFG__["printer"]["printer52"], $file, $queue);
                     break;
                 default:
@@ -416,7 +416,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             case "BB Schloss Ehrenhof":
                 $this->sendToQueue($queue, "BSE", $file);
                 break;
-            case "Ausleihzentrum_X_Westfluegel":
+            case "Ausleihzentrum_Westfluegel":
                 $this->printByFloor($file, $floor, $queue);
                 // if (UG, EG, Galerie) sendToQueue("Westf")
                 // else (Stock_01 - 11) sendToQueue ("SW")
@@ -591,6 +591,9 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                                     } else {
                                         $printer = $this->__CFG__["printer"]["printer08"];
                                     }
+                                    break;
+                                case "WEST":
+                                    $printer = $this->__CFG__["printer"]["printer52"];
                                     break;
                                 default:
                                     $printer = $this->__CFG__["printer"]["printer08"];
