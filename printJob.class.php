@@ -449,52 +449,17 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 }
         }
 
-        // QUITTUNGSDRUCK,
-        // 3.MAHNHUNG &
-        // "FALLBACK"
+        // QUITTUNGSDRUCK, 3.MAHNUNG & "FALLBACK"
         if( ($queue=="quittung") || ($queue=="mahnung") || ($queue=="fallback") ) {
             $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
-
-            /*
-            // Date
-            $date_rfc = date(DATE_RFC822);
-            $date = date("Y-m-d");
-
-            // can't be moved ... has already been moved in 'printByNow()' /direct/
-            // move to history directory /$queue/
-            if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
-                mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
-            }
-
-            $movedFile = basename($file);
-            rename($file, $this->__CFG__["common"]["history"].$queue."/".$date."/".$movedFile);
-            */
         }
 
         if($queue=="fernleihe") {
-
-	    $this->printByNow($this->__CFG__["printer"]["repro"], $file, $queue);
-
-            /*
-            // Date
-            $date_rfc = date(DATE_RFC822);
-            $date = date("Y-m-d");
-
-            // can't be moved ... has already been moved in 'printByNow()' /direct/
-            // move to history directory /$queue/
-            if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
-                mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
-            }
-
-            $movedFile = basename($file);
-            rename($file, $this->__CFG__["common"]["history"].$queue."/".$date."/".$movedFile);
-            */
+            $this->printByNow($this->__CFG__["printer"]["repro"], $file, $queue);
         }
 
-	if($queue=="eingangsbeleg") {
-
+        if($queue=="eingangsbeleg") {
             $this->printByNow($this->__CFG__["printer"]["magazin"], $file, $queue);
-
         }
 
     }
@@ -518,21 +483,16 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         // Cron: Magazindruck
         if($file=="cronMagazindruck") {
-
             $dir = $this->__CFG__["queue"]["magazin"];
-
             print "cronMagazindruck\r\n";
-
         }
 
         // Cron: Scanauftrag
         if($file=="cronScanauftrag") {
-
             $dir = $this->__CFG__["queue"]["scanauftrag"];
-
             print "cronScanauftrag\r\n";
-
         }
+
 // bis hier
 /// /// /// /// --- /// /// /// ///
 
