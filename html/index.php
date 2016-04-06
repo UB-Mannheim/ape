@@ -20,7 +20,7 @@ if (isset($_GET['nav'])) {
             default: $path = "history/";
         }
     } else {
-        $path = "../history/";
+        $path = "history/";
     }
 
     return $path;
