@@ -485,12 +485,14 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         if($file=="cronMagazindruck") {
             $dir = $this->__CFG__["queue"]["magazin"];
             print "cronMagazindruck\r\n";
+                $this->writeLog("Jobtype: cronMagazindruck\r\n");
         }
 
         // Cron: Scanauftrag
         if($file=="cronScanauftrag") {
             $dir = $this->__CFG__["queue"]["scanauftrag"];
             print "cronScanauftrag\r\n";
+                $this->writeLog("Jobtype: cronScanauftrag\r\n");
         }
 
 // bis hier
@@ -535,7 +537,12 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
                         if($s != "dummy") {
                             $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.$f."/".quotemeta($s);
+                                $this->writeLog("\r\n Printing on queue: ".$queue. " with command: " .$print_cmd);
                             shell_exec($print_cmd);
+                                if($printer=="printer52") {
+                                    $print_debug_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
+                                    shell_exec($print_debug_cmd);
+                                }
 
                             $h_dir = basename($dir);    // print ($dir) . "\r\n";   // dir
                             $h_subdir = $f;             // print ($f) . "\r\n";     // subdir
