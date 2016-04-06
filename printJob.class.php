@@ -522,32 +522,6 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             $dir = $this->__CFG__["queue"]["magazin"];
 
             print "cronMagazindruck\r\n";
-            /*
-            // Magazindruck NUR in Magazinturm
-
-            $printer = $this->__CFG__["printer"]["magazin"];
-
-            $files = array_diff(scandir($dir), array('..', '.'));
-
-                foreach($files as $f) {
-                    // a5 quer
-                    // $print_cmd = "lp (-o media=a5) -d " .$printer. " " .$dir."/".$f; // ." >/dev/null 2>&1 &";
-
-                    // a5 hoch, klein skaliert
-                    $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir."/".$f; // >/dev/null 2>&1 &";
-
-                    shell_exec($print_cmd);
-                    print $print_cmd . "\r\n";
-
-                    // move to history directory /magazin/
-                    if (!file_exists($this->__CFG__["common"]["history"]."magazin/".$date)) {
-                        mkdir($this->__CFG__["common"]["history"]."magazin/".$date, 0777, true);
-                    }
-
-                    rename($dir."/".$f, $this->__CFG__["common"]["history"]."magazin/".$date."/".$f);
-
-                }
-            */
 
         }
 
