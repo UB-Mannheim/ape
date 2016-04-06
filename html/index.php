@@ -13,6 +13,8 @@ if (isset($_GET['nav'])) {
             break;
             case "history": $path = "history/";
             break;
+            case "tmp": $path = "tmp/";
+            break;
             case "print_server": $path = "https://134.155.36.54:631/";
             break;
             case "logfile": $path = "log/debug.log";
@@ -84,10 +86,11 @@ a, a:hover, a:visited, a:link {
 <a href="index.php"><span style="margin-left:10px">Alma Print - Webadmin</span></a>
 </div>
 <div id="top_right">
-<a href="index.php?nav=queue">Zeige Queue</a> |
-<a href="index.php?nav=history">Zeige History</a> |
-<a href="index.php?nav=print_server">Gehe zu Druckserver</a> |
-<a href="index.php?nav=logfile">Zeige Logfile</a>
+<a href="index.php?nav=queue">Queue</a> |
+<a href="index.php?nav=history">History</a> |
+<a href="index.php?nav=tmp">Temp</a> |
+<a href="index.php?nav=print_server">Druckserver</a> |
+<a href="index.php?nav=logfile">Logfile</a>
 </div>
 </div>
 
