@@ -9,15 +9,15 @@ $path = "";
 if (isset($_GET['nav'])) {
         $id = $_GET['nav'];
         switch($id) {
-            case "queue": $path = "../queue/";
+            case "queue": $path = "queue/";
             break;
-            case "history": $path = "../history/";
+            case "history": $path = "history/";
             break;
-            case "print_server": $path = "https://134.155.36.54:631/";
+            case "print_server": $path = "https://mail.bib.uni-mannheim.de:631/";
             break;
-            case "logfile": $path = "../log/debug.log";
+            case "logfile": $path = "log/debug.log";
             break;
-            default: $path = "../history/";
+            default: $path = "history/";
         }
     } else {
         $path = "../history/";
