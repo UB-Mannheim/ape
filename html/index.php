@@ -19,7 +19,7 @@ if (isset($_GET['nav'])) {
             break;
             case "logfile": $path = "log/debug.log";
             break;
-            case "logfile": $path = "upload.php";
+            case "upload": $path = "upload.php";
             break;
             default: $path = "history/";
         }
