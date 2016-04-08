@@ -6,29 +6,27 @@ print_r ($_FILES );
 echo "</pre>";
 */
 if(isset($_FILES['file'])) {
-if ( $_FILES['file']['name']  <> "" )
-{
-
-    $zugelassenedateitypen = array("image/png", "image/jpeg", "image/gif", "text/html");
-
-    if ( ! in_array( $_FILES['file']['type'] , $zugelassenedateitypen ))
+    if ( $_FILES['file']['name']  <> "" )
     {
-        echo "<p>Dateitype ist NICHT zugelassen</p>";
-    }
-    else
-    {
-        move_uploaded_file (
-             $_FILES['file']['tmp_name'] ,
-             'uploads/'. $_FILES['file']['name'] );
 
-        echo "<p>Datei erfolgreich hochgeladen: ";
-        echo '<a href="uploads/'. $_FILES['file']['name'] .'" target="_blank">';
-        echo 'uploads/'. $_FILES['file']['name'];
-        echo '</a>';
+        $zugelassenedateitypen = array("image/png", "image/jpeg", "image/gif", "text/html");
+
+        if ( ! in_array( $_FILES['file']['type'] , $zugelassenedateitypen ))
+        {
+            echo "<p>Dateitype ist NICHT zugelassen</p>";
+        }
+        else
+        {
+            move_uploaded_file (
+                 $_FILES['file']['tmp_name'] ,
+                 'uploads/'. $_FILES['file']['name'] );
+
+            echo "<p>Datei erfolgreich hochgeladen: ";
+            echo '<a href="uploads/'. $_FILES['file']['name'] .'" target="_blank">';
+            echo 'uploads/'. $_FILES['file']['name'];
+            echo '</a>';
+        }
     }
-}
-} else {
-    echo "<h1>Datei hochladen</h1>";
 }
 
 if (isset($_POST['fn'])) {
@@ -62,18 +60,19 @@ a, a:hover, a:visited, a:link {
 </head>
 <body>
 
+<h2>Datei hochladen</h2>
 <form name="uploadformular" enctype="multipart/form-data" action="upload.php" method="post" >
-Datei auswählen: <input type="file" name="file" size="60" maxlength="255" >
+Datei ausw&auml;hlen: <input type="file" name="file" size="60" maxlength="255" >
 <input type="Submit" name="submit" value="Datei hochladen">
 </form>
-
-<h2>Vorschau</h2>
-<iframe src="uploads" />
 
 <h2>Löschen</h2>
 <form name="deleteformular" enctype="multipart/form-data" action="upload.php?fn=delete" method="post" >
 <input type="Submit" name="submit" value="Alle Dateien löschen">
 </form>
+
+<h2>Vorschau</h2>
+<iframe src="uploads" />
 
 </body>
 </html>
