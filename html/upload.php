@@ -28,7 +28,7 @@ if(isset($_FILES['file'])) {
 
             $q_filename = quotemeta("uploads/".$_FILES['file']['name']);
             $q_pdf = quotemeta("uploads/".$_FILES['file']['name'].".pdf");
-            echo "<br />Log:"
+            echo "<br />Log:";
             echo "<br />".$q_filename;
             echo "<br />".$q_pdf;
             $cmd = "/usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
@@ -76,7 +76,7 @@ a, a:hover, a:visited, a:link {
 <h2>Datei hochladen</h2>
 <form name="uploadformular" enctype="multipart/form-data" action="upload.php" method="post" >
 Datei ausw&auml;hlen: <input type="file" name="file" size="60" maxlength="255" >
-<input type="Submit" name="submit" value="Datei hochladen">
+<input type="Submit" name="submit" value="Datei drucken">
 </form>
 
 <!--
