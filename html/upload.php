@@ -67,8 +67,7 @@ Datei ausw&auml;hlen: <input type="file" name="file" size="60" maxlength="255" >
 </form>
 
 <h2>L&ouml;schen</h2>
-<form name="deleteformular" enctype="multipart/form-data" action="upload.php?fn=delete" method="get" >
-<input type="Submit" name="submit" value="Alle Dateien l&ouml;schen">
+<a href="upload.php?fn=delete">Alle Dateien L&ouml;schen</a>
 </form>
 
 <h2>Vorschau</h2>
