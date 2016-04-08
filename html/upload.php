@@ -29,8 +29,8 @@ if(isset($_FILES['file'])) {
     }
 }
 
-if (isset($_POST['fn'])) {
-    if($_POST['fn'] == "delete") {
+if (isset($_GET['fn'])) {
+    if($_GET['fn'] == "delete") {
         $cmd = "rm /var/www/html/alma_print/uploads/*";
         shell_exec($cmd);
     }
@@ -67,7 +67,7 @@ Datei ausw&auml;hlen: <input type="file" name="file" size="60" maxlength="255" >
 </form>
 
 <h2>L&ouml;schen</h2>
-<form name="deleteformular" enctype="multipart/form-data" action="upload.php?fn=delete" method="post" >
+<form name="deleteformular" enctype="multipart/form-data" action="upload.php?fn=delete" method="get" >
 <input type="Submit" name="submit" value="Alle Dateien l&ouml;schen">
 </form>
 
