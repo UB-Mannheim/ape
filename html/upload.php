@@ -38,9 +38,12 @@ if (isset($_GET['fn'])) {
         $cmd = "rm /var/www/html/alma_print/uploads/*";
         $q_filename = quotemeta("uploads/".$_FILES['file']['name']);
         $q_pdf = quotemeta("uploads/".$_FILES['file']['name'].".pdf");
+        echo $q_filename."<br />";
+        echo $q_pdf;
         $cmd = "/usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
         shell_exec($cmd);
         $print_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$q_pdf;
+        shell_exec($print_cmd);
     }
 }
 
