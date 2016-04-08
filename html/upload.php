@@ -22,7 +22,7 @@ if ( $_FILES['file']['name']  <> "" )
              'uploads/'. $_FILES['file']['name'] );
 
         echo "<p>Datei erfolgreich hochgeladen: ";
-        echo '<a href="uploads/'. $_FILES['file']['name'] .'">';
+        echo '<a href="uploads/'. $_FILES['file']['name'] .'" target="_blank">';
         echo 'uploads/'. $_FILES['file']['name'];
         echo '</a>';
     }
@@ -36,8 +36,7 @@ if ( $_FILES['file']['name']  <> "" )
 <head>
 <style>
 body {
-    background-color: #efefef;
-    font-family: Tahoma;
+    background-color: white;
 }
 
 iframe {
@@ -60,6 +59,7 @@ Datei: <input type="file" name="file" size="60" maxlength="255" >
 <input type="Submit" name="submit" value="Datei hochladen">
 </form>
 
+<h2>Vorschau</h2>
 <iframe src="uploads" />
 
 </body>
