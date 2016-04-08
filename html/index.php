@@ -19,6 +19,8 @@ if (isset($_GET['nav'])) {
             break;
             case "logfile": $path = "log/debug.log";
             break;
+            case "logfile": $path = "upload.php";
+            break;
             default: $path = "history/";
         }
     } else {
@@ -91,6 +93,7 @@ a, a:hover, a:visited, a:link {
 <a href="index.php?nav=tmp">Temp</a> |
 <a href="index.php?nav=print_server">Druckserver</a> |
 <a href="index.php?nav=logfile">Logfile</a>
+<a href="index.php?nav=upload">Vorlage hochladen</a>
 </div>
 </div>
 
