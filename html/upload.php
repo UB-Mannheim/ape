@@ -71,9 +71,10 @@ Datei: <input type="file" name="file" size="60" maxlength="255" >
 <h2>Vorschau</h2>
 <iframe src="uploads" />
 
-<h3>Löschen</h2>
+<h2>Löschen</h2>
 <form name="deleteformular" enctype="multipart/form-data" action="upload.php?fn=delete" method="post" >
 <input type="Submit" name="submit" value="Alle Dateien löschen">
 </form>
+
 </body>
 </html>
