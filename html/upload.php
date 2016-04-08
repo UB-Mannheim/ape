@@ -31,12 +31,16 @@ if(isset($_FILES['file'])) {
             echo "<br />Log:";
             echo "<br />".$q_filename;
             echo "<br />".$q_pdf;
+
             $cmd = "/usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
             shell_exec($cmd);
-            $print_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$q_pdf;
-            if ( $_FILES['format'] == "a5" ) {
-                $print_cmd = "lp -o fit-to-page -d TEST_KYOCERA_ISA " .$q_pdf;
+
+            if ( $_POST['format'] == "a5" ) {
+                $printer = "TEST_KYOCERA_ISA";
+            } else {
+                $printer = "Kyocera_ECOSYS_M2530dn";
             }
+            $print_cmd = "lp -o fit-to-page -d ".$printer." " .$q_pdf;
             shell_exec($print_cmd);
         }
     }
@@ -79,7 +83,7 @@ a, a:hover, a:visited, a:link {
 <h2>Datei hochladen</h2>
 <form name="uploadformular" enctype="multipart/form-data" action="upload.php" method="post" >
 Datei ausw&auml;hlen: <input type="file" name="file" size="60" maxlength="255" ><br /><br />
-<input type="radio" name="format" "checked" value="a4">A4<br />
+<input type="radio" name="format" checked value="a4">A4<br />
 <input type="radio" name="format" value="a5">A5<br /><br />
 <input type="Submit" name="submit" value="Datei drucken">
 </form>
