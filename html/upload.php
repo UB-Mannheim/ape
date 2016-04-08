@@ -33,7 +33,7 @@ if ( $_FILES['file']['name']  <> "" )
 
 if (isset($_POST['fn'])) {
     if($_POST['fn'] == "delete") {
-        $cmd = "rm /var/www/html/alma_print/uploads/*"
+        $cmd = "rm /var/www/html/alma_print/uploads/*";
         shell_exec($cmd);
     }
 }
