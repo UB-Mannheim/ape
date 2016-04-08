@@ -62,9 +62,8 @@ a, a:hover, a:visited, a:link {
 </head>
 <body>
 
-<h2>Datei hochladen</h2>
 <form name="uploadformular" enctype="multipart/form-data" action="upload.php" method="post" >
-Datei: <input type="file" name="file" size="60" maxlength="255" >
+Datei auswählen: <input type="file" name="file" size="60" maxlength="255" >
 <input type="Submit" name="submit" value="Datei hochladen">
 </form>
 
