@@ -31,6 +31,13 @@ if ( $_FILES['file']['name']  <> "" )
     echo "<h1>Datei hochladen</h1>";
 }
 
+if (isset($_POST['fn'])) {
+    if($_POST['fn'] == "delete") {
+        $cmd = "rm /var/www/html/alma_print/uploads/*"
+        shell_exec($cmd);
+    }
+}
+
 ?>
 <html>
 <head>
@@ -54,6 +61,8 @@ a, a:hover, a:visited, a:link {
 </style>
 </head>
 <body>
+
+<h2>Datei hochladen</h2>
 <form name="uploadformular" enctype="multipart/form-data" action="upload.php" method="post" >
 Datei: <input type="file" name="file" size="60" maxlength="255" >
 <input type="Submit" name="submit" value="Datei hochladen">
@@ -62,5 +71,9 @@ Datei: <input type="file" name="file" size="60" maxlength="255" >
 <h2>Vorschau</h2>
 <iframe src="uploads" />
 
+<h3>Löschen</h2>
+<form name="deleteformular" enctype="multipart/form-data" action="upload.php?fn=delete" method="post" >
+<input type="Submit" name="submit" value="Alle Dateien löschen">
+</form>
 </body>
 </html>
