@@ -33,7 +33,8 @@ if(isset($_FILES['file'])) {
             echo "<br />".$q_pdf;
             $cmd = "/usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
             shell_exec($cmd);
-            $print_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$q_pdf;
+            // $print_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$q_pdf;
+            $print_cmd = "lp -o fit-to-page -d TEST_KYOCERA_ISA " .$q_pdf;
             shell_exec($print_cmd);
         }
     }
