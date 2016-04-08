@@ -28,8 +28,9 @@ if(isset($_FILES['file'])) {
 
             $q_filename = quotemeta("uploads/".$_FILES['file']['name']);
             $q_pdf = quotemeta("uploads/".$_FILES['file']['name'].".pdf");
-            echo $q_filename."<br />";
-            echo $q_pdf;
+            echo "<br />Log:"
+            echo "<br />".$q_filename;
+            echo "<br />".$q_pdf;
             $cmd = "/usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
             shell_exec($cmd);
             $print_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$q_pdf;
@@ -82,13 +83,10 @@ Datei ausw&auml;hlen: <input type="file" name="file" size="60" maxlength="255" >
 <h2>Drucken</h2>
 <a href="upload.php?fn=print">Datei ausdrucken</a>
 -->
-<!--
+
 <h2>Vorschau</h2>
--->
 <a href="upload.php?fn=delete">Dateien L&ouml;schen</a>
-<!--
 <iframe src="uploads" />
--->
 
 </body>
 </html>
