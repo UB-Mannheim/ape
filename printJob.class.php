@@ -392,6 +392,9 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 case "Ausleihzentrum_Westfluegel":
                     $this->printByNow($this->__CFG__["printer"]["printer52"], $file, $queue);
                     break;
+		case "MZES":
+		    $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
+		    break;
                 default:
                     $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
             }
@@ -421,6 +424,10 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 // if (UG, EG, Galerie) sendToQueue("Westf")
                 // else (Stock_01 - 11) sendToQueue ("SW")
                 break;
+	    case "MZES":
+		// send to queue A5 (same  printer)
+		$this->sendToQueue($queue, "A5", $file);
+		break;
             default:
                 $this->sendToQueue($queue, "", $file);
                 }
