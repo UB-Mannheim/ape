@@ -12,19 +12,19 @@ class printJob {
 
     function __construct() {
     //
-    // call:    without parameter = standard
-    //          stream input
+    // Call:    Without Parameter = Standard
+    //          Stream Input
 
-        // switch: constructors with multiple parameters
+        // Switch: Constructors with multiple Parameters
         $a = func_get_args();
         $i = func_num_args();
 
-        // call constructor by parameter count
+        // Call Constructor by Parameter Count
         if (method_exists($this,$f='__construct'.$i)) {
             call_user_func_array(array($this,$f),$a);
         } else {
 
-        // START (standard)
+        // START (Standard)
 
             // Load Config
             $this->getConfig();
@@ -40,8 +40,8 @@ class printJob {
 
     function __construct1($filename) {
     //
-    // call:    with 1 parameter = filename
-    //          file input
+    // Call:    With 1 Parameter = filename
+    //          File Input
 
         // Load Config
         $this->getConfig();
@@ -55,12 +55,12 @@ class printJob {
 
     function __construct2($cron, $job) {
     //
-    // call:    with 2 parameters = cronjob
-    //          activaed by cron
+    // Call:    With 2 Parameters = cronjob
+    //          Activated by Cron
 
         $this->getConfig();
 
-        // no queue assigned -> ""
+        // No Queue assigned -> ""
         if($job=="cronMagazindruck") {
             $this->printByNow($cron, $job, "magazin");
         }
@@ -104,13 +104,12 @@ class printJob {
     //
     // Reading StreamInput
     //
-    print "STREAM IN";
+    // print "STREAM IN";
 
         $this->writeLog("--- READING MAIL ---");
 
         $this->__PARSER__->setStream(fopen("php://stdin", "r"));
 
-            $email = ""; // zu pruefen, ob weiterhin benoetigt
             $to = $this->__PARSER__->getHeader('to');
             $from = $this->__PARSER__->getHeader('from');
             $subject = $this->__PARSER__->getHeader('subject');
@@ -118,21 +117,8 @@ class printJob {
             $text = $this->__PARSER__->getMessageBody('text');
             $html = $this->__PARSER__->getMessageBody('html');
             $htmlEmbedded = $this->__PARSER__->getMessageBody('htmlEmbedded'); //HTML Body included data
-        /*
-        // Mailobobjekt erstellen?
-        include ("Mail.class.php");
-        $mail = new Mail();
-        $mail->setContent($email, $to, $from, $subject, $text, $html, $htmlEmbedded);
 
-        $this->__MAIL__ = true;
-
-        $this->writeLog("-- Html-Text: " .$html);
-        $this->writeLog("-- Html-Text (Data): " .$htmlEmbedded);
-
-        return $mail;
-    */
-
-        // return plain text, no headers, etc.
+        // Return plain Text, no Headers, etc.
         return $htmlEmbedded;
 
     }
@@ -153,47 +139,25 @@ class printJob {
             $localfile = fopen($this->__FILE__, "r");
             $email = "";
 
-            // read file content
+            // Read File Content
             while(!feof($localfile))
             {
                 $email .= fgets($localfile,1024);
                 // $this->writeLog($email);
                 }
 
-            // close file
+            // Close File
             fclose($localfile);
-            /*
-            $this->__PARSER__->setText($email);
 
-                $email = ""; // zu pruefen, ob weiterhin benoetigt
-                $to = $this->__PARSER__->getHeader('to');
-                $from = $this->__PARSER__->getHeader('from');
-                $subject = $this->__PARSER__->getHeader('subject');
-
-                $text = $this->__PARSER__->getMessageBody('text');
-                $html = $this->__PARSER__->getMessageBody('html');
-                $htmlEmbedded = $this->__PARSER__->getMessageBody('htmlEmbedded'); //HTML Body included data
-
-            // Mailobobjekt erstellen
-            include ("Mail.class.php");
-            $mail = new Mail();
-            $mail->setContent($email, $to, $from, $subject, $text, $html, $htmlEmbedded);
-
-            $this->__MAIL__ = false;
-
-            $this->writeLog($email);
-
-            return $mail;
-            */
-
-            // return plain text
+            // Return plain Text
             return $email;
         }
     }
 
     protected function getContent($email) {
 
-        // retrieve all necessary information for creating a job and assigning the right queue
+        // Retrieve all necessary Information for creating a Job and
+        // assigning the right Queue
 
         // Date
         $date_rfc = date(DATE_RFC822);
@@ -203,36 +167,9 @@ class printJob {
         $uid = uniqid();
         $udate = $date."__".$uid;
 
-///////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////
-
-// alter Block
-$printer = "";
-$to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
-
-        switch($to) {
-
-            case "kyocera@mail.bib.uni-mannheim.de": $printer = "Kyocera_ECOSYS_M2530dn";
-                break;
-            case "konica@mail.bib.uni-mannheim.de": $printer = "KONICA_MINOLTA_C360";
-                break;
-            case "epson@mail.bib.uni-mannheim.de": $printer = "T88V";
-                break;
-            default: $printer = "Kyocera_ECOSYS_M2530dn";
-        }
-
-        // $mailstr = "New mail received at " .$printer. " :" .$date_rfc. "\nSubject: " .$subject. "\nTo: " .$to. "\nFrom :" .$from. "\nText: \n" .$htmlEmbedded;
-
-        // print " --- \n" . $email;
-
-
-
-
-
         // Get Information from HTML
         $printjob = array();
-        // if (preg_match_all('#<h2>(?:.*?)</h2>#is', $email, $matches)) {
+
         if (preg_match_all('|<h2 id="print_type">(.*)</h2>|U', $email, $type)) {
             $printjob["type"] = $type[1][0];
         }
@@ -250,55 +187,32 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         $name = preg_replace('/\s+/', '_', $name);
         $name = preg_replace('/\,/', '', $name);
 
-        // posssibliy outdated ...
-        $printjob["name"] = $name;
-        //
+            // DEBUG
+            // print "\r\n--------------------------------------------- \r\n";
+            // print $name ."\r\n";
+            // print "--------------------------------------------- \r\n";
 
-        print "\r\n------------------------------------------------------- \r\n";
-        print $name ."\r\n";
-        print "------------------------------------------------------- \r\n";
+            // print "QUEUE \t\t::".$printjob["type"]."\r\n";
+            // print "SECTION \t::".$printjob["library"]."\r\n";
+            // print "FLOOR \t\t::".$printjob["level"]."\r\n";
+            // print "SIGNATURE \t::".$printjob["callnumber"]."\r\n";
 
 
-        print "QUEUE \t\t::".$printjob["type"]."\r\n";
-        // copy to magazin|scan oder direktdruck
-
-        print "SECTION \t::".$printjob["library"]."\r\n";
-        // copy to magazin
-
-        print "FLOOR \t\t::".$printjob["level"]."\r\n";
-        // copy to magazin
-
-        print "SIGNATURE \t::".$printjob["callnumber"]."\r\n";
-        // copy to magazin
-
-///////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////
-
-        // bisher weitgehend unbearbeitet
+        // Setting Filenames (html/pdf)
         $filename = $this->__CFG__["common"]["tmp"].$name."____incoming__".$udate.".html";
         $pdf = $this->__CFG__["common"]["tmp"].$name."____pdf__".$udate.".pdf";
         $this->writeLog("-- writing html file: ".$filename);
 
+        // Create File
         $fdw = fopen($filename, "w+");
-        // Embedded Html Only
         fwrite($fdw, $email);
-        // fwrite($fdw, $htmlEmbedded);
-
-        // old self-generated "header"
-        // fwrite($fdw, $mailstr);
-
-        // all information from stdin
-        // fwrite($fdw, $email);
-
         fclose($fdw);
-
         $this->writeLog("-- file: ".$filename." written");
 
         // Convert HTML to PDF
         $this->writeLog("-- Create PDF: ".$pdf);
 
-        // quoting filename & pdfname for conversion
+        // Quoting HTML- & PDF-Filename for conversion
         $q_filename = quotemeta($filename);
         $q_pdf = quotemeta($pdf);
         $convert_cmd = "/usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
@@ -312,8 +226,10 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
             $this->writeLog("-- file: ".$pdf." not found");
         }
 
-        // check if files should be deleted?
+        // Uncomment if HTML files should be deleted after conversion
         // unlink($filename);
+
+        // NOT RECOMMENDED: Uncomment to delete PDF files before printing
         // unlink($pdf);
 
         $this->writeLog("--- END ---");
@@ -322,7 +238,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
         // $this->processPrint($printjob["type"], $printjob["library"], $pdf);
         $this->processPrint($printjob["type"], $printjob["library"], $printjob["level"], $pdf);
 
-        // local test (no pdf generator)
+        // Local Test (no PDF Generator)
         // $this->processPrint($printjob["type"], $printjob["library"], $filename);
 
     }
@@ -343,7 +259,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
     protected function processPrint($type, $section, $floor, $file) {
         $queue = "";
 
-        // get type from html content of email
+        // Get Type from HTML Content of Email
         switch($type) {
             case "ruecklagezettel": $queue = "ruecklage";
             break;
@@ -370,7 +286,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 $queue = "fallback";
         }
 
-        // RUECKLAGE ZETTEL
+        // RUECKLAGEZETTEL
         if($queue=="ruecklage") {
             switch($section) {
                 case "BB Schloss Schneckenhof, West":
@@ -392,12 +308,12 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 case "Ausleihzentrum_Westfluegel":
                     $this->printByNow($this->__CFG__["printer"]["printer52"], $file, $queue);
                     break;
-		case "MZES":
-		    $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
-		    break;
+                case "MZES":
+                    $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
+                    break;
                 default:
                     $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
-            }
+                    }
         }
 
         // MAGAZINDRUCK + SCANAUFTRAG
@@ -424,10 +340,10 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                 // if (UG, EG, Galerie) sendToQueue("Westf")
                 // else (Stock_01 - 11) sendToQueue ("SW")
                 break;
-	    case "MZES":
-		// send to queue A5 (same  printer)
-		$this->sendToQueue($queue, "A5", $file);
-		break;
+            case "MZES":
+                // Send to Queue A5 (same  printer)
+                $this->sendToQueue($queue, "A5", $file);
+                break;
             default:
                 $this->sendToQueue($queue, "", $file);
                 }
@@ -555,7 +471,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                             $h_subdir = $f;             // print ($f) . "\r\n";     // subdir
                             $h_file = $s;               // print ($s) . "\r\n";     // file
 
-                            // move to history directory
+                            // Move to History Directory
                             if (!file_exists($this->__CFG__["common"]["history"].$h_dir."/".$date)) {
                                 mkdir($this->__CFG__["common"]["history"].$h_dir."/".$date, 0777, true);
                             }
@@ -567,7 +483,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
                 } else {
 
-    		    // print jobs in ROOT
+    		    // Print Jobs in ROOT Directory
                     if($f != "dummy") {
                         $printer = $this->__CFG__["printer"]["printer08"];
                         // DEBUG
@@ -580,8 +496,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
                         $h_dir = basename($dir);
                         $h_file = $f;
 
-                        // move to history directory
-
+                        // Move to History Directory
                         if (!file_exists($this->__CFG__["common"]["history"].$h_dir."/".$date)) {
                             mkdir($this->__CFG__["common"]["history"].$h_dir."/".$date, 0777, true);
                         }
@@ -608,20 +523,14 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $this->writeLog("-- start printing: ".$file);
 
-        // // $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
-
-	// Letze funktionierende Konfuguration vor Aenderung Eingagnsbeleg
-	// $print_cmd = "lp -d " .$printer. " " .$file; // ." >/dev/null 2>&1 &";
-
-	// Aenderung fuer Eingangsbeleg#
-	$print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file;
+        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file;
 
         $this->writeLog("-- ". $print_cmd);
 
         shell_exec($print_cmd);
         print $print_cmd;
 
-        // move to history directory /direct/
+        // Move to History Directory /direct/
         if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
             mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
         }
@@ -640,7 +549,7 @@ $to = "kyocera@mail.bib.uni-mannheim.de"; // tmp
 
         $cp_cmd = "cp \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"/".$section;
 
-        // local test (slashes)
+        // Local Test (Slashes)
         // $cp_cmd = "copy \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"\".$section;
 
         // print($cp_cmd);
