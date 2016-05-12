@@ -1,35 +1,35 @@
-﻿Return-Path: <alma@exlibrisgroup.com>
+﻿Return-Path: <alma@testserver.com>
 Received: from deliver ([unix socket])
-	 by staff.mail.uni-mannheim.de (Cyrus v2.3.16) with LMTPA;
+	 by mail.test-uni.de (Cyrus v2.3.16) with LMTPA;
 	 Thu, 26 Nov 2015 13:55:33 +0100
 X-Sieve: CMU Sieve 2.3
-Received: from mail-r211.rz.uni-mannheim.de (mail-r211.rz.uni-mannheim.de [134.155.96.211])
-	by staff.mail.uni-mannheim.de (Postfix) with ESMTPS id 7E96E221BEE;
+Received: from mailserver.test-uni.de (mailserver.test-uni.de [134.155.96.211])
+	by mail.test-uni.de (Postfix) with ESMTPS id 7E96E221BEE;
 	Thu, 26 Nov 2015 13:55:33 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by mail-r211.rz.uni-mannheim.de (Postfix) with ESMTP id 6DDB330052F;
+	by mailserver.test-uni.de (Postfix) with ESMTP id 6DDB330052F;
 	Thu, 26 Nov 2015 13:55:33 +0100 (CET)
-X-Virus-Scanned: amavisd-new at uni-mannheim.de
-Received: from mail-r211.rz.uni-mannheim.de ([127.0.0.1])
-	by localhost (mail-r211.rz.uni-mannheim.de [127.0.0.1]) (amavisd-new, port 10024)
+X-Virus-Scanned: amavisd-new at test-uni.de
+Received: from mailserver.test-uni.de ([127.0.0.1])
+	by localhost (mailserver.test-uni.de [127.0.0.1]) (amavisd-new, port 10024)
 	with ESMTP id 2BWKDUkKv6TI; Thu, 26 Nov 2015 13:55:28 +0100 (CET)
-Received: from mail.bib.uni-mannheim.de (mail.bib.uni-mannheim.de [134.155.36.54])
-	by mail-r211.rz.uni-mannheim.de (Postfix) with ESMTPS id 91BA63004C1;
+Received: from mail.bib.test-uni.de (mail.bib.test-uni.de [134.155.36.54])
+	by mailserver.test-uni.de (Postfix) with ESMTPS id 91BA63004C1;
     Thu, 26 Nov 2015 13:55:28 +0100 (CET)
-Received: from smtp-eu00.hosted.exlibrisgroup.com ([95.172.90.143])
-	by mail.bib.uni-mannheim.de with esmtp (Exim 4.84)
-	(envelope-from <alma@exlibrisgroup.com>)
+Received: from smtp-eu00.hosted.testserver.com ([95.172.90.143])
+	by mail.bib.test-uni.de with esmtp (Exim 4.84)
+	(envelope-from <alma@testserver.com>)
 	id 1a1w5A-0003PL-BB
-	for almaprinter@mail.bib.uni-mannheim.de; Thu, 26 Nov 2015 13:55:28 +0100
-Received: from app02.eu01.prod.alma.dc03.hosted.exlibrisgroup.com (lb01-alma-snat.dc03.hosted.exlibrisgroup.com [10.24.1.10])
-	by mail-eu01.dc03.hosted.exlibrisgroup.com (Postfix) with ESMTP id 2B325103137
-	for <almaprinter@mail.bib.uni-mannheim.de>; Thu, 26 Nov 2015 13:55:23 +0100 (CET)
-Received: from app02.eu01.prod.alma.dc03.hosted.exlibrisgroup.com (localhost.localdomain [127.0.0.1])
-	by app02.eu01.prod.alma.dc03.hosted.exlibrisgroup.com (8.14.4/8.14.4) with ESMTP id tAQCtNAl029152
-	for <almaprinter@mail.bib.uni-mannheim.de>; Thu, 26 Nov 2015 12:55:23 GMT
+	for adress@mail.bib.test-uni.de; Thu, 26 Nov 2015 13:55:28 +0100
+Received: from hosted.testserver.com (lb01-alma-snat.dc03.hosted.testserver.com [10.24.1.10])
+	by mail-eu01.dc03.hosted.testserver.com (Postfix) with ESMTP id 2B325103137
+	for <adress@mail.bib.test-uni.de>; Thu, 26 Nov 2015 13:55:23 +0100 (CET)
+Received: from hosted.testserver.com (localhost.localdomain [127.0.0.1])
+	by hosted.testserver.com (8.14.4/8.14.4) with ESMTP id tAQCtNAl029152
+	for <adress@mail.bib.test-uni.de>; Thu, 26 Nov 2015 12:55:23 GMT
 Date: Thu, 26 Nov 2015 12:55:23 +0000 (UTC)
-From: info@bib.uni-mannheim.de
-To: almaprinter@mail.bib.uni-mannheim.de
+From: info@bib.test-uni.de
+To: adress@mail.bib.test-uni.de
 Message-ID: <1253370916.4829.1448542523111.JavaMail.urm@app02.eu01>
 Subject: Vormerkungs-Beleg
 MIME-Version: 1.0
@@ -166,7 +166,7 @@ Content-Transfer-Encoding: 7bit
 <table cellspacing="0" cellpadding="5" border="0">
 <tr>
 <td>
-<h1>Haenger, Julian Elias</h1>
+<h1>Mustermann, Max</h1>
 </td>
 </tr>
 </table>
