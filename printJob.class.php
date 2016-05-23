@@ -306,7 +306,8 @@ class printJob {
                     $this->printByNow($this->__CFG__["printer"]["printer48"], $file, $queue);
                     break;
                 case "Ausleihzentrum_Westfluegel":
-                    $this->printByNow($this->__CFG__["printer"]["printer52"], $file, $queue);
+                    // $this->printByNow($this->__CFG__["printer"]["printer52"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer52_DINA5"], $file, $queue);
                     break;
                 case "MZES":
                     $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
@@ -451,8 +452,12 @@ class printJob {
                                         $printer = $this->__CFG__["printer"]["printer08"];
                                     }
                                     break;
-                                case "WEST":
-                                    $printer = $this->__CFG__["printer"]["printer52"];
+                                case "WEST": // A5 bei Magazindruck
+                                    if($queue=="magazin") {
+                                        $printer = $this->__CFG__["printer"]["printer52_DINA5"];
+                                    } else {
+                                        $printer = $this->__CFG__["printer"]["printer52"];
+                                    }
                                     break;
                                 default:
                                     $printer = $this->__CFG__["printer"]["printer08"];
