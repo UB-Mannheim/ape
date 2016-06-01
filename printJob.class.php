@@ -464,11 +464,11 @@ class printJob {
                             }
 
                         if($s != "dummy") {
-                            $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.$f."/".quotemeta($s);
+                            $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$dir.$f."/".quotemeta($s);
                                 $this->writeLog("\r\n Printing on queue: ".$queue. " with command: " .$print_cmd);
                             shell_exec($print_cmd);
                                 if($printer=="printer52") {
-                                    $print_debug_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
+                                    $print_debug_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
                                     shell_exec($print_debug_cmd);
                                 }
 
@@ -493,7 +493,7 @@ class printJob {
                         $printer = $this->__CFG__["printer"]["printer08"];
                         // DEBUG
                         // $printer = "PRINTER08_SW";
-                        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.quotemeta($f);
+                        $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$dir.quotemeta($f);
                         shell_exec($print_cmd);
                         // DEBUG
                         // echo $print_cmd . "\r\n";
@@ -528,7 +528,7 @@ class printJob {
 
         $this->writeLog("-- start printing: ".$file);
 
-        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$file;
+        $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$file;
 
         $this->writeLog("-- ". $print_cmd);
 
