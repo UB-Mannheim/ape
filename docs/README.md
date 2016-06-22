@@ -5,7 +5,7 @@ Directories & files
 -------------------
 
 APE may live in the <mailusers> home directory
-    * /home/<mailuser>/alma_print
+    * /home/<mailuser>/ape
 
 and has the following directory structure
         * /composer/    -   Mailparser Library

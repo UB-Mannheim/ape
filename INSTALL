@@ -8,6 +8,9 @@ Environment
 Users
  - create a dedicated <mailuser>
 
+Print Conf
+- rename print.conf.example to print.conf and set paths
+
 Packets
  - exim4
  - cups
