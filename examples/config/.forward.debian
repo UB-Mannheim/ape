@@ -1,2 +1,2 @@
-<mailuser>@<servername.bib>,"|php -q /home/mailuser/alma_print/init.php"
+<mailuser>@servername.de,"|php -q /home/<mailuser>/ape/init.php"
 
