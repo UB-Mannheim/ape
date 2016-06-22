@@ -19,3 +19,4 @@ repro = <CUPS_NAME__reprostelle>
 magazin = /home/<mailuser>/ape/queue/magazin/
 scanauftrag = /home/<mailuser>/ape/queue/scanauftrag/
 ruecklage = /home/<mailuser>/ape/queue/ruecklage/
+
