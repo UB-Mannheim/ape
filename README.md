@@ -1,7 +1,7 @@
 ALMA Print Extension (APE) - Easily Print Custom Letters & Notifications
 ========================================================================
 
-Copyright (C) 2015 Universit‰tsbibliothek Mannheim
+Copyright (C) 2015 Universit√§tsbibliothek Mannheim
 
 Authors: Alexander Wagner (UB Mannheim)
 
@@ -23,8 +23,8 @@ The APE script parses incoming HTML mails and converts them to PDF. The
 generated PDF file can be printed out on any user-defined printer.
 
 APE mainly supports two functions
-    * direct print (prints mail immediately)
-    * queue-controlled print (prints collected mails by cronjob)
+ * direct print (prints mail immediately)
+ * queue-controlled print (prints collected mails by cronjob)
 
 APE has a simple and directory based file structure. Configuration changes can
 easily be made by editing text files.
@@ -42,12 +42,12 @@ Windows or Linux system that is able to run a smtp- and webserver as well.
 
 The description beneath covers the software requirements of a Linux based
 environment:
-    * SMTP active and running
-    * Apache2 or similar
-    * PHP5 or higher
-    * PHP Mime Mail Parser
-    * CUPS
-    * wkhtmltopdf
+ * SMTP active and running
+ * Apache2 or similar
+ * PHP5 or higher
+ * PHP Mime Mail Parser
+ * CUPS
+ * wkhtmltopdf
 
 
 Installation
