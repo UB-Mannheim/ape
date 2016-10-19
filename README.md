@@ -16,21 +16,22 @@ Summary
 -------
 
 Every E-Mail ALMA sends can be printed out by a custom printer within your
-local network. "Request Letters", "Ressource Slips", "Reminders" or other mails
+local network. "Request Letters", "Resource Slips", "Reminders" or other mails
 that are received by the server are directly forwarded to the APE script.
 
 The APE script parses incoming HTML mails and converts them to PDF. The
 generated PDF file can be printed out on any user-defined printer.
 
-APE mainly supports two functions
+APE mainly supports two functions:
+
  * direct print (prints mail immediately)
  * queue-controlled print (prints collected mails by cronjob)
 
 APE has a simple and directory based file structure. Configuration changes can
 easily be made by editing text files.
 
-Additionally APE offers functions like caching mails in a temp directory
-and even has a print history, logging mechanisms and a print preview
+Additionally APE offers functions like caching mails in a temp directory.
+It even has a print history, logging mechanisms and a print preview
 for the best possible transparency.
 
 
@@ -38,10 +39,11 @@ Hard & Software requirements
 ----------------------------
 
 APE was built on a Debian server system, but can be installed on any other
-Windows or Linux system that is able to run a smtp- and webserver as well.
+Windows or Linux system that is able to run an SMTP and web server as well.
 
 The description beneath covers the software requirements of a Linux based
 environment:
+
  * SMTP active and running
  * Apache2 or similar
  * PHP5 or higher
@@ -75,7 +77,7 @@ Bug fixes, new functions, suggestions for new features and
 other user feedback are appreciated.
 
 The source code is available from https://github.com/UB-Mannheim/Ape.
-Please prepare your code contributions also on github.
+Please prepare your code contributions also on GitHub.
 
 
 Acknowledgments
@@ -83,5 +85,5 @@ Acknowledgments
 
 This project uses other free software:
 
-* PHP Mime Parser - https://github.com/php-mime-mail-parser/php-mime-mail-parser
-* wkhtmltopdf - https://github.com/wkhtmltopdf/wkhtmltopdf, http://wkhtmltopdf.org/
+* [PHP Mime Mail Parser](https://github.com/php-mime-mail-parser/php-mime-mail-parser)
+* [wkhtmltopdf](https://github.com/wkhtmltopdf/wkhtmltopdf) – http://wkhtmltopdf.org/
