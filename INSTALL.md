@@ -47,11 +47,11 @@ and important files
 
 ### Environment
 
-#### Recommended:
+#### Recommended
 - Standard Debian Jessie Installation
 - Open incoming port 25
 
-#### Optional:
+##### [Alternative Installation]
 - for RedHat Enterprise Linux 6 Packages, see below
 
 ### Users
@@ -77,7 +77,7 @@ and adapt the paths to your system.
 - wkthmltopdf
 - git
 
-### Optional: Install RedHat Enterprise Linux 6 Packages
+#### [Alternative Installation: Install RedHat Enterprise Linux 6 Packages]
 - yum install xorg-x11-server-Xvfb
 
 to get the correct PHP version:
