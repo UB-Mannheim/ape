@@ -47,8 +47,12 @@ and important files
 
 ### Environment
 
+#### Recommended:
 - Standard Debian Jessie Installation
 - Open incoming port 25
+
+#### Optional:
+- for RedHat Enterprise Linux 6 Packages, see below
 
 ### Users
 
@@ -72,6 +76,21 @@ and adapt the paths to your system.
 - php-mime-email-parser
 - wkthmltopdf
 - git
+
+### Optional: Install RedHat Enterprise Linux 6 Packages
+- yum install xorg-x11-server-Xvfb
+
+to get the correct PHP version:
+- yum install rh-php56-php
+- yum install rh-php56-php-mbstring
+- yum install rh-php56-php-devel
+
+- yum install wkhtmltox-0.13.0-alpha-7b36694_linux-centos6-amd64.rpm
+
+Use prefix of wkhtmltopdf with a xserver frame buffer in printJob.class.php
+```
+$convert_cmd = "/usr/bin/xvfb-run /usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
+```
 
 ### Clone the `ape` Repository
 
