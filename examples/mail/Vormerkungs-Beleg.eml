@@ -20,16 +20,16 @@ Received: from smtp-eu00.hosted.testserver.com ([95.172.90.143])
 	by mail.bib.test-uni.de with esmtp (Exim 4.84)
 	(envelope-from <alma@testserver.com>)
 	id 1a1w5A-0003PL-BB
-	for adress@mail.bib.test-uni.de; Thu, 26 Nov 2015 13:55:28 +0100
+	for address@mail.bib.test-uni.de; Thu, 26 Nov 2015 13:55:28 +0100
 Received: from hosted.testserver.com (lb01-alma-snat.dc03.hosted.testserver.com [10.24.1.10])
 	by mail-eu01.dc03.hosted.testserver.com (Postfix) with ESMTP id 2B325103137
-	for <adress@mail.bib.test-uni.de>; Thu, 26 Nov 2015 13:55:23 +0100 (CET)
+	for <address@mail.bib.test-uni.de>; Thu, 26 Nov 2015 13:55:23 +0100 (CET)
 Received: from hosted.testserver.com (localhost.localdomain [127.0.0.1])
 	by hosted.testserver.com (8.14.4/8.14.4) with ESMTP id tAQCtNAl029152
-	for <adress@mail.bib.test-uni.de>; Thu, 26 Nov 2015 12:55:23 GMT
+	for <address@mail.bib.test-uni.de>; Thu, 26 Nov 2015 12:55:23 GMT
 Date: Thu, 26 Nov 2015 12:55:23 +0000 (UTC)
 From: info@bib.test-uni.de
-To: adress@mail.bib.test-uni.de
+To: address@mail.bib.test-uni.de
 Message-ID: <1253370916.4829.1448542523111.JavaMail.urm@app02.eu01>
 Subject: Vormerkungs-Beleg
 MIME-Version: 1.0
