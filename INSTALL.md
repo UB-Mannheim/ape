@@ -95,7 +95,7 @@ $convert_cmd = "/usr/bin/xvfb-run /usr/local/bin/wkhtmltopdf -q ".$q_filename." 
 ### Clone the `ape` Repository
 
 ```
-git clone https://github.com/wagneral/ape.git
+git clone https://github.com/UB-Mannheim/ape.git
 ```
 
 ## Workflow
