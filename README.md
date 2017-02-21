@@ -1,7 +1,7 @@
 ALMA Print Extension (APE) - Easily Print Custom Letters & Notifications
 ========================================================================
 
-Copyright (C) 2015 Universitätsbibliothek Mannheim
+Copyright (C) 2015-2017 Universitätsbibliothek Mannheim
 
 Authors: Alexander Wagner (UB Mannheim)
 
