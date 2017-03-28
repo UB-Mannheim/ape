@@ -172,20 +172,26 @@ class printJob {
 
         if (preg_match_all('|<h2 id="print_type">(.*)</h2>|U', $email, $type)) {
             $printjob["type"] = $type[1][0];
+            $this->writeLog($printjob["type"]."\r\n");
         }
         if (preg_match_all('|<h2 id="print_library">(.*)</h2>|U', $email, $library)) {
             $printjob["library"] = $library[1][0];
+            $this->writeLog($printjob["library"]."\r\n");
         }
         if (preg_match_all('|<h2 id="print_callnumber">(.*)</h2>|U', $email, $callnumber)) {
             $printjob["callnumber"] = $callnumber[1][0];
+            $this->writeLog($printjob["callnumber"]."\r\n");
         }
         if (preg_match_all('|<h2 id="print_level">(.*)</h2>|U', $email, $level)) {
             $printjob["level"] = $level[1][0];
+            $this->writeLog($printjob["level"]."\r\n");
         }
 
         $name = $printjob["type"]."__".$printjob["library"]."__".$printjob["level"]."__".$printjob["callnumber"];
         $name = preg_replace('/\s+/', '_', $name);
         $name = preg_replace('/\,/', '', $name);
+	// changing signature: "/" to "-"
+        $name = preg_replace('/\//', '-', $name);
 
             // DEBUG
             // print "\r\n--------------------------------------------- \r\n";
@@ -196,7 +202,6 @@ class printJob {
             // print "SECTION \t::".$printjob["library"]."\r\n";
             // print "FLOOR \t\t::".$printjob["level"]."\r\n";
             // print "SIGNATURE \t::".$printjob["callnumber"]."\r\n";
-
 
         // Setting Filenames (html/pdf)
         $filename = $this->__CFG__["common"]["tmp"].$name."____incoming__".$udate.".html";
@@ -345,6 +350,17 @@ class printJob {
                 // Send to Queue A5 (same  printer)
                 $this->sendToQueue($queue, "A5", $file);
                 break;
+            //
+            // Sonderfaelle IMGB, Accounting, Binnenschiffahrt
+            case "BB Schloss Ehrenhof - IMGB":
+                $this->sendToQueue($queue, "BSE", $file);
+                break;
+            case "Bibl. f. Accounting u. Taxation":
+                $this->sendToQueue($queue, "BSE", $file);
+                break;
+            case "Binnenschifffahrtsrecht, Bibl.":
+                $this->sendToQueue($queue, "BSE", $file);
+                break;
             default:
                 $this->sendToQueue($queue, "", $file);
                 }
@@ -464,11 +480,13 @@ class printJob {
                             }
 
                         if($s != "dummy") {
-                            $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$dir.$f."/".quotemeta($s);
+                            $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.$f."/".quotemeta($s);
+                            // $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$dir.$f."/".quotemeta($s);
                                 $this->writeLog("\r\n Printing on queue: ".$queue. " with command: " .$print_cmd);
                             shell_exec($print_cmd);
                                 if($printer=="printer52") {
-                                    $print_debug_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
+                                    $print_debug_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
+                                    // $print_debug_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
                                     shell_exec($print_debug_cmd);
                                 }
 
@@ -493,7 +511,8 @@ class printJob {
                         $printer = $this->__CFG__["printer"]["printer08"];
                         // DEBUG
                         // $printer = "PRINTER08_SW";
-                        $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$dir.quotemeta($f);
+                        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.quotemeta($f);
+                        // $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$dir.quotemeta($f);
                         shell_exec($print_cmd);
                         // DEBUG
                         // echo $print_cmd . "\r\n";
@@ -528,7 +547,8 @@ class printJob {
 
         $this->writeLog("-- start printing: ".$file);
 
-        $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$file;
+        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .quotemeta($file);
+        // $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$file;
 
         $this->writeLog("-- ". $print_cmd);
 
