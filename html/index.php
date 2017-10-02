@@ -15,7 +15,7 @@ if (isset($_GET['nav'])) {
             break;
             case "tmp": $path = "tmp/";
             break;
-            case "print_server": $path = "https://134.155.36.54:631/";
+            case "print_server": $path = "https://mail.bib.uni-mannheim.de:631/";
             break;
             case "logfile": $path = "log/debug.log";
             break;
