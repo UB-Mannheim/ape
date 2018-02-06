@@ -128,10 +128,18 @@ class printJob {
     // Reading FileInput
     //
 
-        $this->__FILE__ = $this->__PATH__.$filename;
+	// if path = "alma_print" STANDARD as configured
+        // $this->__FILE__ = $this->__PATH__.$filename;
+	
+	// if path = "Maildir", static path because it is NO REGULAR  action
+	// 2do: add input file path to parameter in init.php
+	$this->__FILE__ = "/home/mailuser/Maildir/new/".$filename;
+
         print "FILE: " . $this->__FILE__ ."\r\n";
 
         if (file_exists($this->__FILE__)) {
+
+	// print("DEBUG: source file: ".$__FILE__);
 
             $this->writeLog("--- READING LOCAL FILE ---");
             // $this->writeLog("source file: ".$__FILE__);
@@ -149,9 +157,16 @@ class printJob {
             // Close File
             fclose($localfile);
 
+            // tmp BUGFIX
+            // print($email);
+
             // Return plain Text
             return $email;
-        }
+        } else {
+
+        	print ("File " . $this->__FILE__ . " not found."); 
+        	}
+
     }
 
     protected function getContent($email) {
@@ -170,6 +185,9 @@ class printJob {
         // Get Information from HTML
         $printjob = array();
 
+        // TODO: hier sollten alle Arrayelemente vorbelegt werden,
+        // damit $printjob vollständig definiert ist.
+
         if (preg_match_all('|<h2 id="print_type">(.*)</h2>|U', $email, $type)) {
             $printjob["type"] = $type[1][0];
             $this->writeLog($printjob["type"]."\r\n");
@@ -186,6 +204,9 @@ class printJob {
             $printjob["level"] = $level[1][0];
             $this->writeLog($printjob["level"]."\r\n");
         }
+
+        // TODO:
+        // PHP Notice:  Undefined index: callnumber in /home/mailuser/alma_print/printJob.class.php on line 193
 
         $name = $printjob["type"]."__".$printjob["library"]."__".$printjob["level"]."__".$printjob["callnumber"];
         $name = preg_replace('/\s+/', '_', $name);
