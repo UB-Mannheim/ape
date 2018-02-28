@@ -1,0 +1,11 @@
+history/*
+log/*
+tmp/*
+queue/*
+docs/eml/
+docs/html/
+docs/pdf/
+docs/txt/
+example/
+old/
+print.conf
