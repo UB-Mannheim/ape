@@ -8,48 +8,67 @@ namespace PhpMimeMailParser;
  * Fully Tested Mailparse Extension Wrapper for PHP 5.4+
  *
  */
-
 class Attachment
 {
+    /**
+     * @var string $filename Filename
+     */
+    protected $filename;
 
     /**
-    * @var $filename Filename
-    */
-    public $filename;
-    /**
-    * @var $contentType Mime Type
-    */
-    public $contentType;
-    /**
-    * @var $content File Content
-    */
-    private $content;
-    /**
-    * @var $extension Filename extension
-    */
-    private $extension;
-    /**
-    * @var $contentDisposition Content-Disposition (attachment or inline)
-    */
-    public $contentDisposition;
-    /**
-    * @var $contentId Content-ID
-    */
-    public $contentId;
-    /**
-    * @var $headers An Array of the attachment headers
-    */
-    public $headers;
+     * @var string $contentType Mime Type
+     */
+    protected $contentType;
 
-    private $stream;
+    /**
+     * @var string $content File Content
+     */
+    protected $content;
 
+    /**
+     * @var string $contentDisposition Content-Disposition (attachment or inline)
+     */
+    protected $contentDisposition;
+
+    /**
+     * @var string $contentId Content-ID
+     */
+    protected $contentId;
+
+    /**
+     * @var array $headers An Array of the attachment headers
+     */
+    protected $headers;
+
+    /**
+     * @var resource $stream
+     */
+    protected $stream;
+
+    /**
+     * @var string $mimePartStr
+     */
+    protected $mimePartStr;
+
+    /**
+     * Attachment constructor.
+     *
+     * @param string   $filename
+     * @param string   $contentType
+     * @param resource $stream
+     * @param string   $contentDisposition
+     * @param string   $contentId
+     * @param array    $headers
+     * @param string   $mimePartStr
+     */
     public function __construct(
         $filename,
         $contentType,
         $stream,
         $contentDisposition = 'attachment',
         $contentId = '',
-        $headers = array()
+        $headers = [],
+        $mimePartStr = ''
     ) {
         $this->filename = $filename;
         $this->contentType = $contentType;
@@ -58,69 +77,88 @@ class Attachment
         $this->contentDisposition = $contentDisposition;
         $this->contentId = $contentId;
         $this->headers = $headers;
+        $this->mimePartStr = $mimePartStr;
     }
 
     /**
-    * retrieve the attachment filename
-    * @return String
-    */
+     * retrieve the attachment filename
+     *
+     * @return string
+     */
     public function getFilename()
     {
         return $this->filename;
     }
 
     /**
-    * Retrieve the Attachment Content-Type
-    * @return String
-    */
+     * Retrieve the Attachment Content-Type
+     *
+     * @return string
+     */
     public function getContentType()
     {
         return $this->contentType;
     }
 
     /**
-    * Retrieve the Attachment Content-Disposition
-    * @return String
-    */
+     * Retrieve the Attachment Content-Disposition
+     *
+     * @return string
+     */
     public function getContentDisposition()
     {
         return $this->contentDisposition;
     }
 
     /**
-    * Retrieve the Attachment Content-ID
-    * @return String
-    */
+     * Retrieve the Attachment Content-ID
+     *
+     * @return string
+     */
     public function getContentID()
     {
         return $this->contentId;
     }
 
     /**
-    * Retrieve the Attachment Headers
-    * @return String
-    */
+     * Retrieve the Attachment Headers
+     *
+     * @return array
+     */
     public function getHeaders()
     {
         return $this->headers;
     }
 
     /**
-    * Read the contents a few bytes at a time until completed
-    * Once read to completion, it always returns false
-    * @return String
-    * @param $bytes Int[optional]
-    */
+     * Get a handle to the stream
+     *
+     * @return stream
+     */
+    public function getStream()
+    {
+        return $this->stream;
+    }
+
+    /**
+     * Read the contents a few bytes at a time until completed
+     * Once read to completion, it always returns false
+     *
+     * @param int $bytes (default: 2082)
+     *
+     * @return string|bool
+     */
     public function read($bytes = 2082)
     {
         return feof($this->stream) ? false : fread($this->stream, $bytes);
     }
 
     /**
-    * Retrieve the file content in one go
-    * Once you retreive the content you cannot use MimeMailParser_attachment::read()
-    * @return String
-    */
+     * Retrieve the file content in one go
+     * Once you retrieve the content you cannot use MimeMailParser_attachment::read()
+     *
+     * @return string
+     */
     public function getContent()
     {
         if ($this->content === null) {
@@ -129,6 +167,17 @@ class Attachment
                 $this->content .= $buf;
             }
         }
+
         return $this->content;
+    }
+
+    /**
+     * Get mime part string for this attachment
+     *
+     * @return string
+     */
+    public function getMimePartStr()
+    {
+        return $this->mimePartStr;
     }
 }
