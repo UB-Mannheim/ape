@@ -319,7 +319,7 @@ class printJob
                 $queue = "eingangsbeleg";
                 break;
             default:
-                // Printer "Ausleitheke"
+                // Printer "Ausleihtheke"
                 $queue = "fallback";
         }
 
