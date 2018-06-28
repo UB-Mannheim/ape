@@ -5,21 +5,17 @@ echo "FILES:<br />";
 print_r ($_FILES );
 echo "</pre>";
 */
-if(isset($_FILES['file'])) {
-    if ( $_FILES['file']['name']  <> "" )
-    {
-
+if (isset($_FILES['file'])) {
+    if ($_FILES['file']['name']  <> "") {
         $zugelassenedateitypen = array("image/png", "image/jpeg", "image/gif", "text/html");
 
-        if ( ! in_array( $_FILES['file']['type'] , $zugelassenedateitypen ))
-        {
+        if (! in_array($_FILES['file']['type'], $zugelassenedateitypen)) {
             echo "<p>Dateitype ist NICHT zugelassen</p>";
-        }
-        else
-        {
-            move_uploaded_file (
-                 $_FILES['file']['tmp_name'] ,
-                 'uploads/'. $_FILES['file']['name'] );
+        } else {
+            move_uploaded_file(
+                $_FILES['file']['tmp_name'],
+                'uploads/'. $_FILES['file']['name']
+            );
 
             echo "<p>Datei erfolgreich hochgeladen: ";
             echo '<a href="uploads/'. $_FILES['file']['name'] .'" target="_blank">';
@@ -35,7 +31,7 @@ if(isset($_FILES['file'])) {
             $cmd = "/usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
             shell_exec($cmd);
 
-            if ( $_POST['format'] == "a5" ) {
+            if ($_POST['format'] == "a5") {
                 $printer = "TEST_KYOCERA_ISA";
             } else {
                 $printer = "Kyocera_ECOSYS_M2530dn";
@@ -47,12 +43,11 @@ if(isset($_FILES['file'])) {
 }
 
 if (isset($_GET['fn'])) {
-    if($_GET['fn'] == "delete") {
+    if ($_GET['fn'] == "delete") {
         $cmd = "rm /var/www/html/alma_print/uploads/*";
         shell_exec($cmd);
     }
-    if($_GET['fn'] == "print") {
-
+    if ($_GET['fn'] == "print") {
     }
 }
 

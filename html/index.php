@@ -2,26 +2,34 @@
 
 $url = loadNavigation();
 
-function loadNavigation() {
+function loadNavigation()
+{
 
-$path = "";
+    $path = "";
 
-if (isset($_GET['nav'])) {
+    if (isset($_GET['nav'])) {
         $id = $_GET['nav'];
-        switch($id) {
-            case "queue": $path = "queue/";
-            break;
-            case "history": $path = "history/";
-            break;
-            case "tmp": $path = "tmp/";
-            break;
-            case "print_server": $path = "https://mail.bib.uni-mannheim.de:631/";
-            break;
-            case "logfile": $path = "log/debug.log";
-            break;
-            case "upload": $path = "upload.php";
-            break;
-            default: $path = "history/";
+        switch ($id) {
+            case "queue":
+                $path = "queue/";
+                break;
+            case "history":
+                $path = "history/";
+                break;
+            case "tmp":
+                $path = "tmp/";
+                break;
+            case "print_server":
+                $path = "https://mail.bib.uni-mannheim.de:631/";
+                break;
+            case "logfile":
+                $path = "log/debug.log";
+                break;
+            case "upload":
+                $path = "upload.php";
+                break;
+            default:
+                $path = "history/";
         }
     } else {
         $path = "history/";
