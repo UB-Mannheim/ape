@@ -1,11 +1,18 @@
-history/*
-log/*
-tmp/*
-queue/*
-docs/eml/
-docs/html/
-docs/pdf/
-docs/txt/
-example/
-old/
+# TODO: Document ignored entries.
+/history/
+/log/
+/tmp/
+/queue/
+/docs/eml/
+/docs/html/
+/docs/pdf/
+/docs/txt/
+
+/html/uploads/
+
+# TODO: Should these entries be removed?
+/example/
+/old/
+
+# Configuration file.
 print.conf
