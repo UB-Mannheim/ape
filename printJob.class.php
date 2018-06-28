@@ -1,7 +1,7 @@
 <?php
 
-class printJob {
-
+class printJob
+{
     // Set Variables
     private $__CFG__;
     private $__PATH__;
@@ -10,21 +10,21 @@ class printJob {
     private $__MAIL__;
     private $__PARSER__;
 
-    function __construct() {
-    //
-    // Call:    Without Parameter = Standard
-    //          Stream Input
+    function __construct()
+    {
+        //
+        // Call:    Without Parameter = Standard
+        //          Stream Input
 
         // Switch: Constructors with multiple Parameters
         $a = func_get_args();
         $i = func_num_args();
 
         // Call Constructor by Parameter Count
-        if (method_exists($this,$f='__construct'.$i)) {
-            call_user_func_array(array($this,$f),$a);
+        if (method_exists($this, $f = '__construct'.$i)) {
+            call_user_func_array(array($this,$f), $a);
         } else {
-
-        // START (Standard)
+            // START (Standard)
 
             // Load Config
             $this->getConfig();
@@ -34,14 +34,14 @@ class printJob {
             $content = $this->streamInput();
 
             $this->getContent($content);
-
         }
     }
 
-    function __construct1($filename) {
-    //
-    // Call:    With 1 Parameter = filename
-    //          File Input
+    function __construct1($filename)
+    {
+        //
+        // Call:    With 1 Parameter = filename
+        //          File Input
 
         // Load Config
         $this->getConfig();
@@ -53,58 +53,58 @@ class printJob {
         $this->getContent($content);
     }
 
-    function __construct2($cron, $job) {
-    //
-    // Call:    With 2 Parameters = cronjob
-    //          Activated by Cron
+    function __construct2($cron, $job)
+    {
+        //
+        // Call:    With 2 Parameters = cronjob
+        //          Activated by Cron
 
         $this->getConfig();
 
         // No Queue assigned -> ""
-        if($job=="cronMagazindruck") {
+        if ($job=="cronMagazindruck") {
             $this->printByNow($cron, $job, "magazin");
         }
-        if($job=="cronScanauftrag") {
+        if ($job=="cronScanauftrag") {
             $this->printByNow($cron, $job, "scanauftrag");
         }
-
-
     }
 
-    protected function getConfig() {
-    //
-    // Read Configuration
-    //
+    protected function getConfig()
+    {
+        //
+        // Read Configuration
+        //
 
         // Initialize Variables
-        $this->__CFG__ = parse_ini_file("print.conf", TRUE);
+        $this->__CFG__ = parse_ini_file("print.conf", true);
         $this->__PATH__ = $this->__CFG__["common"]["root"];
         $this->__LOG__ = $this->__CFG__["common"]["log"];
 
         // Include Mailparser Library
-        require_once $this->__CFG__["lib"]["mailparser"];
+        include_once $this->__CFG__["lib"]["mailparser"];
         $this->__PARSER__ = new PhpMimeMailParser\Parser();
-
     }
 
-    protected function writeLog($msg) {
-    //
-    // Logwriter
-    //
+    protected function writeLog($msg)
+    {
+        //
+        // Logwriter
+        //
 
         $log = $this->__CFG__["common"]["log"];
 
         $fdw = fopen($log, "a+");
             fwrite($fdw, $msg . "\n");
         fclose($fdw);
-
     }
 
-    protected function streamInput() {
-    //
-    // Reading StreamInput
-    //
-    // print "STREAM IN";
+    protected function streamInput()
+    {
+        //
+        // Reading StreamInput
+        //
+        // print "STREAM IN";
 
         $this->writeLog("--- READING MAIL ---");
 
@@ -120,13 +120,13 @@ class printJob {
 
         // Return plain Text, no Headers, etc.
         return $htmlEmbedded;
-
     }
 
-    protected function fileInput($filename) {
-    //
-    // Reading FileInput
-    //
+    protected function fileInput($filename)
+    {
+        //
+        // Reading FileInput
+        //
 
         // if path = "alma_print" STANDARD as configured
         // $this->__FILE__ = $this->__PATH__.$filename;
@@ -138,7 +138,6 @@ class printJob {
         print "FILE: " . $this->__FILE__ ."\r\n";
 
         if (file_exists($this->__FILE__)) {
-
             // print("DEBUG: source file: ".$__FILE__);
 
             $this->writeLog("--- READING LOCAL FILE ---");
@@ -148,11 +147,10 @@ class printJob {
             $email = "";
 
             // Read File Content
-            while(!feof($localfile))
-            {
-                $email .= fgets($localfile,1024);
+            while (!feof($localfile)) {
+                $email .= fgets($localfile, 1024);
                 // $this->writeLog($email);
-                }
+            }
 
             // Close File
             fclose($localfile);
@@ -163,14 +161,12 @@ class printJob {
             // Return plain Text
             return $email;
         } else {
-
             print ("File " . $this->__FILE__ . " not found.");
         }
-
     }
 
-    protected function getContent($email) {
-
+    protected function getContent($email)
+    {
         // Retrieve all necessary Information for creating a Job and
         // assigning the right Queue
 
@@ -262,59 +258,74 @@ class printJob {
 
         // Process Print Job
         // $this->processPrint($printjob["type"], $printjob["library"], $pdf);
-        $this->processPrint($printjob["type"], $printjob["library"], $printjob["level"], $pdf);
+        $this->processPrint(
+            $printjob["type"],
+            $printjob["library"],
+            $printjob["level"],
+            $pdf
+        );
 
         // Local Test (no PDF Generator)
         // $this->processPrint($printjob["type"], $printjob["library"], $filename);
-
     }
 
-    protected function printByFloor($file, $floor, $queue) {
-
+    protected function printByFloor($file, $floor, $queue)
+    {
         // WESTFLUEGEL
-            if($floor=="Westfluegel" || $floor=="Untergeschoss" || $floor=="Erdgeschoss" || $floor=="Galerie") {
-                $this->sendToQueue($queue, "WEST", $file);
-            } else {
-        // MAGAZIN SW
-                $this->sendToQueue($queue, "SW", $file);
-            }
-
+        if ($floor=="Westfluegel" || $floor=="Untergeschoss"
+            || $floor=="Erdgeschoss" || $floor=="Galerie"
+        ) {
+            $this->sendToQueue($queue, "WEST", $file);
+        } else {
+            // MAGAZIN SW
+            $this->sendToQueue($queue, "SW", $file);
+        }
     }
 
-    // protected function processPrint($type, $section, $file) {
-    protected function processPrint($type, $section, $floor, $file) {
+    protected function processPrint($type, $section, $floor, $file)
+    {
         $queue = "";
 
         // Get Type from HTML Content of Email
-        switch($type) {
-            case "ruecklagezettel": $queue = "ruecklage";
-            break;
-            case "magazinbestellung": $queue = "magazin";
-            break;
-            case "scanauftrag": $queue = "scanauftrag";
-            break;
-            case "quittung": $queue = "quittung";
-            break;
-            case "mahnung": $queue = "mahnung";
-            break;
-            case "bestellliste": $queue = "medienbearb";
-            break;
-            case "erwerbungsstornierung": $queue = "medienbearb";
-            break;
-            case "erwerbungsmahnung": $queue = "medienbearb";
-            break;
-            case "fernleihe": $queue = "fernleihe";
-            break;
-            case "eingangsbeleg": $queue = "eingangsbeleg";
-            break;
+        switch ($type) {
+            case "ruecklagezettel":
+                $queue = "ruecklage";
+                break;
+            case "magazinbestellung":
+                $queue = "magazin";
+                break;
+            case "scanauftrag":
+                $queue = "scanauftrag";
+                break;
+            case "quittung":
+                $queue = "quittung";
+                break;
+            case "mahnung":
+                $queue = "mahnung";
+                break;
+            case "bestellliste":
+                $queue = "medienbearb";
+                break;
+            case "erwerbungsstornierung":
+                $queue = "medienbearb";
+                break;
+            case "erwerbungsmahnung":
+                $queue = "medienbearb";
+                break;
+            case "fernleihe":
+                $queue = "fernleihe";
+                break;
+            case "eingangsbeleg":
+                $queue = "eingangsbeleg";
+                break;
             default:
                 // Printer "Ausleitheke"
                 $queue = "fallback";
         }
 
         // RUECKLAGEZETTEL
-        if($queue=="ruecklage") {
-            switch($section) {
+        if ($queue=="ruecklage") {
+            switch ($section) {
                 case "BB Schloss Schneckenhof, West":
                     $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
                     // sendToQueue("magazin", "BSE", $file);
@@ -340,176 +351,173 @@ class printJob {
                     break;
                 default:
                     $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
-                    }
+            }
         }
 
         // MAGAZINDRUCK + SCANAUFTRAG
-        if( ($queue=="magazin") || ($queue=="scanauftrag") ) {
+        if (($queue=="magazin") || ($queue=="scanauftrag")) {
             // $this->sendToQueue("magazin", "", $file);
-            switch($section) {
-            case "BB Schloss Schneckenhof, West":
-                $this->sendToQueue($queue, "SW", $file);
-                break;
-            case "BB A3":
-                $this->sendToQueue($queue, "A3", $file);
-                break;
-            case "BB A5":
-                $this->sendToQueue($queue, "A5", $file);
-                break;
-            case "BB Schloss Schneckenhof, BWL":
-                $this->sendToQueue($queue, "BWL", $file);
-                break;
-            case "BB Schloss Ehrenhof":
-                $this->sendToQueue($queue, "BSE", $file);
-                break;
-            case "Ausleihzentrum_Westfluegel":
-                $this->printByFloor($file, $floor, $queue);
-                // if (UG, EG, Galerie) sendToQueue("Westf")
-                // else (Stock_01 - 11) sendToQueue ("SW")
-                break;
-            case "MZES":
-                // Send to Queue A5 (same  printer)
-                $this->sendToQueue($queue, "A5", $file);
-                break;
+            switch ($section) {
+                case "BB Schloss Schneckenhof, West":
+                    $this->sendToQueue($queue, "SW", $file);
+                    break;
+                case "BB A3":
+                    $this->sendToQueue($queue, "A3", $file);
+                    break;
+                case "BB A5":
+                    $this->sendToQueue($queue, "A5", $file);
+                    break;
+                case "BB Schloss Schneckenhof, BWL":
+                    $this->sendToQueue($queue, "BWL", $file);
+                    break;
+                case "BB Schloss Ehrenhof":
+                    $this->sendToQueue($queue, "BSE", $file);
+                    break;
+                case "Ausleihzentrum_Westfluegel":
+                    $this->printByFloor($file, $floor, $queue);
+                    // if (UG, EG, Galerie) sendToQueue("Westf")
+                    // else (Stock_01 - 11) sendToQueue ("SW")
+                    break;
+                case "MZES":
+                    // Send to Queue A5 (same  printer)
+                    $this->sendToQueue($queue, "A5", $file);
+                    break;
             //
             // Sonderfaelle IMGB, Accounting, Binnenschiffahrt
-            case "BB Schloss Ehrenhof - IMGB":
-                $this->sendToQueue($queue, "BSE", $file);
-                break;
-            case "Bibl. f. Accounting u. Taxation":
-                $this->sendToQueue($queue, "BSE", $file);
-                break;
-            case "Binnenschifffahrtsrecht, Bibl.":
-                $this->sendToQueue($queue, "BSE", $file);
-                break;
-            default:
-                $this->sendToQueue($queue, "", $file);
-                }
+                case "BB Schloss Ehrenhof - IMGB":
+                    $this->sendToQueue($queue, "BSE", $file);
+                    break;
+                case "Bibl. f. Accounting u. Taxation":
+                    $this->sendToQueue($queue, "BSE", $file);
+                    break;
+                case "Binnenschifffahrtsrecht, Bibl.":
+                    $this->sendToQueue($queue, "BSE", $file);
+                    break;
+                default:
+                    $this->sendToQueue($queue, "", $file);
+            }
         }
 
         // MEDIENBEARBEITUNG (Bestellliste, Erwerbungsstornierung, Erwerbungsmahnung)
-        if($queue=="medienbearb") {
-            switch($section) {
-            case "BB Schloss Schneckenhof, West":
-                $this->printByNow($this->__CFG__["printer"]["printer09"], $file, $queue);
-                break;
-            case "BB A3":
-                $this->printByNow($this->__CFG__["printer"]["konicaA3"], $file, $queue);
-                break;
-            case "BB A5":
-                $this->printByNow($this->__CFG__["printer"]["konicaA5"], $file, $queue);
-                break;
-            case "BB Schloss Schneckenhof, BWL":
-                $this->printByNow($this->__CFG__["printer"]["printer19"], $file, $queue);
-                break;
-            case "BB Schloss Ehrenhof":
-                $this->printByNow($this->__CFG__["printer"]["printer20"], $file, $queue);
-                break;
-            default:
-                $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
-                }
+        if ($queue=="medienbearb") {
+            switch ($section) {
+                case "BB Schloss Schneckenhof, West":
+                    $this->printByNow($this->__CFG__["printer"]["printer09"], $file, $queue);
+                    break;
+                case "BB A3":
+                    $this->printByNow($this->__CFG__["printer"]["konicaA3"], $file, $queue);
+                    break;
+                case "BB A5":
+                    $this->printByNow($this->__CFG__["printer"]["konicaA5"], $file, $queue);
+                    break;
+                case "BB Schloss Schneckenhof, BWL":
+                    $this->printByNow($this->__CFG__["printer"]["printer19"], $file, $queue);
+                    break;
+                case "BB Schloss Ehrenhof":
+                    $this->printByNow($this->__CFG__["printer"]["printer20"], $file, $queue);
+                    break;
+                default:
+                    $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
+            }
         }
 
         // QUITTUNGSDRUCK, 3.MAHNUNG & "FALLBACK"
-        if( ($queue=="quittung") || ($queue=="mahnung") || ($queue=="fallback") ) {
+        if (($queue=="quittung") || ($queue=="mahnung") || ($queue=="fallback")) {
             $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
         }
 
-        if($queue=="fernleihe") {
+        if ($queue=="fernleihe") {
             $this->printByNow($this->__CFG__["printer"]["repro"], $file, $queue);
         }
 
-        if($queue=="eingangsbeleg") {
+        if ($queue=="eingangsbeleg") {
             $this->printByNow($this->__CFG__["printer"]["magazin"], $file, $queue);
         }
-
     }
 
-    protected function printByNow($printer, $file, $queue) {
-    //
-    // Direct Printing or Printing via Cronjob
-    //
+    protected function printByNow($printer, $file, $queue)
+    {
+        //
+        // Direct Printing or Printing via Cronjob
+        //
 
-    // Date
-    $date_rfc = date(DATE_RFC822);
-    $date = date("Y-m-d");
+        // Date
+        $date_rfc = date(DATE_RFC822);
+        $date = date("Y-m-d");
 
-/// /// /// /// --- /// /// /// ///
-// 2do $this->__CFG__["queue"]["magazin"] durch $this->__CFG__["queue"][$queue] ersetzen
+        /// /// /// /// --- /// /// /// ///
+        // 2do $this->__CFG__["queue"]["magazin"] durch $this->__CFG__["queue"][$queue] ersetzen
 
-    // Is Cronjob?
-    if( ($file=="cronMagazindruck") || ($file=="cronScanauftrag") ) {
+        // Is Cronjob?
+        if (($file=="cronMagazindruck") || ($file=="cronScanauftrag")) {
+            $printer = "";
 
-        $printer = "";
-
-        // Cron: Magazindruck
-        if($file=="cronMagazindruck") {
-            $dir = $this->__CFG__["queue"]["magazin"];
-            print "cronMagazindruck\r\n";
+            // Cron: Magazindruck
+            if ($file=="cronMagazindruck") {
+                $dir = $this->__CFG__["queue"]["magazin"];
+                print "cronMagazindruck\r\n";
                 $this->writeLog("Jobtype: cronMagazindruck\r\n");
-        }
+            }
 
-        // Cron: Scanauftrag
-        if($file=="cronScanauftrag") {
-            $dir = $this->__CFG__["queue"]["scanauftrag"];
-            print "cronScanauftrag\r\n";
+            // Cron: Scanauftrag
+            if ($file=="cronScanauftrag") {
+                $dir = $this->__CFG__["queue"]["scanauftrag"];
+                print "cronScanauftrag\r\n";
                 $this->writeLog("Jobtype: cronScanauftrag\r\n");
-        }
+            }
 
-// bis hier
-/// /// /// /// --- /// /// /// ///
+            // bis hier
+            /// /// /// /// --- /// /// /// ///
 
-        $files = array_diff(scandir($dir), array('..', '.'));
+            $files = array_diff(scandir($dir), array('..', '.'));
 
-        foreach($files as $f) {
+            foreach ($files as $f) {
+                if (is_dir($dir."/".$f)) {
+                    $subdir = array_diff(scandir($dir."/".$f), array('..', '.'));
 
-            if(is_dir($dir."/".$f)) {
-
-                $subdir = array_diff(scandir($dir."/".$f), array('..', '.'));
-
-                    foreach($subdir as $s) {
+                    foreach ($subdir as $s) {
                         $print_cmd = "";
-                            switch($f) {
-                                case "A3":
-                                    $printer = $this->__CFG__["printer"]["printer50"];
-                                    break;
-                                case "A5":
-                                    $printer = $this->__CFG__["printer"]["konicaA5"];
-                                    break;
-                                case "BWL":
-                                    $printer = $this->__CFG__["printer"]["printer29"];
-                                    break;
-                                case "BSE":
-                                    $printer = $this->__CFG__["printer"]["printer21"];
-                                    break;
-                                case "SW":
-                                    if($queue=="magazin") {
-                                        $printer = $this->__CFG__["printer"]["magazin"];
-                                    } else {
-                                        $printer = $this->__CFG__["printer"]["printer08"];
-                                    }
-                                    break;
-                                case "WEST": // A5 bei Magazindruck
-                                    if($queue=="magazin") {
-                                        $printer = $this->__CFG__["printer"]["printer52_DINA5"];
-                                    } else {
-                                        $printer = $this->__CFG__["printer"]["printer52"];
-                                    }
-                                    break;
-                                default:
+                        switch ($f) {
+                            case "A3":
+                                $printer = $this->__CFG__["printer"]["printer50"];
+                                break;
+                            case "A5":
+                                $printer = $this->__CFG__["printer"]["konicaA5"];
+                                break;
+                            case "BWL":
+                                $printer = $this->__CFG__["printer"]["printer29"];
+                                break;
+                            case "BSE":
+                                $printer = $this->__CFG__["printer"]["printer21"];
+                                break;
+                            case "SW":
+                                if ($queue=="magazin") {
+                                    $printer = $this->__CFG__["printer"]["magazin"];
+                                } else {
                                     $printer = $this->__CFG__["printer"]["printer08"];
-                            }
+                                }
+                                break;
+                            case "WEST": // A5 bei Magazindruck
+                                if ($queue=="magazin") {
+                                    $printer = $this->__CFG__["printer"]["printer52_DINA5"];
+                                } else {
+                                    $printer = $this->__CFG__["printer"]["printer52"];
+                                }
+                                break;
+                            default:
+                                $printer = $this->__CFG__["printer"]["printer08"];
+                        }
 
-                        if($s != "dummy") {
+                        if ($s != "dummy") {
                             $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.$f."/".quotemeta($s);
                             // $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$dir.$f."/".quotemeta($s);
-                                $this->writeLog("\r\n Printing on queue: ".$queue. " with command: " .$print_cmd);
+                            $this->writeLog("\r\n Printing on queue: ".$queue. " with command: " .$print_cmd);
                             shell_exec($print_cmd);
-                                if($printer=="printer52") {
-                                    $print_debug_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
-                                    // $print_debug_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
-                                    shell_exec($print_debug_cmd);
-                                }
+                            if ($printer=="printer52") {
+                                $print_debug_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
+                                // $print_debug_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
+                                shell_exec($print_debug_cmd);
+                            }
 
                             $h_dir = basename($dir);    // print ($dir) . "\r\n";   // dir
                             $h_subdir = $f;             // print ($f) . "\r\n";     // subdir
@@ -522,13 +530,10 @@ class printJob {
                             $movedFile = basename($h_file);
                             rename($dir.$f."/".$s, "/home/mailuser/alma_print/history/".$h_dir."/".$date."/".$movedFile);
                         }
-
                     }
-
                 } else {
-
                     // Print Jobs in ROOT Directory
-                    if($f != "dummy") {
+                    if ($f != "dummy") {
                         $printer = $this->__CFG__["printer"]["printer08"];
                         // DEBUG
                         // $printer = "PRINTER08_SW";
@@ -558,40 +563,36 @@ class printJob {
                         //echo "\r\n\r\n";
                     }
                     // end print in ROOT
-
                 }
             }
+        } else {
+            // No Cronjob, called directly from processPrint()
 
-    } else {
+            $this->writeLog("-- start printing: ".$file);
 
-    // No Cronjob, called directly from processPrint()
+            $print_cmd = "lp -o fit-to-page -d " .$printer. " " .quotemeta($file);
+            // $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$file;
 
-        $this->writeLog("-- start printing: ".$file);
+            $this->writeLog("-- ". $print_cmd);
 
-        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .quotemeta($file);
-        // $print_cmd = "lp -o fit-to-page -o sides=two-sided-long-edge -d " .$printer. " " .$file;
+            shell_exec($print_cmd);
+            print $print_cmd;
 
-        $this->writeLog("-- ". $print_cmd);
+            // Move to History Directory /direct/
+            if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
+                mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
+            }
 
-        shell_exec($print_cmd);
-        print $print_cmd;
-
-        // Move to History Directory /direct/
-        if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
-            mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
+            $movedFile = basename($file);
+            rename($file, $this->__CFG__["common"]["history"].$queue."/".$date."/".$movedFile);
         }
-
-        $movedFile = basename($file);
-        rename($file, $this->__CFG__["common"]["history"].$queue."/".$date."/".$movedFile);
-
-        }
-
     }
 
-    protected function sendToQueue($queue, $section, $file) {
-    //
-    // Copy File to Queue
-    //
+    protected function sendToQueue($queue, $section, $file)
+    {
+        //
+        // Copy File to Queue
+        //
 
         $cp_cmd = "cp \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"/".$section;
 
@@ -600,7 +601,5 @@ class printJob {
 
         // print($cp_cmd);
         shell_exec($cp_cmd);
-
     }
 }
-?>
