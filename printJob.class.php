@@ -128,18 +128,18 @@ class printJob {
     // Reading FileInput
     //
 
-	// if path = "alma_print" STANDARD as configured
+        // if path = "alma_print" STANDARD as configured
         // $this->__FILE__ = $this->__PATH__.$filename;
-	
-	// if path = "Maildir", static path because it is NO REGULAR  action
-	// 2do: add input file path to parameter in init.php
-	$this->__FILE__ = "/home/mailuser/Maildir/new/".$filename;
+
+        // if path = "Maildir", static path because it is NO REGULAR  action
+        // 2do: add input file path to parameter in init.php
+        $this->__FILE__ = "/home/mailuser/Maildir/new/".$filename;
 
         print "FILE: " . $this->__FILE__ ."\r\n";
 
         if (file_exists($this->__FILE__)) {
 
-	// print("DEBUG: source file: ".$__FILE__);
+            // print("DEBUG: source file: ".$__FILE__);
 
             $this->writeLog("--- READING LOCAL FILE ---");
             // $this->writeLog("source file: ".$__FILE__);
@@ -164,8 +164,8 @@ class printJob {
             return $email;
         } else {
 
-        	print ("File " . $this->__FILE__ . " not found."); 
-        	}
+            print ("File " . $this->__FILE__ . " not found.");
+        }
 
     }
 
@@ -211,7 +211,7 @@ class printJob {
         $name = $printjob["type"]."__".$printjob["library"]."__".$printjob["level"]."__".$printjob["callnumber"];
         $name = preg_replace('/\s+/', '_', $name);
         $name = preg_replace('/\,/', '', $name);
-	// changing signature: "/" to "-"
+        // changing signature: "/" to "-"
         $name = preg_replace('/\//', '-', $name);
 
             // DEBUG
@@ -527,7 +527,7 @@ class printJob {
 
                 } else {
 
-    		    // Print Jobs in ROOT Directory
+                    // Print Jobs in ROOT Directory
                     if($f != "dummy") {
                         $printer = $this->__CFG__["printer"]["printer08"];
                         // DEBUG
@@ -556,8 +556,8 @@ class printJob {
                         // DEBUG
                         // echo "renaming from: ". $dir.$f . " to " . "/home/mailuser/alma_print/history/".$h_dir."/".$date."/TEST_".$movedFile;
                         //echo "\r\n\r\n";
-                        }
-		    // end print in ROOT
+                    }
+                    // end print in ROOT
 
                 }
             }
