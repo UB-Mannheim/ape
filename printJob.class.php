@@ -327,7 +327,7 @@ class printJob
         if ($queue=="ruecklage") {
             switch ($section) {
                 case "BB Schloss Schneckenhof, West":
-                    $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer38"], $file, $queue);
                     // sendToQueue("magazin", "BSE", $file);
                     break;
                 case "BB A3":
@@ -337,7 +337,7 @@ class printJob
                     $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
                     break;
                 case "BB Schloss Schneckenhof, BWL":
-                    $this->printByNow($this->__CFG__["printer"]["printer29"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer38"], $file, $queue);
                     break;
                 case "BB Schloss Ehrenhof":
                     $this->printByNow($this->__CFG__["printer"]["printer48"], $file, $queue);
@@ -485,7 +485,7 @@ class printJob
                                 $printer = $this->__CFG__["printer"]["konicaA5"];
                                 break;
                             case "BWL":
-                                $printer = $this->__CFG__["printer"]["printer29"];
+                                $printer = $this->__CFG__["printer"]["printer38"];
                                 break;
                             case "BSE":
                                 $printer = $this->__CFG__["printer"]["printer21"];
@@ -494,7 +494,7 @@ class printJob
                                 if ($queue=="magazin") {
                                     $printer = $this->__CFG__["printer"]["magazin"];
                                 } else {
-                                    $printer = $this->__CFG__["printer"]["printer08"];
+                                    $printer = $this->__CFG__["printer"]["printer38"];
                                 }
                                 break;
                             case "WEST": // A5 bei Magazindruck
