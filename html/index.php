@@ -99,7 +99,7 @@ a, a:hover, a:visited, a:link {
 <a href="index.php?nav=queue">Queue</a> |
 <a href="index.php?nav=history">History</a> |
 <a href="index.php?nav=tmp">Temp</a> |
-<a href="index.php?nav=print_server">Druckserver</a> |
+<a href="https://mail.bib.uni-mannheim.de:631" target="_blank">Druckserver</a> |
 <a href="index.php?nav=logfile">Logfile</a> |
 <a href="index.php?nav=upload">Vorlage hochladen</a>
 </div>
