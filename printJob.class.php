@@ -226,7 +226,7 @@ class printJob
                     $this->printByNow($this->__CFG__["printer"]["printer38"], $file, $queue);
                     break;
                 case "BB A3":
-                    $this->printByNow($this->__CFG__["printer"]["printer10"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
                     break;
                 case "BB A5":
                     $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
@@ -244,7 +244,7 @@ class printJob
                     $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
                     break;
                 default:
-                    $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
             }
         }
 
@@ -290,7 +290,7 @@ class printJob
         if ($queue=="medienbearb") {
             switch ($section) {
                 case "BB Schloss Schneckenhof, West":
-                    $this->printByNow($this->__CFG__["printer"]["printer09"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
                     break;
                 case "BB A3":
                     $this->printByNow($this->__CFG__["printer"]["printer50"], $file, $queue);
@@ -299,19 +299,19 @@ class printJob
                     $this->printByNow($this->__CFG__["printer"]["konicaA5"], $file, $queue);
                     break;
                 case "BB Schloss Schneckenhof, BWL":
-                    $this->printByNow($this->__CFG__["printer"]["printer19"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
                     break;
                 case "BB Schloss Ehrenhof":
-                    $this->printByNow($this->__CFG__["printer"]["printer20"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
                     break;
                 default:
-                    $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
             }
         }
 
         // QUITTUNGSDRUCK, 3.MAHNUNG & "FALLBACK"
         if (($queue=="quittung") || ($queue=="mahnung") || ($queue=="fallback")) {
-            $this->printByNow($this->__CFG__["printer"]["printer08"], $file, $queue);
+            $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
         }
 
         if ($queue=="fernleihe") {
@@ -382,17 +382,13 @@ class printJob
                                 }
                                 break;
                             default:
-                                $printer = $this->__CFG__["printer"]["printer08"];
+                                $printer = $this->__CFG__["printer"]["fallback"];
                         }
 
                         if ($s != "dummy") {
                             $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.$f."/".quotemeta($s);
                             $this->writeLog("\r\n Printing on queue: ".$queue. " with command: " .$print_cmd);
                             shell_exec($print_cmd);
-                            if ($printer=="printer52") {
-                                $print_debug_cmd = "lp -o fit-to-page -d Kyocera_ECOSYS_M2530dn " .$dir.$f."/".quotemeta($s);
-                                shell_exec($print_debug_cmd);
-                            }
 
                             $h_dir = basename($dir);    // print ($dir) . "\r\n";   // dir
                             $h_subdir = $f;             // print ($f) . "\r\n";     // subdir
@@ -409,7 +405,7 @@ class printJob
                 } else {
                     // Print Jobs in ROOT Directory
                     if ($f != "dummy") {
-                        $printer = $this->__CFG__["printer"]["printer08"];
+                        $printer = $this->__CFG__["printer"]["fallback"];
                         $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.quotemeta($f);
                         shell_exec($print_cmd);
 
