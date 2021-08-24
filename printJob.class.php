@@ -226,7 +226,7 @@ class printJob
                     $this->printByNow($this->__CFG__["printer"]["printer38"], $file, $queue);
                     break;
                 case "BB A3":
-                    $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer50"], $file, $queue);
                     break;
                 case "BB A5":
                     $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
