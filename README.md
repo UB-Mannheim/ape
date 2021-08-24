@@ -49,7 +49,7 @@ environment:
  * PHP5 or higher
  * PHP Mime Mail Parser
  * CUPS
- * wkhtmltopdf
+ * wkhtmltopdf or weasyprint
 
 
 Installation
@@ -87,3 +87,4 @@ This project uses other free software:
 
 * [PHP Mime Mail Parser](https://github.com/php-mime-mail-parser/php-mime-mail-parser)
 * [wkhtmltopdf](https://github.com/wkhtmltopdf/wkhtmltopdf) – http://wkhtmltopdf.org/
+* [weasyprint](https://weasyprint.org) – http://weasyprint.org/

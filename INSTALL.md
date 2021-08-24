@@ -48,7 +48,7 @@ and important files
 ### Environment
 
 #### Recommended
-- Standard Debian Jessie Installation
+- Standard Debian Installation
 - Open incoming port 25
 
 ##### [Alternative Installation]
@@ -74,7 +74,7 @@ and adapt the paths to your system.
 - apache2
 - libapache2-mod-php5
 - php-mime-email-parser
-- wkthmltopdf
+- weasyprint (or wkthmltopdf)
 - git
 
 #### [Alternative Installation: Install RedHat Enterprise Linux 6 Packages]
