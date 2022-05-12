@@ -222,26 +222,23 @@ class printJob
         // RUECKLAGEZETTEL
         if ($queue=="ruecklage") {
             switch ($section) {
+                case "BB Schloss Schneckenhof, BWL":
                 case "BB Schloss Schneckenhof, West":
                     $this->printByNow($this->__CFG__["printer"]["printer38"], $file, $queue);
                     break;
                 case "BB A3":
+                case "BB A3, Testothek":
                     $this->printByNow($this->__CFG__["printer"]["printer50"], $file, $queue);
                     break;
                 case "BB A5":
+                case "MZES":
                     $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
-                    break;
-                case "BB Schloss Schneckenhof, BWL":
-                    $this->printByNow($this->__CFG__["printer"]["printer38"], $file, $queue);
                     break;
                 case "BB Schloss Ehrenhof":
                     $this->printByNow($this->__CFG__["printer"]["printer48"], $file, $queue);
                     break;
                 case "Ausleihzentrum_Westfluegel":
                     $this->printByNow($this->__CFG__["printer"]["printer52_DINA5"], $file, $queue);
-                    break;
-                case "MZES":
-                    $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
                     break;
                 default:
                     $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
