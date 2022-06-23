@@ -2,13 +2,13 @@ Installation and Configuration
 ------------------------------
 
 <!-- BEGIN-MARKDOWN-TOC -->
+* [Project structure](#project-structure)
 * [Base installation](#base-installation)
 	* [Recommended Environment](#recommended-environment)
 	* [Users](#users)
+	* [Clone the `ape` Repository](#clone-the-ape-repository)
 	* [Print Configuration](#print-configuration)
 	* [Install required packages](#install-required-packages)
-	* [Clone the `ape` Repository](#clone-the-ape-repository)
-* [Project structure](#project-structure)
 * [Workflow](#workflow)
 	* [Processing Mail](#processing-mail)
 	* [Printing](#printing)
@@ -58,6 +58,13 @@ Create a dedicated user `<mailuser>`
 sudo useradd -d <mailuser>
 ```
 
+### Clone the `ape` Repository
+Inside `/home/<mailuser>/` run
+
+```
+git clone https://github.com/UB-Mannheim/ape.git
+```
+
 ### Print Configuration
 
 Rename [`print.conf.example`](./print.conf.example) to `print.conf`
@@ -86,12 +93,6 @@ composer install
 ```
 
 to install php-mime-mail-parser.
-
-### Clone the `ape` Repository
-
-```
-git clone https://github.com/UB-Mannheim/ape.git
-```
 
 ## Workflow
 
