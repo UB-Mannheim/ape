@@ -49,14 +49,14 @@ environment:
  * PHP5 or higher
  * PHP Mime Mail Parser
  * CUPS
- * wkhtmltopdf or weasyprint
+ * weasyprintf
 
 
 Installation
 ------------
 
 Mannheim University Library develops and installs APE as a web application
-on a Linux server running Debian GNU Linux (Jessie). Other hardware and software
+on a Linux server running Debian GNU Linux (Bullseye). Other hardware and software
 combinations can also be used, but might require some smaller modifications.
 
 See [INSTALL.md](INSTALL.md) for detailed information.
@@ -86,5 +86,4 @@ Acknowledgments
 This project uses other free software:
 
 * [PHP Mime Mail Parser](https://github.com/php-mime-mail-parser/php-mime-mail-parser)
-* [wkhtmltopdf](https://github.com/wkhtmltopdf/wkhtmltopdf) – http://wkhtmltopdf.org/
 * [weasyprint](https://weasyprint.org) – http://weasyprint.org/

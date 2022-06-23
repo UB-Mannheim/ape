@@ -45,14 +45,10 @@ and important files
 
 ## Base installation
 
-### Environment
+### Recommended Environment
 
-#### Recommended
-- Standard Debian Installation
+- Debian 11 (Bullseye) Installation with PHP 7.4
 - Open incoming port 25
-
-##### [Alternative Installation]
-- for RedHat Enterprise Linux 6 Packages, see below
 
 ### Users
 
@@ -69,28 +65,17 @@ and adapt the paths to your system.
 
 ### Install required packages
 
+#### Debian packages
+
 - exim4
 - cups
 - apache2
-- libapache2-mod-php5
-- php-mime-email-parser
-- weasyprint (or wkthmltopdf)
+- libapache2-mod-php
+- weasyprint
 - git
 
-#### [Alternative Installation: Install RedHat Enterprise Linux 6 Packages]
-- yum install xorg-x11-server-Xvfb
-
-to get the correct PHP version:
-- yum install rh-php56-php
-- yum install rh-php56-php-mbstring
-- yum install rh-php56-php-devel
-
-- yum install wkhtmltox-0.13.0-alpha-7b36694_linux-centos6-amd64.rpm
-
-Use prefix of wkhtmltopdf with a xserver frame buffer in printJob.class.php
-```
-$convert_cmd = "/usr/bin/xvfb-run /usr/local/bin/wkhtmltopdf -q ".$q_filename." ".$q_pdf;
-```
+#### Using composer
+- php-mime-mail-parser
 
 ### Clone the `ape` Repository
 
