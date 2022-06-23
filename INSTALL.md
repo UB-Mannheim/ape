@@ -3,7 +3,7 @@ Installation and Configuration
 
 <!-- BEGIN-MARKDOWN-TOC -->
 * [Base installation](#base-installation)
-	* [Environment](#environment)
+	* [Recommended Environment](#recommended-environment)
 	* [Users](#users)
 	* [Print Configuration](#print-configuration)
 	* [Install required packages](#install-required-packages)
@@ -76,6 +76,16 @@ and adapt the paths to your system.
 
 #### Using composer
 - php-mime-mail-parser
+
+Assuming [composer](https://getcomposer.org) is already 
+[installed](https://getcomposer.org/doc/00-intro.md) change to 
+directory `/home/<mailuser>/ape/composer` and run
+
+```
+composer install
+```
+
+to install php-mime-mail-parser.
 
 ### Clone the `ape` Repository
 
