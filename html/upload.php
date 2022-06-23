@@ -28,7 +28,7 @@ if (isset($_FILES['file'])) {
             echo "<br />".$q_filename;
             echo "<br />".$q_pdf;
 
-            $cmd = "/usr/local/bin/weasyprint -q -s /home/mailuser/alma_print/weasy.css ".$q_filename." ".$q_pdf;
+            $cmd = "/usr/bin/weasyprint -q -s /home/mailuser/alma_print/weasy.css ".$q_filename." ".$q_pdf;
             shell_exec($cmd);
 
             if ($_POST['format'] == "a5") {

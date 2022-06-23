@@ -151,7 +151,7 @@ class printJob
         // Quoting HTML- & PDF-Filename for conversion
         $q_filename = quotemeta($filename);
         $q_pdf = quotemeta($pdf);
-        $convert_cmd = "/usr/local/bin/weasyprint -q -s /home/mailuser/alma_print/weasy.css ".$q_filename." ".$q_pdf;
+        $convert_cmd = "/usr/bin/weasyprint -q -s /home/mailuser/alma_print/weasy.css ".$q_filename." ".$q_pdf;
         shell_exec($convert_cmd);
 
         // File Creation Successful?
