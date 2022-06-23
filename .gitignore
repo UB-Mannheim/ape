@@ -8,6 +8,8 @@
 /docs/pdf/
 /docs/txt/
 
+/composer/vendor/
+
 /html/uploads/
 
 # TODO: Should these entries be removed?
