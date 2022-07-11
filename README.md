@@ -9,7 +9,7 @@ This is free software. You may use it under the terms of the
 GNU General Public License (GPL). See [docs/gpl.txt](docs/gpl.txt) for details.
 
 Parts of the software use different licenses which are listed
-in file [LICENSE](LICENSE).
+in file [LICENSE](LICENSE.md).
 
 
 Summary
