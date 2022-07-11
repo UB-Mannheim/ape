@@ -46,7 +46,7 @@ environment:
 
  * SMTP active and running
  * Apache2 or similar
- * PHP5 or higher
+ * PHP 7.4 or 8.0
  * PHP Mime Mail Parser
  * CUPS
  * WeasyPrint
