@@ -1,9 +1,9 @@
 ALMA Print Extension (APE) - Easily Print Custom Letters & Notifications
 ========================================================================
 
-Copyright (C) 2015-2017 Universitätsbibliothek Mannheim
+Copyright (C) 2015-2022 Universitätsbibliothek Mannheim
 
-Authors: Alexander Wagner (UB Mannheim)
+Authors: see commit history
 
 This is free software. You may use it under the terms of the
 GNU General Public License (GPL). See [docs/gpl.txt](docs/gpl.txt) for details.
