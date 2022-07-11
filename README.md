@@ -49,7 +49,7 @@ environment:
  * PHP5 or higher
  * PHP Mime Mail Parser
  * CUPS
- * weasyprintf
+ * WeasyPrint
 
 
 Installation
@@ -86,4 +86,4 @@ Acknowledgments
 This project uses other free software:
 
 * [PHP Mime Mail Parser](https://github.com/php-mime-mail-parser/php-mime-mail-parser)
-* [weasyprint](https://weasyprint.org) – http://weasyprint.org/
+* [WeasyPrint](https://github.com/Kozea/WeasyPrint)
