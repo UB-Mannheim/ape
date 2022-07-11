@@ -15,7 +15,7 @@ in file [LICENSE](LICENSE.md).
 Summary
 -------
 
-Every email ALMA sends can be printed out by a custom printer within your
+Every email ALMA sends can be printed by a custom printer within your
 local network. "Request Letters", "Resource Slips", "Reminders" or other emails
 that are received by the server are directly forwarded to the APE script.
 
