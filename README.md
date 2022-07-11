@@ -15,22 +15,22 @@ in file [LICENSE](LICENSE.md).
 Summary
 -------
 
-Every E-Mail ALMA sends can be printed out by a custom printer within your
-local network. "Request Letters", "Resource Slips", "Reminders" or other mails
+Every email ALMA sends can be printed out by a custom printer within your
+local network. "Request Letters", "Resource Slips", "Reminders" or other emails
 that are received by the server are directly forwarded to the APE script.
 
-The APE script parses incoming HTML mails and converts them to PDF. The
+The APE script parses incoming HTML emails and converts them to PDF. The
 generated PDF file can be printed out on any user-defined printer.
 
 APE mainly supports two functions:
 
- * direct print (prints mail immediately)
- * queue-controlled print (prints collected mails by cronjob)
+ * direct print (prints email immediately)
+ * queue-controlled print (prints collected emails by cronjob)
 
 APE has a simple and directory based file structure. Configuration changes can
 easily be made by editing text files.
 
-Additionally APE offers functions like caching mails in a temp directory.
+Additionally APE offers functions like caching emails in a temp directory.
 It even has a print history, logging mechanisms and a print preview
 for the best possible transparency.
 
