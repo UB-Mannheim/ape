@@ -1,6 +1,6 @@
 ## ALMA Print Extension (APE)
 
-Copyright (C) 2015-2016 Universitätsbibliothek Mannheim
+Copyright (C) 2015-2022 Universitätsbibliothek Mannheim
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

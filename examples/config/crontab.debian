@@ -1,12 +1,12 @@
 # Crontab Print
 # From Monday till Thursday at 12, Friday at 10 o'clock
-0 12 * * 1-4 /usr/bin/php5 /home/<mailuser>/ape/cronMagazindruck.php &> /home/<mailuser>/ape/log/cronMagazin_1200.log
-0 10 * * 5 /usr/bin/php5 /home/<mailuser>/ape/cronMagazindruck.php &> /home/<mailuser>/ape/log/cronMagazin_1000.log
+0 12 * * 1-4 /usr/bin/php /home/<mailuser>/ape/cronMagazindruck.php &> /home/<mailuser>/ape/log/cronMagazin_1200.log
+0 10 * * 5 /usr/bin/php /home/<mailuser>/ape/cronMagazindruck.php &> /home/<mailuser>/ape/log/cronMagazin_1000.log
 
 # Crontab Scans
 # From Monday till Friday at 6 and 10 o'clock
-0 6 * * 1-5 /usr/bin/php5 /home/<mailuser>/ape/cronScanauftrag.php &> /home/<mailuser>/ape/log/cronScan_0600.log
-0 11 * * 1-5 /usr/bin/php5 /home/<mailuser>/ape/cronScanauftrag.php &> /home/<mailuser>/ape/log/cronScan_1100.log
+0 6 * * 1-5 /usr/bin/php /home/<mailuser>/ape/cronScanauftrag.php &> /home/<mailuser>/ape/log/cronScan_0600.log
+0 11 * * 1-5 /usr/bin/php /home/<mailuser>/ape/cronScanauftrag.php &> /home/<mailuser>/ape/log/cronScan_1100.log
 
 # Crontab Clean History (inactive)
 # find -P "/home/mailuser/alma_print/history" -maxdepth 3 -type d \( -name '201*' \) -ctime +7 -exec rm -r {} \;

@@ -9,28 +9,28 @@ This is free software. You may use it under the terms of the
 GNU General Public License (GPL). See [docs/gpl.txt](docs/gpl.txt) for details.
 
 Parts of the software use different licenses which are listed
-in file [LICENSE](LICENSE).
+in file [LICENSE](LICENSE.md).
 
 
 Summary
 -------
 
-Every E-Mail ALMA sends can be printed out by a custom printer within your
-local network. "Request Letters", "Resource Slips", "Reminders" or other mails
+Every email ALMA sends can be printed by a custom printer within your
+local network. "Request Letters", "Resource Slips", "Reminders" or other emails
 that are received by the server are directly forwarded to the APE script.
 
-The APE script parses incoming HTML mails and converts them to PDF. The
+The APE script parses incoming HTML emails and converts them to PDF. The
 generated PDF file can be printed out on any user-defined printer.
 
 APE mainly supports two functions:
 
- * direct print (prints mail immediately)
- * queue-controlled print (prints collected mails by cronjob)
+ * direct print (prints email immediately)
+ * queue-controlled print (prints collected emails by cronjob)
 
 APE has a simple and directory based file structure. Configuration changes can
 easily be made by editing text files.
 
-Additionally APE offers functions like caching mails in a temp directory.
+Additionally APE offers functions like caching emails in a temp directory.
 It even has a print history, logging mechanisms and a print preview
 for the best possible transparency.
 
@@ -46,10 +46,10 @@ environment:
 
  * SMTP active and running
  * Apache2 or similar
- * PHP5 or higher
+ * PHP 7.4 or 8.0
  * PHP Mime Mail Parser
  * CUPS
- * weasyprintf
+ * WeasyPrint
 
 
 Installation
@@ -86,4 +86,4 @@ Acknowledgments
 This project uses other free software:
 
 * [PHP Mime Mail Parser](https://github.com/php-mime-mail-parser/php-mime-mail-parser)
-* [weasyprint](https://weasyprint.org) – http://weasyprint.org/
+* [WeasyPrint](https://github.com/Kozea/WeasyPrint)

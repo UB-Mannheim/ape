@@ -10,7 +10,7 @@ Installation and Configuration
 	* [Print Configuration](#print-configuration)
 	* [Install required packages](#install-required-packages)
 * [Workflow](#workflow)
-	* [Processing Mail](#processing-mail)
+	* [Processing Email](#processing-email)
 	* [Printing](#printing)
 	* [Setting up cronjobs](#setting-up-cronjobs)
 
@@ -33,7 +33,7 @@ and has the following directory structure
 * `/html/`        -   Web interface, accessed by Apache
 * `/log/`         -   Logfiles
 * `/queue/`       -   PDFs awaiting to be printed with next cronjob
-* `/tmp/`         -   Incoming mails as HTML files
+* `/tmp/`         -   Incoming emails as HTML files
 
 and important files
 
@@ -96,15 +96,15 @@ to install php-mime-mail-parser.
 
 ## Workflow
 
-### Processing Mail
-- exim4 retrieves mails on incoming port 25 (!firewall restrictions)
+### Processing Email
+- exim4 retrieves emails on incoming port 25 (!firewall restrictions)
   and redirects them all to the `<mailuser>` as specified in `/etc/aliases`
 
 ```
 *: <mailuser>
 ```
 
-- the `<mailuser>` forwards incoming mail to the ape script as specified
+- the `<mailuser>` forwards incoming email to the ape script as specified
   in `/home/<mailuser>/.forward`
 
 ```
@@ -113,7 +113,7 @@ to install php-mime-mail-parser.
 
 ### Printing
 
-- the named script parses the mail and gathers the required
+- the named script parses the email and gathers the required
   information before printing via CUPS print server
 
 ### Setting up cronjobs
