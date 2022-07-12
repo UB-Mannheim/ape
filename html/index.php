@@ -2,7 +2,7 @@
 
 $url = loadNavigation();
 
-function loadNavigation()
+function loadNavigation(): string
 {
 
     $path = "";

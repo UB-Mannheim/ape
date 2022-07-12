@@ -62,7 +62,7 @@ class printJob
     /**
      * Reads and sets configuration array from file.
      */
-    protected function getConfig()
+    protected function getConfig(): void
     {
         $this->__CFG__ = parse_ini_file("print.conf", true);
         include_once $this->__CFG__["lib"]["mailparser"];
@@ -72,7 +72,7 @@ class printJob
     /**
      * Writes a log message to the configured log file.
      */
-    protected function writeLog($msg)
+    protected function writeLog(string $msg): void
     {
         $log = $this->__CFG__["common"]["log"];
         $fdw = fopen($log, "a+");
@@ -108,6 +108,7 @@ class printJob
 
     /**
      * Processes a local file given as constructor argument.
+     * @return null|string
      */
     protected function fileInput($filename)
     {
@@ -144,6 +145,9 @@ class printJob
         return $email;
     }
 
+    /**
+     * @return void
+     */
     protected function getContent($email)
     {
         $date_rfc = date(DATE_RFC822);
@@ -219,7 +223,7 @@ class printJob
         );
     }
 
-    protected function printByFloor($file, $floor, $queue)
+    protected function printByFloor($file, $floor, string $queue): void
     {
         if ($floor=="Westfluegel" || $floor=="Untergeschoss"
             || $floor=="Erdgeschoss" || $floor=="Galerie"
@@ -230,7 +234,7 @@ class printJob
         }
     }
 
-    protected function processPrint($type, $section, $floor, $file)
+    protected function processPrint(string $type, string $section, string $floor, string $file): void
     {
         $queue = "";
         switch ($type) {
@@ -369,7 +373,7 @@ class printJob
         }
     }
 
-    protected function printByNow($printer, $file, $queue)
+    protected function printByNow($printer, $file, string $queue): void
     {
         $date_rfc = date(DATE_RFC822);
         $date = date("Y-m-d");
@@ -492,7 +496,7 @@ class printJob
         }
     }
 
-    protected function sendToQueue($queue, $section, $file)
+    protected function sendToQueue(string $queue, string $section, $file): void
     {
         $queue_dir = $this->__CFG__["queue"][$queue];
         shell_exec("cp \"$file\" \"$queue_dir\"/$section");
