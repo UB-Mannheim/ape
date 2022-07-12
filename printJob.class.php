@@ -2,7 +2,7 @@
 
 class printJob
 {
-    private $__CFG__;
+    private array $__CFG__;
     private $__PARSER__;
 
     /**
