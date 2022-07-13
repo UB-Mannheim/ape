@@ -4,15 +4,15 @@ Installation and Configuration
 <!-- BEGIN-MARKDOWN-TOC -->
 * [Project structure](#project-structure)
 * [Base installation](#base-installation)
-	* [Recommended Environment](#recommended-environment)
-	* [Users](#users)
-	* [Clone the `ape` Repository](#clone-the-ape-repository)
-	* [Print Configuration](#print-configuration)
-	* [Install required packages](#install-required-packages)
+  * [Recommended Environment](#recommended-environment)
+  * [Users](#users)
+  * [Clone the `ape` Repository](#clone-the-ape-repository)
+  * [Print Configuration](#print-configuration)
+  * [Install required packages](#install-required-packages)
 * [Workflow](#workflow)
-	* [Processing Email](#processing-email)
-	* [Printing](#printing)
-	* [Setting up cronjobs](#setting-up-cronjobs)
+  * [Processing Email](#processing-email)
+  * [Printing](#printing)
+  * [Setting up cronjobs](#setting-up-cronjobs)
 
 <!-- END-MARKDOWN-TOC -->
 
@@ -101,13 +101,13 @@ It is possible to access files remotely that are generated for printing.
 Example Apache configuration snippet:
 
 ```
-	Alias "/ape" "/home/mailuser/ape/html"
-	<Location /ape>
-        	Options Indexes MultiViews FollowSymLinks
-        	AllowOverride All
-            # require local network
-        	Require ip 192.168.0.0/24
-    	</Location>
+Alias "/ape" "/home/mailuser/ape/html"
+<Location /ape>
+    Options Indexes MultiViews FollowSymLinks
+    AllowOverride All
+    # require local network
+    Require ip 192.168.0.0/24
+</Location>
 ```
 
 ## Workflow
