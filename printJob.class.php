@@ -3,12 +3,11 @@
 class printJob
 {
     private $__CFG__;
-    private $__PATH__;
-    private $__LOG__;
-    private $__FILE__;
-    private $__MAIL__;
     private $__PARSER__;
 
+    /**
+     * Default constructor.
+     */
     function __construct()
     {
         $a = func_get_args();
@@ -18,20 +17,36 @@ class printJob
             call_user_func_array(array($this,$f), $a);
         } else {
             $this->getConfig();
-            $this->__MAIL__ = true;
+
             $content = $this->streamInput();
+            if ($content === NULL) {
+                return;
+            }
             $this->getContent($content);
         }
     }
 
+    /**
+     * Constructor taking one argument.
+     *
+     * This constructor is used for manually processing input files.
+     */
     function __construct1($filename)
     {
         $this->getConfig();
-        $this->__MAIL__ = false;
+
         $content = $this->fileInput($filename);
+        if ($content === NULL) {
+            return;
+        }
         $this->getContent($content);
     }
 
+    /**
+     * Constructor taking two arguments.
+     *
+     * This constructor is used for cron printing.
+     */
     function __construct2($cron, $job)
     {
         $this->getConfig();
@@ -44,15 +59,19 @@ class printJob
         }
     }
 
+    /**
+     * Reads and sets configuration array from file.
+     */
     protected function getConfig()
     {
         $this->__CFG__ = parse_ini_file("print.conf", true);
-        $this->__PATH__ = $this->__CFG__["common"]["root"];
-        $this->__LOG__ = $this->__CFG__["common"]["log"];
         include_once $this->__CFG__["lib"]["mailparser"];
         $this->__PARSER__ = new PhpMimeMailParser\Parser();
     }
 
+    /**
+     * Writes a log message to the configured log file.
+     */
     protected function writeLog($msg)
     {
         $log = $this->__CFG__["common"]["log"];
@@ -61,10 +80,12 @@ class printJob
         fclose($fdw);
     }
 
-    protected function streamInput()
+    /**
+     * Parses a HTML email and returns its body with embedded contents. 
+     */
+    protected function parseHTMLMail($file)
     {
-        $this->writeLog("--- READING MAIL ---");
-        $this->__PARSER__->setStream(fopen("php://stdin", "r"));
+        $this->__PARSER__->setStream(fopen($file, "r"));
         $to = $this->__PARSER__->getHeader('to');
         $from = $this->__PARSER__->getHeader('from');
         $subject = $this->__PARSER__->getHeader('subject');
@@ -76,25 +97,51 @@ class printJob
         return $htmlEmbedded;
     }
 
+    /**
+     * Parses a HTML email from standard input.
+     */
+    protected function streamInput()
+    {
+        $this->writeLog("--- READING MAIL ---");
+        return $this->parseHTMLMail("php://stdin");
+    }
+
+    /**
+     * Processes a local file given as constructor argument.
+     */
     protected function fileInput($filename)
     {
-        $this->__FILE__ = "/home/mailuser/Maildir/new/".$filename;
-        print "FILE: " . $this->__FILE__ ."\r\n";
+        $actual_filename = $filename;
 
-        if (file_exists($this->__FILE__)) {
-            $this->writeLog("--- READING LOCAL FILE ---");
-            $localfile = fopen($this->__FILE__, "r");
-            $email = "";
-
-            while (!feof($localfile)) {
-                $email .= fgets($localfile, 1024);
-            }
-            fclose($localfile);
-
-            return $email;
-        } else {
-            print ("File " . $this->__FILE__ . " not found.");
+        // if file is not found directly, try looking for it in mail directory (if configured)
+        if (!file_exists($actual_filename)
+            && array_key_exists("mail", $this->__CFG__["common"])) {
+            $actual_filename = $this->__CFG__["common"]["mail"] . $filename;
         }
+
+        if (!file_exists($actual_filename)) {
+            print ("File " . $filename . " not found.\n");
+            return;
+        }
+
+        $this->writeLog("--- READING LOCAL FILE ---");
+        $localfile = fopen($actual_filename, "r");
+        $email = "";
+
+        while (!feof($localfile)) {
+            $email .= fgets($localfile, 1024);
+        }
+        fclose($localfile);
+
+        // try detecting emails
+        if (preg_match("/^Return-path: <alma@exlibrisgroup.com>.*/", $email)) {
+            print("Detected email, using HTML parser\n");
+            return $this->parseHTMLMail($actual_filename);
+        } else {
+            print("Using raw contents of file\n");
+        }
+        
+        return $email;
     }
 
     protected function getContent($email)
@@ -108,19 +155,19 @@ class printJob
         $printjob = array();
         if (preg_match_all('|<h2 id="print_type">(.*)</h2>|U', $email, $type)) {
             $printjob["type"] = $type[1][0];
-            $this->writeLog($printjob["type"]."\r\n");
+            $this->writeLog($printjob["type"]."\n");
         }
         if (preg_match_all('|<h2 id="print_library">(.*)</h2>|U', $email, $library)) {
             $printjob["library"] = $library[1][0];
-            $this->writeLog($printjob["library"]."\r\n");
+            $this->writeLog($printjob["library"]."\n");
         }
         if (preg_match_all('|<h2 id="print_callnumber">(.*)</h2>|U', $email, $callnumber)) {
             $printjob["callnumber"] = $callnumber[1][0];
-            $this->writeLog($printjob["callnumber"]."\r\n");
+            $this->writeLog($printjob["callnumber"]."\n");
         }
         if (preg_match_all('|<h2 id="print_level">(.*)</h2>|U', $email, $level)) {
             $printjob["level"] = $level[1][0];
-            $this->writeLog($printjob["level"]."\r\n");
+            $this->writeLog($printjob["level"]."\n");
         }
 
         # abort if seat reservation during Corona crisis
@@ -129,15 +176,16 @@ class printJob
             return;
         }
 
-        $name = $printjob["type"]."__".$printjob["library"]."__".$printjob["level"]."__".$printjob["callnumber"];
+        $name = $printjob["type"] . "__" . $printjob["library"] . "__" . $printjob["level"]
+              . "__" . $printjob["callnumber"];
         $name = preg_replace('/\s+/', '_', $name);
         $name = preg_replace('/\,/', '', $name);
         // changing signature: "/" to "-"
         $name = preg_replace('/\//', '-', $name);
 
-        $filename = $this->__CFG__["common"]["tmp"].$name."____incoming__".$udate.".html";
-        $pdf = $this->__CFG__["common"]["tmp"].$name."____pdf__".$udate.".pdf";
-        $this->writeLog("-- writing html file: ".$filename);
+        $filename = $this->__CFG__["common"]["tmp"] . "${name}____incoming__$udate.html";
+        $pdf = $this->__CFG__["common"]["tmp"] . "${name}____pdf__$udate.pdf";
+        $this->writeLog("-- writing html file: $filename");
 
         // Create File
         $fdw = fopen($filename, "w+");
@@ -151,14 +199,15 @@ class printJob
         // Quoting HTML- & PDF-Filename for conversion
         $q_filename = quotemeta($filename);
         $q_pdf = quotemeta($pdf);
-        $convert_cmd = "/usr/bin/weasyprint -q -s /home/mailuser/alma_print/weasy.css ".$q_filename." ".$q_pdf;
+        $convert_cmd = "/usr/bin/weasyprint -q -s " . $this->__CFG__["common"]["root"]
+                     . "weasy.css $q_filename $q_pdf";
         shell_exec($convert_cmd);
 
         // File Creation Successful?
         if (file_exists($pdf)) {
-            $this->writeLog("-- file: ".$pdf." successfully created");
+            $this->writeLog("-- file: $pdf successfully created");
         } else {
-            $this->writeLog("-- file: ".$pdf." not found");
+            $this->writeLog("-- file: $pdf not found");
         }
         $this->writeLog("--- END ---");
 
@@ -332,15 +381,15 @@ class printJob
             // Cron: Magazindruck
             if ($file=="cronMagazindruck") {
                 $dir = $this->__CFG__["queue"]["magazin"];
-                print "cronMagazindruck\r\n";
-                $this->writeLog("Jobtype: cronMagazindruck\r\n");
+                print "cronMagazindruck\n";
+                $this->writeLog("Jobtype: cronMagazindruck\n");
             }
 
             // Cron: Scanauftrag
             if ($file=="cronScanauftrag") {
                 $dir = $this->__CFG__["queue"]["scanauftrag"];
-                print "cronScanauftrag\r\n";
-                $this->writeLog("Jobtype: cronScanauftrag\r\n");
+                print "cronScanauftrag\n";
+                $this->writeLog("Jobtype: cronScanauftrag\n");
             }
 
             $files = array_diff(scandir($dir), array('..', '.'));
@@ -383,64 +432,69 @@ class printJob
                         }
 
                         if ($s != "dummy") {
-                            $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.$f."/".quotemeta($s);
-                            $this->writeLog("\r\n Printing on queue: ".$queue. " with command: " .$print_cmd);
+                            $print_cmd = "lp -o fit-to-page -d $printer $dir$f/"
+                                       . quotemeta($s);
+                            $this->writeLog("\n Printing on queue: $queue with command: "
+                                            . $print_cmd);
                             shell_exec($print_cmd);
 
-                            $h_dir = basename($dir);    // print ($dir) . "\r\n";   // dir
-                            $h_subdir = $f;             // print ($f) . "\r\n";     // subdir
-                            $h_file = $s;               // print ($s) . "\r\n";     // file
-
+                            $h_dir = basename($dir);    // print ($dir) . "\n";   // dir
+                            $h_subdir = $f;             // print ($f) . "\n";     // subdir
+                            $h_file = $s;               // print ($s) . "\n";     // file
+                            $h_datedir = $this->__CFG__["common"]["history"] . "$h_dir/$date";
+                            
                             // Move to History Directory
-                            if (!file_exists($this->__CFG__["common"]["history"].$h_dir."/".$date)) {
-                                mkdir($this->__CFG__["common"]["history"].$h_dir."/".$date, 0777, true);
+                            if (!file_exists($h_datedir)) {
+                                mkdir($h_datedir, 0777, true);
                             }
                             $movedFile = basename($h_file);
-                            rename($dir.$f."/".$s, "/home/mailuser/alma_print/history/".$h_dir."/".$date."/".$movedFile);
+                            rename($dir.$f."/".$s, "$h_datedir/$movedFile");
                         }
                     }
                 } else {
                     // Print Jobs in ROOT Directory
                     if ($f != "dummy") {
                         $printer = $this->__CFG__["printer"]["fallback"];
-                        $print_cmd = "lp -o fit-to-page -d " .$printer. " " .$dir.quotemeta($f);
+                        $print_cmd = "lp -o fit-to-page -d $printer $dir" . quotemeta($f);
                         shell_exec($print_cmd);
 
                         $h_dir = basename($dir);
                         $h_file = $f;
+                        $h_datedir = $this->__CFG__["common"]["history"] . "$h_dir/$date";
 
                         // Move to History Directory
-                        if (!file_exists($this->__CFG__["common"]["history"].$h_dir."/".$date)) {
-                            mkdir($this->__CFG__["common"]["history"].$h_dir."/".$date, 0777, true);
+                        if (!file_exists($h_datedir)) {
+                            mkdir($h_datedir, 0777, true);
                         }
 
                         $movedFile = basename($h_file);
-                        rename($dir.$f, "/home/mailuser/alma_print/history/".$h_dir."/".$date."/".$movedFile);
+                        rename($dir.$f, "$h_datedir/$movedFile");
                     }
                 }
             }
         } else {
             // No Cronjob, called directly from processPrint()
 
-            $this->writeLog("-- start printing: ".$file);
-            $print_cmd = "lp -o fit-to-page -d " .$printer. " " .quotemeta($file);
-            $this->writeLog("-- ". $print_cmd);
+            $this->writeLog("-- start printing: $file");
+            $print_cmd = "lp -o fit-to-page -d $printer ".quotemeta($file);
+            $this->writeLog("-- $print_cmd");
             shell_exec($print_cmd);
             print $print_cmd;
 
+            $h_datedir = $this->__CFG__["common"]["history"] . "$queue/$date";
             // Move to History Directory /direct/
-            if (!file_exists($this->__CFG__["common"]["history"].$queue."/".$date)) {
-                mkdir($this->__CFG__["common"]["history"].$queue."/".$date, 0777, true);
+            if (!file_exists($h_datedir)) {
+                mkdir($h_datedir, 0777, true);
             }
 
             $movedFile = basename($file);
-            rename($file, $this->__CFG__["common"]["history"].$queue."/".$date."/".$movedFile);
+            rename($file, "$h_datedir/$movedFile");
         }
     }
 
     protected function sendToQueue($queue, $section, $file)
     {
-        $cp_cmd = "cp \"".$file."\" \"".$this->__CFG__["queue"][$queue]."\"/".$section;
-        shell_exec($cp_cmd);
+        $queue_dir = $this->__CFG__["queue"][$queue];
+        shell_exec("cp \"$file\" \"$queue_dir\"/$section");
     }
 }

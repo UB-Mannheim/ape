@@ -1,3 +1,5 @@
+*~
+
 # TODO: Document ignored entries.
 /history/
 /log/
@@ -11,10 +13,6 @@
 /composer/vendor/
 
 /html/uploads/
-
-# TODO: Should these entries be removed?
-/example/
-/old/
 
 # Configuration file.
 print.conf
