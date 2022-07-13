@@ -484,6 +484,6 @@ class printJob
 
     protected function sendToQueue(string $queue, string $section, string $file): void
     {
-        copy($file, $this->__CFG__["queue"][$queue]."/$section");
+        copy($file, $this->__CFG__["queue"][$queue]."/$section/".basename($file));
     }
 }
