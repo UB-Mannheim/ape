@@ -94,6 +94,22 @@ composer install
 
 to install php-mime-mail-parser.
 
+### Web interface
+
+It is possible to access files remotely that are generated for printing.
+
+Example Apache configuration snippet:
+
+```
+	Alias "/ape" "/home/mailuser/ape/html"
+	<Location /ape>
+        	Options Indexes MultiViews FollowSymLinks
+        	AllowOverride All
+            # require local network
+        	Require ip 192.168.0.0/24
+    	</Location>
+```
+
 ## Workflow
 
 ### Processing Email
