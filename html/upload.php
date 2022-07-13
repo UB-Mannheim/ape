@@ -28,7 +28,7 @@ if (isset($_FILES['file'])) {
             echo "<br />".$q_filename;
             echo "<br />".$q_pdf;
 
-            $cmd = "/usr/bin/weasyprint -q -s /home/mailuser/alma_print/weasy.css ".$q_filename." ".$q_pdf;
+            $cmd = "/usr/bin/weasyprint -q -s weasy.css ${q_filename} ${q_pdf}";
             shell_exec($cmd);
 
             if ($_POST['format'] == "a5") {
@@ -44,7 +44,7 @@ if (isset($_FILES['file'])) {
 
 if (isset($_GET['fn'])) {
     if ($_GET['fn'] == "delete") {
-        $cmd = "rm /var/www/html/alma_print/uploads/*";
+        $cmd = "rm uploads/*";
         shell_exec($cmd);
     }
     if ($_GET['fn'] == "print") {
