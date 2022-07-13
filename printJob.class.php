@@ -1,28 +1,27 @@
 <?php
 
+require_once("vendor/autoload.php");
+
 class printJob
 {
     private array $__CFG__;
-    private $__PARSER__;
+    private object $__PARSER__;
 
     /**
      * Default constructor.
      */
     function __construct()
     {
+        $this->__CFG__ = parse_ini_file("print.conf", true);
+        $this->__PARSER__ = new PhpMimeMailParser\Parser();
+
         $a = func_get_args();
         $i = func_num_args();
 
         if (method_exists($this, $f = '__construct'.$i)) {
             call_user_func_array(array($this,$f), $a);
         } else {
-            $this->getConfig();
-
-            $content = $this->streamInput();
-            if ($content === NULL) {
-                return;
-            }
-            $this->getContent($content);
+            $this->getContent($this->streamInput());
         }
     }
 
@@ -31,10 +30,8 @@ class printJob
      *
      * This constructor is used for manually processing input files.
      */
-    function __construct1($filename)
+    function __construct1(string $filename)
     {
-        $this->getConfig();
-
         $content = $this->fileInput($filename);
         if ($content === NULL) {
             return;
@@ -47,26 +44,14 @@ class printJob
      *
      * This constructor is used for cron printing.
      */
-    function __construct2($cron, $job)
+    function __construct2(string $cron, string $job)
     {
-        $this->getConfig();
-
         if ($job=="cronMagazindruck") {
             $this->printByNow($cron, $job, "magazin");
         }
         if ($job=="cronScanauftrag") {
             $this->printByNow($cron, $job, "scanauftrag");
         }
-    }
-
-    /**
-     * Reads and sets configuration array from file.
-     */
-    protected function getConfig(): void
-    {
-        $this->__CFG__ = parse_ini_file("print.conf", true);
-        include_once $this->__CFG__["lib"]["mailparser"];
-        $this->__PARSER__ = new PhpMimeMailParser\Parser();
     }
 
     /**
@@ -81,15 +66,15 @@ class printJob
     }
 
     /**
-     * Parses a HTML email and returns its body with embedded contents. 
+     * Parses a HTML email and returns its body with embedded contents.
      */
-    protected function parseHTMLMail($file)
+    protected function parseHTMLMail(string $file): string
     {
         $this->__PARSER__->setStream(fopen($file, "r"));
         $to = $this->__PARSER__->getHeader('to');
         $from = $this->__PARSER__->getHeader('from');
         $subject = $this->__PARSER__->getHeader('subject');
-    
+
         $text = $this->__PARSER__->getMessageBody('text');
         $html = $this->__PARSER__->getMessageBody('html');
         $htmlEmbedded = $this->__PARSER__->getMessageBody('htmlEmbedded');
@@ -100,7 +85,7 @@ class printJob
     /**
      * Parses a HTML email from standard input.
      */
-    protected function streamInput()
+    protected function streamInput(): string
     {
         $this->writeLog("--- READING MAIL ---");
         return $this->parseHTMLMail("php://stdin");
@@ -108,9 +93,9 @@ class printJob
 
     /**
      * Processes a local file given as constructor argument.
-     * @return null|string
+     * @return string
      */
-    protected function fileInput($filename)
+    protected function fileInput(string $filename): string
     {
         $actual_filename = $filename;
 
@@ -122,7 +107,7 @@ class printJob
 
         if (!file_exists($actual_filename)) {
             print ("File " . $filename . " not found.\n");
-            return;
+            return "";
         }
 
         $this->writeLog("--- READING LOCAL FILE ---");
@@ -141,14 +126,14 @@ class printJob
         } else {
             print("Using raw contents of file\n");
         }
-        
+
         return $email;
     }
 
     /**
      * @return void
      */
-    protected function getContent($email)
+    protected function getContent(string $email): void
     {
         $date_rfc = date(DATE_RFC822);
         $date = date("Y-m-d_H-i-s");
@@ -156,7 +141,7 @@ class printJob
         $uid = uniqid();
         $udate = $date."__".$uid;
 
-        $printjob = array();
+        $printjob = array("type" => "", "library" => "", "callnumber" => "", "level" => "");
         if (preg_match_all('|<h2 id="print_type">(.*)</h2>|U', $email, $type)) {
             $printjob["type"] = $type[1][0];
             $this->writeLog($printjob["type"]."\n");
@@ -223,7 +208,7 @@ class printJob
         );
     }
 
-    protected function printByFloor($file, $floor, string $queue): void
+    protected function printByFloor(string $file, string $floor, string $queue): void
     {
         if ($floor=="Westfluegel" || $floor=="Untergeschoss"
             || $floor=="Erdgeschoss" || $floor=="Galerie"
@@ -373,10 +358,11 @@ class printJob
         }
     }
 
-    protected function printByNow($printer, $file, string $queue): void
+    protected function printByNow(string $printer, string $file, string $queue): void
     {
         $date_rfc = date(DATE_RFC822);
         $date = date("Y-m-d");
+        $dir = "";
 
         // Is Cronjob?
         if (($file=="cronMagazindruck") || ($file=="cronScanauftrag")) {
@@ -446,7 +432,7 @@ class printJob
                             $h_subdir = $f;             // print ($f) . "\n";     // subdir
                             $h_file = $s;               // print ($s) . "\n";     // file
                             $h_datedir = $this->__CFG__["common"]["history"] . "$h_dir/$date";
-                            
+
                             // Move to History Directory
                             if (!file_exists($h_datedir)) {
                                 mkdir($h_datedir, 0777, true);
@@ -496,9 +482,8 @@ class printJob
         }
     }
 
-    protected function sendToQueue(string $queue, string $section, $file): void
+    protected function sendToQueue(string $queue, string $section, string $file): void
     {
-        $queue_dir = $this->__CFG__["queue"][$queue];
-        shell_exec("cp \"$file\" \"$queue_dir\"/$section");
+        copy($file, $this->__CFG__["queue"][$queue]."/$section");
     }
 }
