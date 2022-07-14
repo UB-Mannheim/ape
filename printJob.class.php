@@ -33,9 +33,6 @@ class printJob
     function __construct1(string $filename)
     {
         $content = $this->fileInput($filename);
-        if ($content === NULL) {
-            return;
-        }
         $this->getContent($content);
     }
 
