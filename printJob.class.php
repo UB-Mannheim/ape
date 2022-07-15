@@ -270,6 +270,7 @@ class printJob
                     $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
                     break;
                 case "BB Schloss Ehrenhof":
+                case "Bibl. f. Accounting u. Taxation":
                     $this->printByNow($this->__CFG__["printer"]["printer48"], $file, $queue);
                     break;
                 case "Ausleihzentrum_Westfluegel":
