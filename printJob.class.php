@@ -368,14 +368,12 @@ class printJob
             // Cron: Magazindruck
             if ($file=="cronMagazindruck") {
                 $dir = $this->__CFG__["queue"]["magazin"];
-                print "cronMagazindruck\n";
                 $this->writeLog("Jobtype: cronMagazindruck\n");
             }
 
             // Cron: Scanauftrag
             if ($file=="cronScanauftrag") {
                 $dir = $this->__CFG__["queue"]["scanauftrag"];
-                print "cronScanauftrag\n";
                 $this->writeLog("Jobtype: cronScanauftrag\n");
             }
 
@@ -466,7 +464,6 @@ class printJob
             $print_cmd = "lp -o fit-to-page -d $printer ".quotemeta($file);
             $this->writeLog("-- $print_cmd");
             shell_exec($print_cmd);
-            print $print_cmd;
 
             $h_datedir = $this->__CFG__["common"]["history"] . "$queue/$date";
             // Move to History Directory /direct/
