@@ -263,6 +263,7 @@ class printJob
                     break;
                 case "BB A3":
                 case "BB A3, Testothek":
+                case "BB A3, Mediathek":
                     $this->printByNow($this->__CFG__["printer"]["printer50"], $file, $queue);
                     break;
                 case "BB A5":
