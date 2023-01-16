@@ -353,7 +353,7 @@ class printJob
         }
 
         if ($queue=="eingangsbeleg") {
-            $this->printByNow($this->__CFG__["printer"]["magazin"], $file, $queue);
+            $this->printByNow($this->__CFG__["printer"]["repro_DINA5"], $file, $queue);
         }
     }
 
