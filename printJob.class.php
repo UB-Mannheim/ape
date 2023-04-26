@@ -183,8 +183,8 @@ class printJob
         $this->writeLog("-- Create PDF: ".$pdf);
 
         // Quoting HTML- & PDF-Filename for conversion
-        $q_filename = quotemeta($filename);
-        $q_pdf = quotemeta($pdf);
+        $q_filename = escapeshellarg($filename);
+        $q_pdf = escapeshellarg($pdf);
         $convert_cmd = "/usr/bin/weasyprint -q -s " . $this->__CFG__["common"]["root"]
                      . "weasy.css $q_filename $q_pdf";
         shell_exec($convert_cmd);
@@ -413,8 +413,7 @@ class printJob
                         }
 
                         if ($s != "dummy") {
-                            $print_cmd = "lp -o fit-to-page -d $printer $dir$f/"
-                                       . quotemeta($s);
+                            $print_cmd = "lp -o fit-to-page -d $printer " . escapeshellarg("$dir$f/$s");
                             $this->writeLog("\n Printing on queue: $queue with command: "
                                             . $print_cmd);
                             shell_exec($print_cmd);
@@ -436,7 +435,7 @@ class printJob
                     // Print Jobs in ROOT Directory
                     if ($f != "dummy") {
                         $printer = $this->__CFG__["printer"]["fallback"];
-                        $print_cmd = "lp -o fit-to-page -d $printer $dir" . quotemeta($f);
+                        $print_cmd = "lp -o fit-to-page -d $printer " . escapeshellarg("$dir$f");
                         shell_exec($print_cmd);
 
                         $h_dir = basename($dir);
@@ -457,7 +456,7 @@ class printJob
             // No Cronjob, called directly from processPrint()
 
             $this->writeLog("-- start printing: $file");
-            $print_cmd = "lp -o fit-to-page -d $printer ".quotemeta($file);
+            $print_cmd = "lp -o fit-to-page -d $printer ".escapeshellarg($file);
             $this->writeLog("-- $print_cmd");
             shell_exec($print_cmd);
 
