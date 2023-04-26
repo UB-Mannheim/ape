@@ -289,31 +289,25 @@ class printJob
                     $this->sendToQueue($queue, "SW", $file);
                     break;
                 case "BB A3":
+                case "BB A3, Testothek":
+                case "BB A3, Mediathek":
                     $this->sendToQueue($queue, "A3", $file);
                     break;
                 case "BB A5":
+                case "MZES":
                     $this->sendToQueue($queue, "A5", $file);
                     break;
                 case "BB Schloss Schneckenhof, BWL":
                     $this->sendToQueue($queue, "BWL", $file);
                     break;
                 case "BB Schloss Ehrenhof":
+                case "Bibl. f. Accounting u. Taxation":
+                case "Binnenschifffahrtsrecht, Bibl.":
+                case "BB Schloss Ehrenhof - IMGB":
                     $this->sendToQueue($queue, "BSE", $file);
                     break;
                 case "Ausleihzentrum_Westfluegel":
                     $this->printByFloor($file, $floor, $queue);
-                    break;
-                case "MZES":
-                    $this->sendToQueue($queue, "A5", $file);
-                    break;
-                case "BB Schloss Ehrenhof - IMGB":
-                    $this->sendToQueue($queue, "BSE", $file);
-                    break;
-                case "Bibl. f. Accounting u. Taxation":
-                    $this->sendToQueue($queue, "BSE", $file);
-                    break;
-                case "Binnenschifffahrtsrecht, Bibl.":
-                    $this->sendToQueue($queue, "BSE", $file);
                     break;
                 default:
                     $this->sendToQueue($queue, "", $file);
