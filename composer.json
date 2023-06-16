@@ -1,6 +1,6 @@
 {
     "require": {
-        "php-mime-mail-parser/php-mime-mail-parser": "^7.0"
+        "php-mime-mail-parser/php-mime-mail-parser": "^8.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.8",
