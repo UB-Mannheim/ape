@@ -259,23 +259,23 @@ class printJob
             switch ($section) {
                 case "BB Schloss Schneckenhof, BWL":
                 case "BB Schloss Schneckenhof, West":
-                    $this->printByNow($this->__CFG__["printer"]["printer38"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer_BSS"], $file, $queue);
                     break;
                 case "BB A3":
                 case "BB A3, Testothek":
                 case "BB A3, Mediathek":
-                    $this->printByNow($this->__CFG__["printer"]["printer50"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer_A3"], $file, $queue);
                     break;
                 case "BB A5":
                 case "MZES":
-                    $this->printByNow($this->__CFG__["printer"]["printer46"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer_A5"], $file, $queue);
                     break;
                 case "BB Schloss Ehrenhof":
                 case "Bibl. f. Accounting u. Taxation":
-                    $this->printByNow($this->__CFG__["printer"]["printer48"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer_BSE"], $file, $queue);
                     break;
                 case "Ausleihzentrum_Westfluegel":
-                    $this->printByNow($this->__CFG__["printer"]["printer52_DINA5"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer_WF_DINA5"], $file, $queue);
                     break;
                 default:
                     $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
@@ -321,10 +321,10 @@ class printJob
                     $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
                     break;
                 case "BB A3":
-                    $this->printByNow($this->__CFG__["printer"]["printer50"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer_A3"], $file, $queue);
                     break;
                 case "BB A5":
-                    $this->printByNow($this->__CFG__["printer"]["konicaA5"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["mfp_A5"], $file, $queue);
                     break;
                 case "BB Schloss Schneckenhof, BWL":
                     $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
@@ -383,29 +383,29 @@ class printJob
                         $print_cmd = "";
                         switch ($f) {
                             case "A3":
-                                $printer = $this->__CFG__["printer"]["printer50"];
+                                $printer = $this->__CFG__["printer"]["printer_A3"];
                                 break;
                             case "A5":
-                                $printer = $this->__CFG__["printer"]["konicaA5"];
+                                $printer = $this->__CFG__["printer"]["mfp_A5"];
                                 break;
                             case "BWL":
-                                $printer = $this->__CFG__["printer"]["printer38"];
+                                $printer = $this->__CFG__["printer"]["printer_BSS"];
                                 break;
                             case "BSE":
-                                $printer = $this->__CFG__["printer"]["printer21"];
+                                $printer = $this->__CFG__["printer"]["printer_BSE_2"];
                                 break;
                             case "SW":
                                 if ($queue=="magazin") {
                                     $printer = $this->__CFG__["printer"]["magazin"];
                                 } else {
-                                    $printer = $this->__CFG__["printer"]["printer38"];
+                                    $printer = $this->__CFG__["printer"]["printer_BSS"];
                                 }
                                 break;
                             case "WEST": // A5 bei Magazindruck
                                 if ($queue=="magazin") {
-                                    $printer = $this->__CFG__["printer"]["printer52_DINA5"];
+                                    $printer = $this->__CFG__["printer"]["printer_WF_DINA5"];
                                 } else {
-                                    $printer = $this->__CFG__["printer"]["printer52"];
+                                    $printer = $this->__CFG__["printer"]["printer_WF"];
                                 }
                                 break;
                             default:
