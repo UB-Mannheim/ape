@@ -324,7 +324,7 @@ class printJob
                     $this->printByNow($this->__CFG__["printer"]["printer_A3"], $file, $queue);
                     break;
                 case "BB A5":
-                    $this->printByNow($this->__CFG__["printer"]["mfp_A5"], $file, $queue);
+                    $this->printByNow($this->__CFG__["printer"]["printer_A5_2"], $file, $queue);
                     break;
                 case "BB Schloss Schneckenhof, BWL":
                     $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
@@ -386,7 +386,7 @@ class printJob
                                 $printer = $this->__CFG__["printer"]["printer_A3"];
                                 break;
                             case "A5":
-                                $printer = $this->__CFG__["printer"]["mfp_A5"];
+                                $printer = $this->__CFG__["printer"]["printer_A5_2"];
                                 break;
                             case "BWL":
                                 $printer = $this->__CFG__["printer"]["printer_BSS"];
