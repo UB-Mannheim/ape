@@ -156,8 +156,9 @@ class printJob
             $this->writeLog($printjob["level"]."\n");
         }
 
-        # abort if seat reservation during Corona crisis
-        if ($printjob["level"] === "Arbeitsplatz") {
+        # abort if no call number for mag
+        if ($printjob["type"] === "magazinbestellung" && ($printjob["callnumber"] === "" || empty($printjob["callnumber"]))) {
+            $this->writeLog("No call number for mag job. Aborting.");
             $this->writeLog("--- END ---");
             return;
         }
