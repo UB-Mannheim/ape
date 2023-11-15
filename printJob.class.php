@@ -138,6 +138,8 @@ class printJob
         $uid = uniqid();
         $udate = $date."__".$uid;
 
+	$this->writeLog("Processing $udate\n");
+
         $printjob = array("type" => "", "library" => "", "callnumber" => "", "level" => "");
         if (preg_match_all('|<h2 id="print_type">(.*)</h2>|U', $email, $type)) {
             $printjob["type"] = $type[1][0];
@@ -159,7 +161,7 @@ class printJob
         # abort if no call number for mag
         if ($printjob["type"] === "magazinbestellung" && ($printjob["callnumber"] === "" || empty($printjob["callnumber"]))) {
             $this->writeLog("No call number for mag job. Aborting.");
-            $this->writeLog("--- END ---");
+            $this->writeLog("--- END ---\n");
             return;
         }
 
@@ -196,7 +198,7 @@ class printJob
         } else {
             $this->writeLog("-- file: $pdf not found");
         }
-        $this->writeLog("--- END ---");
+        $this->writeLog("--- END ---\n");
 
         $this->processPrint(
             $printjob["type"],
