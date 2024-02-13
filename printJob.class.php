@@ -307,7 +307,9 @@ class printJob
                 case "Bibl. f. Accounting u. Taxation":
                 case "Binnenschifffahrtsrecht, Bibl.":
                 case "BB Schloss Ehrenhof - IMGB":
-                    $this->sendToQueue($queue, "BSE", $file);
+		    # wasserschaden: print bse stuff right away
+                    #$this->sendToQueue($queue, "BSE", $file);
+                    $this->printByNow($this->__CFG__["printer"]["printer_BSE_2"], $file, $queue);
                     break;
                 case "Ausleihzentrum_Westfluegel":
                     $this->printByFloor($file, $floor, $queue);
