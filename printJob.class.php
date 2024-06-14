@@ -138,7 +138,7 @@ class printJob
         $uid = uniqid();
         $udate = $date."__".$uid;
 
-	$this->writeLog("Processing $udate\n");
+        $this->writeLog("Processing $udate\n");
 
         $printjob = array("type" => "", "library" => "", "callnumber" => "", "level" => "");
         if (preg_match_all('|<h2 id="print_type">(.*)</h2>|U', $email, $type)) {
@@ -156,6 +156,18 @@ class printJob
         if (preg_match_all('|<h2 id="print_level">(.*)</h2>|U', $email, $level)) {
             $printjob["level"] = $level[1][0];
             $this->writeLog($printjob["level"]."\n");
+        }
+
+        # abort if physical request for interested user from order
+        if ($printjob["type"] === "magazinbestellung" && preg_match_all('|<span class="bestelldaten">(.*)</span>|U', $email, $matches)) {
+            foreach ($matches[1] as $bestellinfo) {
+                if (str_contains(strtolower($bestellinfo), "interested user from order") || str_contains(strtolower($bestellinfo), "interessierter benutzer von bestellung")) {
+                        $this->writeLog($bestellinfo);
+                        $this->writeLog("Mag job for interested user from order. Aborting.");
+                        $this->writeLog("--- END ---\n");
+                        return;
+                }
+            }
         }
 
         # abort if no call number for mag
