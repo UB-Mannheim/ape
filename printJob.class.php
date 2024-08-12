@@ -306,7 +306,8 @@ class printJob
                 case "BB A3":
                 case "BB A3, Testothek":
                 case "BB A3, Mediathek":
-                    $this->sendToQueue($queue, "A3", $file);
+                    #$this->sendToQueue($queue, "A3", $file);
+                    $this->printByNow($this->__CFG__["printer"]["printer_A3"], $file, $queue);
                     break;
                 case "BB A5":
                 case "MZES":
