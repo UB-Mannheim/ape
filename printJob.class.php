@@ -287,6 +287,8 @@ class printJob
                     break;
                 case "BB Schloss Ehrenhof":
                 case "Bibl. f. Accounting u. Taxation":
+                case "Binnenschifffahrtsrecht, Bibl.":
+                case "BB Schloss Ehrenhof - IMGB":
                     $this->printByNow($this->__CFG__["printer"]["printer_BSE"], $file, $queue);
                     break;
                 case "Ausleihzentrum_Westfluegel":
