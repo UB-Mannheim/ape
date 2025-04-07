@@ -222,10 +222,15 @@ class printJob
 
     protected function printByFloor(string $file, string $floor, string $queue): void
     {
-        if ($floor=="Westfluegel" || $floor=="Untergeschoss"
-            || $floor=="Erdgeschoss" || $floor=="Galerie"
-        ) {
+        # Ausleihzentrum
+        if ($floor=="Westfluegel" || $floor=="Untergeschoss" || $floor=="Erdgeschoss" || $floor=="Galerie") {
             $this->sendToQueue($queue, "WEST", $file);
+        # IVW BSE
+        } elseif ($floor=="Versicherungsrecht") {
+                $this->sendToQueue($queue, "BSE", $file);
+        # IVW A5
+        } elseif ($floor=="Versicherungsbetriebslehre und Versicherungsmathematik") {
+                $this->sendToQueue($queue, "A5", $file);
         } else {
             $this->sendToQueue($queue, "SW", $file);
         }
@@ -295,6 +300,15 @@ class printJob
                 case "Ausleihzentrum_Westfluegel":
                     $this->printByNow($this->__CFG__["printer"]["printer_WF_DINA5"], $file, $queue);
                     break;
+                case "Institut für Versicherungswissenschaft":
+                    if ($floor=="Versicherungswissenschaft Magazin") {
+                        $this->printByNow($this->__CFG__["printer"]["printer_WF_DINA5"], $file, $queue);
+                    } elseif ($floor=="Versicherungsrecht") {
+                        $this->printByNow($this->__CFG__["printer"]["printer_BSE"], $file, $queue);
+                    } elseif ($floor=="Versicherungsbetriebslehre und Versicherungsmathematik") {
+                        $this->printByNow($this->__CFG__["printer"]["printer_A5"], $file, $queue);
+                    }
+                    break;
                 default:
                     $this->printByNow($this->__CFG__["printer"]["fallback"], $file, $queue);
             }
@@ -326,6 +340,7 @@ class printJob
                     $this->sendToQueue($queue, "BSE", $file);
                     break;
                 case "Ausleihzentrum_Westfluegel":
+                case "Institut für Versicherungswissenschaft":
                     $this->printByFloor($file, $floor, $queue);
                     break;
                 default:
