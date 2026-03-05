@@ -288,7 +288,7 @@ class printJob
                     break;
                 case "BB A5":
                 case "BB A5, EDZ":
-                case "MZES":
+                case "BB A5 (ehem. MZES)":
                     $this->printByNow($this->__CFG__["printer"]["printer_A5"], $file, $queue);
                     break;
                 case "BB Schloss Ehrenhof":
@@ -327,7 +327,7 @@ class printJob
                     break;
                 case "BB A5":
                 case "BB A5, EDZ":
-                case "MZES":
+                case "BB A5 (ehem. MZES)":
                     $this->sendToQueue($queue, "A5", $file);
                     break;
                 case "BB Schloss Schneckenhof, BWL":
